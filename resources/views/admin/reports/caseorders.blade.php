@@ -4,13 +4,13 @@
 
 @section('content')
 <div class="p-6 bg-gray-100 min-h-screen text-sm">
-    <h1 class="text-xl font-bold mb-4">📊 Case Orders Report</h1>
+    <h1 class="text-xl font-bold mb-4"> Case Orders Report</h1>
 
-    <!-- ✅ Filter Form -->
+ 
     <form id="filterForm" method="GET" action="{{ route('reports.caseorders') }}"
           class="mb-6 bg-white p-4 rounded shadow flex flex-wrap gap-4 items-end">
 
-        <!-- Clinic Filter -->
+      
         <div>
             <label class="block text-gray-600 text-xs mb-1">Clinic</label>
             <select name="clinic_id" class="p-2 border rounded auto-submit">
@@ -23,7 +23,7 @@
             </select>
         </div>
 
-       <!-- Status Filter -->
+      
 <div>
     <label class="block text-gray-600 text-xs mb-1">Status</label>
     <select name="status" class="p-2 border rounded auto-submit">
@@ -37,52 +37,52 @@
 </div>
 
 
-        <!-- Date From -->
+        
         <div>
             <label class="block text-gray-600 text-xs mb-1">From</label>
             <input type="date" name="from" value="{{ request('from') }}" 
                    class="border p-2 rounded w-44 auto-submit">
         </div>
 
-        <!-- Date To -->
+     
         <div>
             <label class="block text-gray-600 text-xs mb-1">To</label>
             <input type="date" name="to" value="{{ request('to') }}" 
                    class="border p-2 rounded w-44 auto-submit">
         </div>
 
-        <!-- Reset Button -->
+       
         <div class="flex gap-2">
             <button type="button" id="resetBtn"
-               class="bg-gray-500 text-white px-4 py-2 rounded shadow hover:bg-gray-600">
+               class="bg-gray-500 text-white px-4 py-2 text-left text-sm font-medium rounded shadow hover:bg-gray-600">
                 Reset
             </button>
         </div>
     </form>
 
-    <!-- ✅ Report Table -->
+    
     <div id="reportTable">
-        <table class="min-w-full bg-white rounded shadow text-sm">
-            <thead>
-                <tr class="bg-gray-200 text-left text-xs uppercase tracking-wider">
-                    <th class="px-4 py-2">ID</th>
-                    <th class="px-4 py-2">Case Type</th>
-                    <th class="px-4 py-2">Clinic</th>
-                    <th class="px-4 py-2">Dentist</th>
-                    <th class="px-4 py-2">Patient</th>
-                    <th class="px-4 py-2">Status / Delivery</th>
-                    <th class="px-4 py-2">Created At</th>
+       <table class="min-w-full border-separate border-spacing-0">
+        <thead>
+            <tr class="bg-blue-900 text-white">
+                    <th class="px-4 py-2 text-left text-sm font-medium">ID</th>
+                    <th class="px-4 py-2 text-left text-sm font-medium">Case Type</th>
+                    <th class="px-4 py-2 text-left text-sm font-medium">Clinic</th>
+                    <th class="px-4 py-2 text-left text-sm font-medium">Dentist</th>
+                    <th class="px-4 py-2 text-left text-sm font-medium">Patient</th>
+                    <th class="px-4 py-2 text-left text-sm font-medium">Status / Delivery</th>
+                    <th class="px-4 py-2 text-left text-sm font-medium">Created At</th>
                 </tr>
             </thead>
             <tbody>
                 @forelse($caseOrders as $order)
-                    <tr class="border-b hover:bg-gray-50">
-                        <td class="px-4 py-2">{{ $order->co_id }}</td>
-                        <td class="px-4 py-2">{{ $order->case_type }}</td>
-                        <td class="px-4 py-2">{{ $order->clinic->clinic_name ?? 'N/A' }}</td>
-                        <td class="px-4 py-2">{{ $order->dentist->name ?? 'N/A' }}</td>
-                    <td class="px-4 py-2">{{ $order->patient->full_name ?? 'N/A' }}</td>
-                        <td class="px-4 py-2">
+                    <tr class="bg-white hover:bg-gray-50">
+                        <td class="px-4 py-2 text-left text-sm font-medium">{{ $order->co_id }}</td>
+                        <td class="px-4 py-2 text-left text-sm font-medium">{{ $order->case_type }}</td>
+                        <td class="px-4 py-2 text-left text-sm font-medium">{{ $order->clinic->clinic_name ?? 'N/A' }}</td>
+                        <td class="px-4 py-2 text-left text-sm font-medium">{{ $order->dentist->name ?? 'N/A' }}</td>
+                    <td class="px-4 py-2 text-left text-sm font-medium">{{ $order->patient->full_name ?? 'N/A' }}</td>
+                        <td class="px-4 py-2 text-left text-sm font-medium">
                             <span class="
                                 px-2 py-1 rounded text-xs 
                                 @if($order->status == 'pending') bg-yellow-200 text-yellow-800 
@@ -98,7 +98,7 @@
                                 @endif
                             </span>
                         </td>
-                        <td class="px-4 py-2">{{ $order->created_at->format('Y-m-d') }}</td>
+                        <td class="px-4 py-2 text-left text-sm font-medium">{{ $order->created_at->format('Y-m-d') }}</td>
                     </tr>
                 @empty
                     <tr>
@@ -110,34 +110,33 @@
             </tbody>
         </table>
 
-        <!-- ✅ Pagination -->
+        
         <div class="mt-4">
             {{ $caseOrders->links() }}
         </div>
     </div>
 </div>
 
-<!-- ✅ AJAX Script -->
+
 <script>
 document.addEventListener("DOMContentLoaded", function() {
     const filterForm = document.getElementById('filterForm');
     const reportTable = document.getElementById('reportTable');
     const resetBtn = document.getElementById('resetBtn');
 
-    // Auto-submit with AJAX
+   
     document.querySelectorAll('.auto-submit').forEach(element => {
         element.addEventListener('change', function() {
             applyFilter();
         });
     });
 
-    // Reset filter
+  
     resetBtn.addEventListener('click', function() {
         filterForm.reset();
         applyFilter();
     });
 
-    // Function to apply filter via AJAX
     function applyFilter(page = 1) {
         let formData = new FormData(filterForm);
         let params = new URLSearchParams(formData).toString();

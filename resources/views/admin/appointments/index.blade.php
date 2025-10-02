@@ -159,17 +159,17 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-    // Auto-hide success toast
+    
     const successToast = document.getElementById('successToast');
     if (successToast) {
         setTimeout(() => {
             successToast.style.transition = 'opacity 0.5s ease-out';
             successToast.style.opacity = '0';
-            setTimeout(() => successToast.remove(), 500); // remove from DOM
-        }, 3000); // hides after 3 seconds
+            setTimeout(() => successToast.remove(), 500); 
+        }, 3000); 
     }
 
-    // Auto-hide error toast
+    
     const errorToast = document.getElementById('errorToast');
     if (errorToast) {
         setTimeout(() => {
@@ -180,7 +180,7 @@
     }
 });
 function openAppointmentModal(id) {
-    // dito mo ilalagay ang content, pwede AJAX call para makuha ang data
+  
     document.getElementById('appointmentModalContent').innerHTML = `<p>Loading details for appointment ID ${id}...</p>`;
     document.getElementById('appointmentModal').classList.remove('hidden');
 }

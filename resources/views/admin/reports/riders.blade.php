@@ -7,7 +7,7 @@
 
     <h1 class="text-xl font-bold mb-4">🏍️ Riders Report</h1>
 
-    <!-- Filter by Clinic -->
+   
     <div class="mb-4">
         <label for="clinic_id" class="font-medium">Filter by Clinic:</label>
         <select id="clinic_id" class="border rounded px-2 py-1">
@@ -18,30 +18,30 @@
         </select>
     </div>
 
-    <!-- Riders Table -->
+ 
     <div id="ridersTable">
-        <table class="w-full table-auto border border-gray-300 bg-white">
-            <thead class="bg-gray-200">
-                <tr>
-                    <th class="border px-4 py-2 text-left">#</th>
-                    <th class="border px-4 py-2 text-left">Rider Name</th>
-                    <th class="border px-4 py-2 text-left">Email</th>
-                    <th class="border px-4 py-2 text-left">Contact Number</th>
-                    <th class="border px-4 py-2 text-left">Deliveries Count</th>
+        <table class="min-w-full border-separate border-spacing-0">
+        <thead>
+            <tr class="bg-blue-900 text-white">
+                    <th class="px-4 py-2 text-left text-sm font-medium text-left">#</th>
+                    <th class="px-4 py-2 text-left text-sm font-medium text-left">Rider Name</th>
+                    <th class="px-4 py-2 text-left text-sm font-medium text-left">Email</th>
+                    <th class="px-4 py-2 text-left text-sm font-medium text-left">Contact Number</th>
+                    <th class="px-4 py-2 text-left text-sm font-medium text-left">Deliveries Count</th>
                 </tr>
             </thead>
             <tbody>
                 @forelse($riders as $rider)
-                    <tr>
-                        <td class="border px-4 py-2">{{ $rider->id }}</td>
-                        <td class="border px-4 py-2">{{ $rider->name }}</td>
-                        <td class="border px-4 py-2">{{ $rider->email }}</td>
-                        <td class="border px-4 py-2">{{ $rider->contact_number ?? '-' }}</td>
-                        <td class="border px-4 py-2">{{ $rider->deliveries_count }}</td>
+                     <tr class="bg-white hover:bg-gray-50">
+                        <td class="px-4 py-2 text-left text-sm font-medium">{{ $rider->id }}</td>
+                        <td class="px-4 py-2 text-left text-sm font-medium">{{ $rider->name }}</td>
+                        <td class="px-4 py-2 text-left text-sm font-medium">{{ $rider->email }}</td>
+                        <td class="px-4 py-2 text-left text-sm font-medium">{{ $rider->contact_number ?? '-' }}</td>
+                        <td class="px-4 py-2 text-left text-sm font-medium">{{ $rider->deliveries_count }}</td>
                     </tr>
                 @empty
                     <tr>
-                        <td class="border px-4 py-2 text-center" colspan="5">No riders found.</td>
+                        <td class="px-4 py-2 text-left text-sm font-medium text-center" colspan="5">No riders found.</td>
                     </tr>
                 @endforelse
             </tbody>

@@ -76,22 +76,22 @@
     </table>
 </div>
 
-<!-- ADD PATIENT MODAL -->
+
 <div id="addPatientModal" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50 p-4">
   <div class="bg-white rounded-xl shadow-2xl w-full max-w-2xl overflow-hidden relative">
     
-    <!-- Header -->
+
     <div class="p-6 border-b border-gray-200 flex items-center justify-between">
       <h2 class="text-2xl font-semibold text-gray-800">Add Patient</h2>
       <button id="closeAddPatientModal" class="text-gray-500 hover:text-gray-800 text-2xl">&times;</button>
     </div>
     
-    <!-- Tabs -->
+
     <div class="flex border-b border-gray-200 px-6 py-2 bg-blue-900 text-white">
       <span class="px-4 py-2 border-b-2 border-white font-medium">Patient Details</span>
     </div>
     
-    <!-- Form -->
+
     <div class="p-6 space-y-6">
       <form id="addPatientForm" action="{{ route('clinic.patients.store') }}" method="POST" class="space-y-6">
         @csrf
@@ -139,7 +139,7 @@
       </form>
     </div>
     
-    <!-- Footer -->
+
     <div class="p-6 border-t border-gray-200 flex justify-end space-x-4">
       <button id="cancelAddPatient" class="py-2 px-4 rounded-md text-gray-700 font-medium hover:bg-gray-100">Cancel</button>
       <button type="submit" form="addPatientForm"
@@ -149,22 +149,19 @@
   </div>
 </div>
 
-<!-- EDIT PATIENT MODAL -->
+
 <div id="editPatientModal" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50 p-4">
   <div class="bg-white rounded-xl shadow-2xl w-full max-w-2xl overflow-hidden relative">
-    
-    <!-- Header -->
+
     <div class="p-6 border-b border-gray-200 flex items-center justify-between">
       <h2 class="text-2xl font-semibold text-gray-800">Edit Patient</h2>
       <button onclick="closeEditPatientModal()" class="text-gray-500 hover:text-gray-800 text-2xl">&times;</button>
     </div>
-    
-    <!-- Tabs -->
+
     <div class="flex border-b border-gray-200 px-6 py-2 bg-blue-900 text-white">
       <span class="px-4 py-2 border-b-2 border-white font-medium">Patient Details</span>
     </div>
-    
-    <!-- Form -->
+
     <div class="p-6 space-y-6">
       <form id="editPatientForm" method="POST" class="space-y-6">
         @csrf
@@ -212,8 +209,7 @@
         </div>
       </form>
     </div>
-    
-    <!-- Footer -->
+  
     <div class="p-6 border-t border-gray-200 flex justify-end space-x-4">
       <button onclick="closeEditPatientModal()" class="py-2 px-4 rounded-md text-gray-700 font-medium hover:bg-gray-100">Cancel</button>
       <button type="submit" form="editPatientForm"
@@ -225,14 +221,13 @@
 
 <script>
 document.addEventListener("DOMContentLoaded", () => {
-    // Add Modal
+
     const addModal = document.getElementById('addPatientModal');
     document.getElementById('openAddPatientModal').addEventListener('click', () => addModal.classList.remove('hidden'));
     document.getElementById('closeAddPatientModal').addEventListener('click', () => addModal.classList.add('hidden'));
     document.getElementById('cancelAddPatient').addEventListener('click', () => addModal.classList.add('hidden'));
 });
 
-// Edit Modal
 function openEditPatientModal(id, name, email, contact, address) {
     const modal = document.getElementById('editPatientModal');
     const form = document.getElementById('editPatientForm');
@@ -248,8 +243,6 @@ function closeEditPatientModal() {
     document.getElementById('editPatientModal').classList.add('hidden');
 }
 
-
-    // Open Delete Modal
     function openDeletePatientModal(id, name) {
         const form = document.getElementById('deletePatientForm');
         form.action = `/clinic/patients/${id}`;
@@ -257,40 +250,37 @@ function closeEditPatientModal() {
         document.getElementById('deletePatientModal').classList.remove('hidden');
     }
 
-    // Close Delete Modal
     function closeDeletePatientModal() {
         document.getElementById('deletePatientModal').classList.add('hidden');
     }
 
 
 document.addEventListener("DOMContentLoaded", () => {
-    // Success Toast
+
     const successToast = document.getElementById('successToast');
-    // Success Toast
+ 
 if(successToast) {
-    // Slide in
+   
     setTimeout(() => {
         successToast.classList.remove('translate-x-20', 'opacity-0');
         successToast.classList.add('translate-x-0', 'opacity-100');
     }, 100);
 
-    // Slide out after 4 seconds
     setTimeout(() => {
         successToast.classList.add('translate-x-20', 'opacity-0');
-        // Remove from DOM after animation (0.5s)
+      
         setTimeout(() => successToast.remove(), 500);
     }, 4100);
 }
 
-// Error Toast
+
 if(errorToast) {
-    // Slide in
+  
     setTimeout(() => {
         errorToast.classList.remove('translate-x-20', 'opacity-0');
         errorToast.classList.add('translate-x-0', 'opacity-100');
     }, 100);
 
-    // Slide out after 4 seconds
     setTimeout(() => {
         errorToast.classList.add('translate-x-20', 'opacity-0');
         setTimeout(() => errorToast.remove(), 500);

@@ -5,25 +5,24 @@
 @section('content')
 <div class="p-6 bg-gray-100 min-h-screen">
     <h1 class="text-xl font-bold mb-4">Clinics Report</h1>
-
-    <table class="min-w-full bg-white rounded shadow text-sm" id="reportTable">
+<table class="min-w-full border-separate border-spacing-0">
         <thead>
-            <tr class="bg-gray-200 text-left">
-                <th class="px-4 py-2">Clinic ID</th>
-                <th class="px-4 py-2">Clinic Name</th>
-                <th class="px-4 py-2">Email</th>
-                <th class="px-4 py-2">Case Orders</th>
-                <th class="px-4 py-2">Appointments</th>
+            <tr class="bg-blue-900 text-white">
+                <th class="px-4 py-2 text-left text-sm font-medium">Clinic ID</th>
+                <th class="px-4 py-2 text-left text-sm font-medium">Clinic Name</th>
+                <th class="px-4 py-2 text-left text-sm font-medium">Email</th>
+                <th class="px-4 py-2 text-left text-sm font-medium">Case Orders</th>
+                <th class="px-4 py-2 text-left text-sm font-medium">Appointments</th>
             </tr>
         </thead>
         <tbody>
             @foreach($clinics as $clinic)
-                <tr class="border-b">
-                    <td class="px-4 py-2">{{ $clinic->clinic_id }}</td>
-                    <td class="px-4 py-2">{{ $clinic->clinic_name }}</td>
-                    <td class="px-4 py-2">{{ $clinic->email }}</td>
-                    <td class="px-4 py-2">{{ $clinic->case_orders_count }}</td>
-                    <td class="px-4 py-2">{{ $clinic->appointments_count }}</td>
+               <tr class="bg-white hover:bg-gray-50">
+                    <td class="px-4 py-2 text-left text-sm font-medium">{{ $clinic->clinic_id }}</td>
+                    <td class="px-4 py-2 text-left text-sm font-medium">{{ $clinic->clinic_name }}</td>
+                    <td class="px-4 py-2 text-left text-sm font-medium">{{ $clinic->email }}</td>
+                    <td class="px-4 py-2 text-left text-sm font-medium">{{ $clinic->case_orders_count }}</td>
+                    <td class="px-4 py-2 text-left text-sm font-medium">{{ $clinic->appointments_count }}</td>
                 </tr>
             @endforeach
         </tbody>
@@ -40,7 +39,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const reportTable = document.getElementById('reportTable');
     const resetBtn = document.getElementById('resetBtn');
 
-    // Auto-submit on input change
+  
     document.querySelectorAll('.auto-submit').forEach(el => el.addEventListener('input', applyFilter));
 
     resetBtn?.addEventListener('click', function() {

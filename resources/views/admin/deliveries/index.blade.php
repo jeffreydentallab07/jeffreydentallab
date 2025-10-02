@@ -23,7 +23,6 @@
                     <td class="px-6 py-3 font-medium text-gray-800">{{ $delivery->delivery_id }}</td>
                     <td class="px-6 py-3 font-medium text-gray-800">{{ $delivery->appointment->co_id }}</td>
 
-                    {{-- Rider Column --}}
                     <td class="px-6 py-3 font-medium text-gray-800">
                         @if($delivery->rider_id)
                             {{ $delivery->rider?->name }}
@@ -33,7 +32,7 @@
                                 Assign Rider
                             </button>
 
-                            {{-- Rider Modal --}}
+                    
                             <div id="assignRiderModal{{ $delivery->delivery_id }}" 
                                 class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
                                 <div class="bg-white w-11/12 max-w-md rounded-lg shadow-lg p-6 relative">

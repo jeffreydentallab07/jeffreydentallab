@@ -60,7 +60,7 @@
         </table>
     </div>
 
-    <!-- Add Clinic Modal -->
+   
     <div id="addClinicModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
         <div class="bg-white w-11/12 max-w-lg rounded-xl shadow-lg p-6 relative">
             <button id="closeAddClinicModal" class="absolute top-3 right-3 text-gray-500 hover:text-gray-800 text-2xl">&times;</button>
@@ -99,7 +99,7 @@
         </div>
     </div>
 
-    <!-- Edit Clinic Modal -->
+
     <div id="editClinicModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
         <div class="bg-white w-11/12 max-w-lg rounded-xl shadow-lg p-6 relative">
             <button id="closeEditClinicModal" class="absolute top-3 right-3 text-gray-500 hover:text-gray-800 text-2xl">&times;</button>
@@ -142,12 +142,12 @@ document.addEventListener("DOMContentLoaded", () => {
     const addModal = document.getElementById('addClinicModal');
     const editModal = document.getElementById('editClinicModal');
 
-    // Add Modal
+  
     document.getElementById('openAddClinicModal').addEventListener('click', () => addModal.classList.remove('hidden'));
     document.getElementById('closeAddClinicModal').addEventListener('click', () => addModal.classList.add('hidden'));
     document.getElementById('cancelAddClinic').addEventListener('click', () => addModal.classList.add('hidden'));
 
-    // Edit Modal (event delegation)
+   
     document.addEventListener('click', function(e){
         if(e.target.closest('.editBtn')){
             const btn = e.target.closest('.editBtn');

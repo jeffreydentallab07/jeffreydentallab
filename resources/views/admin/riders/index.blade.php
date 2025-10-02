@@ -6,7 +6,7 @@
 <link rel="icon" type="image/png" href="{{ asset('images/logo3.png') }}">
 <div class="p-6 space-y-6 bg-gray-300 min-h-screen">
 
-    <!-- Add Rider Button -->
+  
     <button id="openAddRiderModal"
         class="bg-green-500 text-white px-5 py-2 rounded font-semibold hover:bg-green-600 transition mb-4">
         + Add Rider
@@ -46,7 +46,7 @@
                     <td class="px-6 py-3 font-semibold text-gray-800">{{ $rider->email }}</td>
                     <td class="px-6 py-3 font-semibold text-gray-800">{{ $rider->contact_number ?? 'N/A' }}</td>
                     <td class="px-6 py-3 flex gap-2">
-                       <!-- Edit Rider Button -->
+                      
 <button 
     onclick="openEditRiderModal({{ $rider->id }}, '{{ addslashes($rider->name) }}', '{{ $rider->contact_number ?? '' }}', '{{ addslashes($rider->email) }}', '{{ $rider->photo ?? '' }}')" 
     class="px-2 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 transition flex items-center justify-center"
@@ -57,7 +57,7 @@
     </svg>
 </button>
 
-<!-- Delete Rider Button -->
+
 <button 
     onclick="openDeleteRiderModal('{{ route('riders.destroy', $rider->id) }}')" 
     class="text-red-600 hover:text-red-800 transition p-1 rounded flex items-center justify-center"
@@ -141,7 +141,7 @@
 </div>
 
 <script>
-    // Preview selected image for rider
+   
     function previewAddRiderImage(event) {
         const reader = new FileReader();
         reader.onload = function() {

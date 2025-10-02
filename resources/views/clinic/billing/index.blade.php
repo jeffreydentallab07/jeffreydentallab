@@ -20,17 +20,17 @@
                 <td class="px-6 py-3 text-gray-700">{{ $billing->patient_name ?? '-' }}</td>
                 <td class="px-6 py-3 text-gray-700">{{ $billing->case_type ?? '-' }}</td>
                 <td class="px-6 py-3 text-gray-700" x-data="{ open: false }">
-                    <!-- View Button -->
+                 
                     <button @click="open = true"
                         class="px-3 py-1 bg-green-600 text-white rounded hover:bg-green-700">
                         View
                     </button>
 
-                    <!-- Receipt Modal -->
+                   
                     <div x-show="open" x-transition.opacity class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
                         <div @click.away="open = false" class="bg-white p-6 rounded-lg w-[700px] max-h-[90vh] overflow-y-auto">
 
-                            <!-- Receipt Content -->
+                        
                             <div class="text-left mb-2">
                                 <h1 class="text-xl font-bold uppercase">Jeffrey Dental Laboratory</h1>
                                 <p class="leading-tight text-[11px]">

@@ -22,7 +22,7 @@
     @endif
 </div>
 
-{{-- 2. Main Content (Rider Deliveries Table) --}}
+
 <div class="container mx-auto mt-24 px-4">
 
 
@@ -111,9 +111,9 @@
     </div>
 </div>
 
-{{-- 3. Scripts --}}
+
 <script>
-    // Auto-hide toast notifications after 5 seconds
+   
     document.addEventListener('DOMContentLoaded', function() {
         const successToast = document.getElementById('successToast');
         const errorToast = document.getElementById('errorToast');

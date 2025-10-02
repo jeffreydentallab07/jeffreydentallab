@@ -129,7 +129,7 @@
         </div>
     </div>
 
-    <!-- Receipt Modal -->
+   
     <div id="receiptModal" class="fixed inset-0 z-50 hidden bg-black/50 flex items-center justify-center">
         <div class="bg-white w-[550px] max-h-[90vh] overflow-y-auto p-6 border border-gray-300 shadow-lg rounded-lg relative">
             <button onclick="closeReceiptModal()" class="absolute top-2 right-2 text-gray-600 hover:text-gray-900 font-bold text-2xl">&times;</button>
@@ -148,7 +148,6 @@
         </div>
     </div>
 
-    <!-- Delete Confirmation Modal -->
     <div id="deleteModal" class="fixed inset-0 z-50 hidden bg-black/50 flex items-center justify-center">
         <div class="bg-white w-[400px] p-6 rounded-lg shadow-lg text-center relative">
             <h2 class="text-lg font-semibold text-gray-800 mb-4">Confirm Delete</h2>
@@ -212,7 +211,7 @@ function closeDeleteModal() {
     document.getElementById('deleteModal').classList.add('hidden');
 }
 
-// Auto-hide toast notifications after 5 seconds
+
 document.addEventListener('DOMContentLoaded', function() {
     setTimeout(() => {
         const toasts = document.querySelectorAll('#successToast, #errorToast');

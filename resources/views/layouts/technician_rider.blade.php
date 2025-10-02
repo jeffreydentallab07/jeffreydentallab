@@ -3,12 +3,13 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="{{ asset('images/logo3.ico') }}" type="image/x-icon">
     <title>@yield('title', 'Dashboard')</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="h-screen flex bg-white text-[12px]">
 
-    {{-- Sidebar --}}
+   
     <aside class="w-48 bg-blue-900 text-white flex flex-col fixed top-0 left-0 h-full">
         <div class="h-20 px-3 border-b border-blue-700 flex items-center justify-center">
             <img src="{{ asset('images/logo2.png') }}" alt="Logo" class="h-12 object-contain">
@@ -17,7 +18,6 @@
        
     </aside>
 
-    {{-- Main Content --}}
     <div class="flex-grow flex flex-col h-full ml-48">
         <header class="bg-white p-3 flex items-center justify-between shadow-md z-10">
             <div class="flex items-center gap-2 border border-gray-300 rounded-lg w-96 p-2 bg-white">

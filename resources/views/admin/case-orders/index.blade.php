@@ -6,18 +6,18 @@
 <link rel="icon" type="image/png" href="{{ asset('images/logo3.png') }}">
 
 <style>
-/* Wiggle animation for "For Approval" button */
+
 @keyframes wiggle {
   0%, 100% { transform: rotate(-3deg); }
   50% { transform: rotate(3deg); }
 }
 
-/* Animate by default */
+
 .animate-wiggle {
   animation: wiggle 0.5s ease-in-out infinite;
 }
 
-/* Stop animation on hover */
+
 .animate-wiggle:hover {
   animation: none;
 }
@@ -39,7 +39,7 @@
             <tbody class="divide-y divide-gray-200">
                 @forelse ($caseOrders as $caseOrder)
                 <tr class="text-gray-700 text-sm">
-                    <!-- Case No as Modal Trigger -->
+             
                     <td class="px-6 py-3 text-left">
                         <button type="button"
                                 onclick="openModal('modal{{ $caseOrder->co_id }}')"
@@ -69,7 +69,7 @@
                     </td>
                 </tr>
 
-                <!-- Case Order Modal -->
+             
                 <div id="modal{{ $caseOrder->co_id }}" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50 p-2">
                     <div class="bg-white rounded-xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto relative font-sans" role="dialog" aria-labelledby="modalTitle{{ $caseOrder->co_id }}" aria-modal="true">
 
@@ -92,7 +92,7 @@
                             <button onclick="closeModal('modal{{ $caseOrder->co_id }}')" class="text-gray-500 hover:text-gray-800 text-xl">&times;</button>
                         </div>
 
-                        {{-- Case Order Details --}}
+              
                         <div class="p-4 space-y-4 text-sm text-gray-700">
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
                                 <div>
@@ -121,7 +121,7 @@
                                 </div>
                             </div>
 
-                            {{-- Buttons --}}
+                         
                             <div class="flex justify-end space-x-3 mt-3">
                                 <button type="button" onclick="closeModal('modal{{ $caseOrder->co_id }}')" class="px-3 py-1.5 bg-gray-500 text-white rounded hover:bg-gray-600 text-sm">Back</button>
                                 <form action="{{ route('case-orders.approve', $caseOrder->co_id) }}" method="POST">

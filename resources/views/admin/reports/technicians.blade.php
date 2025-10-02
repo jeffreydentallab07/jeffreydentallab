@@ -4,38 +4,38 @@
 
 @section('content')
 <div class="p-6 bg-gray-100 min-h-screen text-sm">
-    <h1 class="text-xl font-bold mb-4">🛠️ Technicians Report</h1>
+    <h1 class="text-xl font-bold mb-4">Technicians Report</h1>
 
-    <!-- ✅ Filter Form -->
+   
     <form id="filterForm" action="{{ route('reports.technicians') }}" method="GET" class="mb-4 flex items-center space-x-2">
-        <input type="text" name="search" placeholder="Search by name/email..." class="p-2 border rounded">
+        <input type="text" name="search" placeholder="Search by name/email..." class="px-4 py-2 text-left text-sm font-medium text-left rounded">
         <button type="button" id="resetBtn" class="px-3 py-1 bg-gray-300 rounded hover:bg-gray-400">Reset</button>
     </form>
 
-    <!-- ✅ Table Container -->
+   
     <div id="reportTable">
-        <table class="w-full table-auto border border-gray-300">
-            <thead>
-                <tr class="bg-gray-200 text-left">
-                    <th class="p-2 border">#</th>
-                    <th class="p-2 border">Name</th>
-                    <th class="p-2 border">Email</th>
-                    <th class="p-2 border">Contact Number</th>
-                    <th class="p-2 border">Appointments Count</th>
+       <table class="min-w-full border-separate border-spacing-0">
+        <thead>
+            <tr class="bg-blue-900 text-white">
+                    <th class="px-4 py-2 text-left text-sm font-medium text-left">#</th>
+                    <th class="px-4 py-2 text-left text-sm font-medium text-left">Name</th>
+                    <th class="px-4 py-2 text-left text-sm font-medium text-left">Email</th>
+                    <th class="px-4 py-2 text-left text-sm font-medium text-left">Contact Number</th>
+                    <th class="px-4 py-2 text-left text-sm font-medium text-left">Appointments Count</th>
                 </tr>
             </thead>
             <tbody>
                 @forelse ($technicians as $tech)
-                    <tr>
-                        <td class="p-2 border">{{ $loop->iteration + ($technicians->currentPage() - 1) * $technicians->perPage() }}</td>
-                        <td class="p-2 border">{{ $tech->name }}</td>
-                        <td class="p-2 border">{{ $tech->email }}</td>
-                        <td class="p-2 border">{{ $tech->contact_number }}</td>
-                        <td class="p-2 border">{{ $tech->appointments_count }}</td>
+                    <tr class="bg-white hover:bg-gray-50">
+                        <td class="px-4 py-2 text-left text-sm font-medium text-left">{{ $loop->iteration + ($technicians->currentPage() - 1) * $technicians->perPage() }}</td>
+                        <td class="px-4 py-2 text-left text-sm font-medium text-left">{{ $tech->name }}</td>
+                        <td class="px-4 py-2 text-left text-sm font-medium text-left">{{ $tech->email }}</td>
+                        <td class="px-4 py-2 text-left text-sm font-medium text-left">{{ $tech->contact_number }}</td>
+                        <td class="px-4 py-2 text-left text-sm font-medium text-left">{{ $tech->appointments_count }}</td>
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="5" class="p-2 border text-center">No technicians found.</td>
+                        <td colspan="5" class="px-4 py-2 text-left text-sm font-medium text-left text-center">No technicians found.</td>
                     </tr>
                 @endforelse
             </tbody>

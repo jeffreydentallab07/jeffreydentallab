@@ -4,7 +4,7 @@
 
 @section('content')
 <div class="fixed top-4 right-4 z-50 space-y-2">
-    {{-- Success Toast --}}
+   
     @if(session('success'))
         <div id="successToast" 
              class="bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg flex items-center gap-2 animate-fade-in-down">
@@ -13,7 +13,7 @@
         </div>
     @endif
 
-    {{-- Error Toast --}}
+  
     @if(session('error'))
         <div id="errorToast" 
              class="bg-red-500 text-white px-4 py-2 rounded-lg shadow-lg flex items-center gap-2 animate-fade-in-down">
@@ -48,15 +48,15 @@
                                 $materialName = $appointment->material ? $appointment->material->name : 'Not Selected';
                             @endphp
                                <tr class="hover:bg-blue-50 transition">
-                                {{-- Appointment # --}}
+                              
                                 <td class="px-6 py-3 text-gray-700">{{ $appointment->appointment_id }}</td>
 
-                                {{-- Clinic --}}
+                             
                                 <td class="px-6 py-3 text-gray-700">
                                     {{ $appointment->caseOrder?->clinic?->clinic_name ?? 'N/A' }}
                                 </td>
 
-                                {{-- Case Type --}}
+                             
                                 <td class="px-6 py-3 text-gray-700">
                                     {{ $appointment->caseOrder?->case_type ?? 'N/A' }}
                                 </td>
@@ -85,7 +85,7 @@
                                     </form>
                                 </td>
 
-                                {{-- Material --}}
+                               
                                 <td class="px-6 py-3 text-gray-700">
                                     <form id="materialForm_{{ $appointment->appointment_id }}" 
                                           action="{{ route('technician.appointment.update', $appointment->appointment_id) }}" 
@@ -107,7 +107,7 @@
                                     </form>
                                 </td>
 
-                                {{-- Actions --}}
+                               
                                 <td class="px-6 py-3 text-gray-700">
                                     @if($isFinished)
                                         <span class="text-gray-500 text-xs font-semibold">✓ Completed</span>
@@ -124,7 +124,7 @@
     </div>
 </div>
 
-{{-- Finish Confirmation Modal --}}
+
 <div id="finishModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
     <div class="bg-white rounded-lg shadow-lg w-96 p-6">
         <h2 class="text-lg font-semibold text-gray-700 mb-4">Confirm Finish</h2>
@@ -136,19 +136,19 @@
     </div>
 </div>
 
-{{-- Scripts --}}
+
 <script>
-    // Work status change
+ 
 document.querySelectorAll('select[name="work_status"]').forEach(select => {
     select.addEventListener('change', function(event) {
         const form = this.form;
         const materialSelect = form.querySelector('select[name="material_id"]');
 
-        // Check if material is selected
+    
         if (this.value === 'finished' && (!materialSelect.value || materialSelect.value === "")) {
             event.preventDefault();
             alert("Please select a material before marking this as finished.");
-            this.value = this.dataset.previousValue; // revert back to previous
+            this.value = this.dataset.previousValue; 
             return;
         }
 
@@ -163,21 +163,21 @@ document.querySelectorAll('select[name="work_status"]').forEach(select => {
 });
 
 document.addEventListener('DOMContentLoaded', function() {
-    // Toast auto-hide
+  
     const toastSuccess = document.getElementById('successToast');
     if (toastSuccess) setTimeout(() => { toastSuccess.style.opacity = '0'; setTimeout(()=>toastSuccess.remove(), 500); }, 3000);
 
     const toastError = document.getElementById('errorToast');
     if (toastError) setTimeout(() => { toastError.style.opacity = '0'; setTimeout(()=>toastError.remove(), 500); }, 3000);
 
-    // Modal elements
+   
     const finishModal = document.getElementById('finishModal');
     const confirmBtn = document.getElementById('confirmFinishBtn');
     const cancelBtn = document.getElementById('cancelFinishBtn');
 
     let currentForm = null;
 
-    // Work status change
+   
     document.querySelectorAll('select[name="work_status"]').forEach(select => {
         select.addEventListener('change', function(event) {
             if (this.value === 'finished') {
@@ -190,13 +190,13 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Modal confirm
+    
     confirmBtn.addEventListener('click', function() {
         if (currentForm) currentForm.submit();
         finishModal.classList.add('hidden');
     });
 
-    // Modal cancel
+  
     cancelBtn.addEventListener('click', function() {
         if (currentForm) {
             const previousValue = currentForm.querySelector('select[name="work_status"]').dataset.previousValue;

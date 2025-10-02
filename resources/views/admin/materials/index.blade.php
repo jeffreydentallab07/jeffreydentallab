@@ -36,7 +36,6 @@
 </td>
 <td class="px-4 py-2">
     <div class="flex items-center gap-1">
-     <!-- Edit Button -->
 <button 
     onclick="openEditMaterialModal({{ $material->material_id }}, '{{ addslashes($material->name) }}', {{ $material->price }})"
     class="px-2 py-1 bg-blue-500 text-white text-xs rounded hover:bg-blue-600 transition-colors flex items-center justify-center"
@@ -47,8 +46,6 @@
         <path d="M4.75 3.5c-.69 0-1.25.56-1.25 1.25v6.5c0 .69.56 1.25 1.25 1.25h6.5c.69 0 1.25-.56 1.25-1.25V9A.75.75 0 0 1 14 9v2.25A2.75 2.75 0 0 1 11.25 14h-6.5A2.75 2.75 0 0 1 2 11.25v-6.5A2.75 2.75 0 0 1 4.75 2H7a.75.75 0 0 1 0 1.5H4.75Z" />
     </svg>
 </button>
-
-<!-- Delete Button -->
 <button 
     onclick="openDeleteMaterialModal({{ $material->material_id }}, '{{ e($material->name) }}')"
     class="px-2 py-1 bg-red-500 text-white text-xs rounded hover:bg-red-600 transition-colors flex items-center justify-center"
@@ -78,7 +75,7 @@
     </table>
 </div>
 
-{{-- Add Material Modal --}}
+
 <div id="addMaterialModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
     <div class="bg-white w-11/12 max-w-lg rounded-xl shadow-lg p-6 relative">
         <button id="closeAddMaterialModal" class="absolute top-3 right-3 text-gray-500 hover:text-gray-800 text-2xl">&times;</button>
@@ -101,7 +98,7 @@
     </div>
 </div>
 
-{{-- Edit Material Modal --}}
+
 <div id="editMaterialModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
     <div class="bg-white w-11/12 max-w-lg rounded-xl shadow-lg p-6 relative">
         <button id="closeEditMaterialModal" class="absolute top-3 right-3 text-gray-500 hover:text-gray-800 text-2xl">&times;</button>
@@ -125,7 +122,7 @@
     </div>
 </div>
 
-{{-- Delete Material Confirmation Modal --}}
+
 <div id="deleteMaterialModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
     <div class="bg-white w-11/12 max-w-sm rounded-xl shadow-lg p-6 relative">
         <button id="closeDeleteMaterialModal" class="absolute top-3 right-3 text-gray-500 hover:text-gray-800 text-2xl">&times;</button>
@@ -146,28 +143,28 @@ document.addEventListener("DOMContentLoaded", () => {
     const editModal = document.getElementById('editMaterialModal');
     const deleteModal = document.getElementById('deleteMaterialModal');
 
-    // Add Material Modal Logic
+ 
     document.getElementById('openAddMaterialModal').addEventListener('click', () => addModal.classList.remove('hidden'));
     document.getElementById('closeAddMaterialModal').addEventListener('click', () => addModal.classList.add('hidden'));
     document.getElementById('cancelAddMaterial').addEventListener('click', () => addModal.classList.add('hidden'));
 
-    // Edit Material Modal Logic
+  
     window.openEditMaterialModal = function(id, name, price) {
         editModal.classList.remove('hidden');
         const form = document.getElementById('editMaterialForm');
-        form.action = `/materials/${id}`; // Assuming your route is /materials/{material}
+        form.action = `/materials/${id}`; 
         document.getElementById('edit_name').value = name;
         document.getElementById('edit_price').value = price;
     }
     document.getElementById('closeEditMaterialModal').addEventListener('click', () => editModal.classList.add('hidden'));
     document.getElementById('cancelEditMaterial').addEventListener('click', () => editModal.classList.add('hidden'));
 
-    // Delete Material Modal Logic
+   
     window.openDeleteMaterialModal = function(id, name) {
         deleteModal.classList.remove('hidden');
         const form = document.getElementById('deleteMaterialForm');
         document.getElementById('materialNameToDelete').textContent = name;
-        form.action = `/materials/${id}`; // Assuming your route is /materials/{material}
+        form.action = `/materials/${id}`; 
     }
     document.getElementById('closeDeleteMaterialModal').addEventListener('click', () => deleteModal.classList.add('hidden'));
     document.getElementById('cancelDeleteMaterial').addEventListener('click', () => deleteModal.classList.add('hidden'));
