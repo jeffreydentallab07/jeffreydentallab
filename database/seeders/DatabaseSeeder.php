@@ -1,0 +1,17 @@
+<?php
+
+namespace Database\Seeders;
+
+use Illuminate\Database\Seeder;
+
+class DatabaseSeeder extends Seeder
+{
+    /**
+     * Seed the application's database.
+     */
+    public function run(): void
+    {
+        // Tawagin ang RolesAndPermissionsSeeder
+        $this->call(RolesAndPermissionsSeeder::class);
+    }
+}

@@ -1,0 +1,27 @@
+@import 'tailwindcss';
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source '../**/*.blade.php';
+@source '../**/*.js';
+
+@theme {
+    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+        'Segoe UI Symbol', 'Noto Color Emoji';
+}
+
+/* Force table header to sidebar color */
+table thead th {
+    background-color: #189ab4 !important; /* Sidebar color */
+    color: white !important;
+}
+
+/* Force table rows to be white */
+table tbody tr {
+    background-color: white !important;
+}
+
+/* Optional: hover effect for rows */
+table tbody tr:hover {
+    background-color: #f3f4f6; /* light gray on hover */
+}
