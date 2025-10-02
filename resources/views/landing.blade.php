@@ -126,7 +126,7 @@
         <div class="bg-white rounded-2xl shadow-xl md:flex md:items-center md:justify-between overflow-hidden">
            
             <div class="p-8 md:w-1/2 space-y-6">
-                <h1 class="text-4xl md:text-5xl font-extrabold text-gray-900">Your Smile, Our Masterpiece</h1>
+                <h1 class="text-4xl md:text-5xl font-extrabold text-red-900">Your Smile, Our Masterpiece</h1>
                 <p class="text-gray-700 text-lg md:text-xl">Your trusted partner in creating perfect smiles</p>
             </div>
 
