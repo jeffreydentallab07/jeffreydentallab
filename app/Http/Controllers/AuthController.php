@@ -5,6 +5,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
+use App\Models\Appointment; 
+use App\Models\Material;
+use App\Models\CaseOrder;
+use App\Models\Clinic;
+use App\Models\Dentist;
 
 class AuthController extends Controller
 {
@@ -21,7 +26,7 @@ class AuthController extends Controller
             'password' => 'required',
         ]);
 
-        // Ensure we use the default web session cookie for admin/staff
+   
         config(['session.cookie' => env('SESSION_COOKIE_WEB', config('session.cookie'))]);
 
         if (Auth::attempt($credentials)) {
@@ -64,7 +69,7 @@ class AuthController extends Controller
     'role' => 'technician', 
 ]);
 
-        // Use web cookie for created user (default guard)
+      
         config(['session.cookie' => env('SESSION_COOKIE_WEB', config('session.cookie'))]);
         Auth::login($user);
 
@@ -81,10 +86,41 @@ class AuthController extends Controller
     }
 
     
-    public function dashboard()
-    {
-        return view('admin.dashboard');
+   public function dashboard()
+{
+ 
+    $clinics      = Clinic::all();
+    $appointments = Appointment::with(['caseOrder.clinic', 'technician'])->get();
+    $materials    = Material::all();
+    $caseOrders   = CaseOrder::with('clinic')->get();
+
+ 
+    $clinicCount      = $clinics->count();
+    $appointmentCount = $appointments->count();
+    $materialCount    = $materials->count();
+    $caseOrderCount   = $caseOrders->count();
+
+
+    $recentAppointments = Appointment::with(['caseOrder.dentist.clinic', 'technician'])
+        ->orderBy('schedule_datetime', 'desc')
+        ->take(5)
+        ->get();
+
+   
+    return view('admin.dashboard', [
+        'clinicCount'        => $clinicCount,
+        'appointmentCount'   => $appointmentCount,
+        'materialCount'      => $materialCount,
+        'caseOrderCount'     => $caseOrderCount,
+        'clinics'            => $clinics,
+        'appointments'       => $appointments,
+        'materials'          => $materials,
+        'caseOrders'         => $caseOrders,
+        'recentAppointments' => $recentAppointments,
+    ]);
+
     }
+
 
    
     public function logout(Request $request)
@@ -94,4 +130,14 @@ class AuthController extends Controller
         $request->session()->regenerateToken();
         return redirect()->route('login');
     }
+     public function getLiveCounts()
+    {
+        return response()->json([
+            'clinicCount'      => Clinic::count(),
+            'appointmentCount' => Appointment::count(),
+            'materialCount'    => Material::count(),
+            'caseOrderCount'   => CaseOrder::count(),
+        ]);
+    }
+
 }

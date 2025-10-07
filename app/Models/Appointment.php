@@ -28,7 +28,7 @@ class Appointment extends Model
         'schedule_datetime' => 'datetime',
     ];
 
-    // Existing relationships (huwag baguhin)
+   
     public function material()
 {
     return $this->belongsTo(Material::class, 'material_id', 'material_id');
@@ -53,21 +53,19 @@ class Appointment extends Model
         return $this->hasOne(Billing::class, 'appointment_id', 'appointment_id');
     }
 
-    // BAGONG ADDITION: Indirect relationship to Patient via CaseOrder
+   
     public function patient()
     {
         return $this->belongsToThrough(
-            Patient::class,  // Target model (Patient)
-            CaseOrder::class,  // Intermediate model (CaseOrder)
-            'co_id',  // Foreign key sa Appointment (co_id → CaseOrder.co_id)
-            'patient_id',  // Foreign key sa CaseOrder (CaseOrder.patient_id → Patient.patient_id)
-            'co_id',  // Local key sa Appointment (co_id)
-            'co_id'  // Local key sa CaseOrder (co_id)
+            Patient::class, 
+            CaseOrder::class, 
+            'co_id',  
+            'patient_id', 
+            'co_id',
+            'co_id'
         );
     }
 
-    // Helper method para sa patient name (optional, para madaling i-access)
-   // Appointment.php
 public function getPatientNameAttribute()
 {
     return $this->caseOrder && $this->caseOrder->patient
@@ -76,7 +74,7 @@ public function getPatientNameAttribute()
 }
 
 
-    // Iba pang helper methods (huwag baguhin)
+   
     public function getMaterialNameAttribute()
     {
         return $this->material ? $this->material->material_name : 'Not Selected';

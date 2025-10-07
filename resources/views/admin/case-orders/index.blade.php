@@ -6,18 +6,18 @@
 <link rel="icon" type="image/png" href="{{ asset('images/logo3.png') }}">
 
 <style>
-/* Wiggle animation for "For Approval" button */
+
 @keyframes wiggle {
   0%, 100% { transform: rotate(-3deg); }
   50% { transform: rotate(3deg); }
 }
 
-/* Animate by default */
+
 .animate-wiggle {
   animation: wiggle 0.5s ease-in-out infinite;
 }
 
-/* Stop animation on hover */
+
 .animate-wiggle:hover {
   animation: none;
 }
@@ -39,7 +39,6 @@
             <tbody class="divide-y divide-gray-200">
                 @forelse ($caseOrders as $caseOrder)
                 <tr class="text-gray-700 text-sm">
-                    <!-- Case No as Modal Trigger -->
                     <td class="px-6 py-3 text-left">
                         <button type="button"
                                 onclick="openModal('modal{{ $caseOrder->co_id }}')"
@@ -69,11 +68,11 @@
                     </td>
                 </tr>
 
-                <!-- Case Order Modal -->
+            
                 <div id="modal{{ $caseOrder->co_id }}" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50 p-2">
                     <div class="bg-white rounded-xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto relative font-sans" role="dialog" aria-labelledby="modalTitle{{ $caseOrder->co_id }}" aria-modal="true">
 
-                        {{-- Header with Clinic Info --}}
+                       
                         <div class="p-4 border-b border-gray-200 flex items-center justify-between">
                             <div class="flex items-center space-x-4">
                                 <div class="relative">

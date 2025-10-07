@@ -3,9 +3,9 @@
 @section('title', 'Clinic Home')
 
 @section('content')
-<div class="p-6 bg-gray-100 min-h-screen text-[13px] space-y-6">
+<div class="p-6 bg-gray-300 min-h-screen text-[13px] space-y-6">
 
-    {{-- Top Stats --}}
+   
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-5">
         <div class="bg-white backdrop-blur-lg rounded-xl shadow-lg border border-white/80 p-5 hover:shadow-2xl hover:-translate-y-1 hover:scale-105 transition transform duration-300">
             <h6 class="text-gray-500 text-xs uppercase tracking-wider">Case Orders</h6>
@@ -22,11 +22,9 @@
     </div>
 
     <div class="grid grid-cols-12 gap-6">
-
-        {{-- Left Column --}}
         <div class="col-span-12 lg:col-span-8 flex flex-col gap-6">
 
-            {{-- Reports --}}
+        
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div class="bg-white backdrop-blur-lg rounded-xl shadow-lg border border-white/80 p-6 flex flex-col items-center hover:shadow-2xl hover:-translate-y-1 hover:scale-105 transition transform duration-300">
                     <h6 class="font-semibold text-gray-700 mb-2 border-b border-gray-200 w-full text-center pb-2">Appointments Report</h6>
@@ -40,7 +38,6 @@
                 </div>
             </div>
 
-            {{-- Recent Appointments Table --}}
             <section class="bg-white backdrop-blur-lg rounded-xl shadow-lg border border-white/80 overflow-hidden flex flex-col hover:shadow-xl hover:-translate-y-1 transition transform duration-300">
                 <div class="px-4 py-3 border-b border-gray-200">
                     <h6 class="font-semibold text-gray-700">Recent Appointments</h6>
@@ -75,7 +72,7 @@
             </section>
         </div>
 
-        {{-- Right Column: Orders Summary --}}
+   
         <div class="col-span-12 lg:col-span-4">
             <div class="bg-white backdrop-blur-lg rounded-xl shadow-lg border border-white/80 overflow-x-auto hover:shadow-xl hover:-translate-y-1 transition transform duration-300">
                 <table class="min-w-full">
