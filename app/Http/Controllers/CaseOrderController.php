@@ -12,7 +12,8 @@ class CaseOrderController extends Controller
 {
     public function index()
 {
-   $caseOrders = CaseOrder::with(['clinic','patient.dentist'])
+  $caseOrders = CaseOrder::with(['clinic','patient.dentist'])
+                        ->whereHas('clinic') 
                         ->orderBy('created_at', 'desc')
                         ->get();
 

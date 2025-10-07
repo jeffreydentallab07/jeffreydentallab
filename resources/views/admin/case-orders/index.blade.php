@@ -77,11 +77,10 @@
                             <div class="flex items-center space-x-4">
                                 <div class="relative">
                                     <img class="w-16 h-16 rounded-full object-cover border-4 border-white shadow-md"
-     src="{{ $caseOrder->clinic?->profile_photo 
-         ? asset('storage/uploads/clinic_photos/' . $caseOrder->clinic->profile_photo) 
-         : asset('images/user.png') }}"
-     alt="{{ $caseOrder->clinic?->clinic_name ?? 'N/A' }}">
-
+                                         src="{{ $caseOrder->clinic->profile_photo 
+                                             ? asset('storage/uploads/clinic_photos/' . $caseOrder->clinic->profile_photo) 
+                                             : asset('images/user.png') }}"
+                                         alt="{{ $caseOrder->clinic->clinic_name }}">
                                 </div>
                                 <div>
                                     <h2 id="modalTitle{{ $caseOrder->co_id }}" class="text-xl font-semibold text-gray-800">{{ $caseOrder->clinic->clinic_name }}</h2>
