@@ -15,7 +15,6 @@
     style="font-family: 'Century Gothic', sans-serif;"
 >
 
-    <!-- DASHBOARD CARDS -->
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-5 mb-8">
         <div @click="openModal('clinics')" class="bg-white rounded-xl shadow-lg border border-white/80 p-5 cursor-pointer transition hover:shadow-xl hover:-translate-y-2 hover:scale-105 duration-300">
             <h6 class="text-black text-xs uppercase tracking-wider">Clinics</h6>
@@ -35,7 +34,7 @@
         </div>
     </div>
 
-    <!-- RECENT APPOINTMENTS -->
+   
     <div class="bg-white rounded-xl shadow-lg p-6">
         <h2 class="text-lg font-semibold text-blue-900 mb-4">Recent Appointments</h2>
         <div class="overflow-x-auto rounded-xl shadow-lg mt-4 mx-[15px]">
@@ -79,10 +78,10 @@
         <div class="bg-white w-full max-w-3xl rounded-xl shadow-lg p-6 relative">
             <button @click="closeModal" class="absolute top-3 right-3 text-gray-500 hover:text-gray-700">✕</button>
             <h2 class="text-lg font-semibold text-blue-900 mb-4">Clinic List</h2>
-            <div class="overflow-y-auto max-h-[60vh]">
-                <table class="min-w-full border">
-                    <thead class="bg-blue-900 text-white">
-                        <tr>
+              <div class="overflow-x-auto rounded-xl shadow-lg mt-4 mx-[15px]">
+        <table class="min-w-full border-separate border-spacing-0">
+            <thead>
+                <tr class="bg-blue-900 text-white">
                             <th class="px-4 py-2 text-left">Clinic Name</th>
                             <th class="px-4 py-2 text-left">Email</th>
                             <th class="px-4 py-2 text-left">Contact</th>
@@ -107,10 +106,10 @@
         <div class="bg-white w-full max-w-4xl rounded-xl shadow-lg p-6 relative">
             <button @click="closeModal" class="absolute top-3 right-3 text-gray-500 hover:text-gray-700">✕</button>
             <h2 class="text-lg font-semibold text-blue-900 mb-4">Appointment List</h2>
-            <div class="overflow-y-auto max-h-[60vh]">
-                <table class="min-w-full border">
-                    <thead class="bg-blue-900 text-white">
-                        <tr>
+              <div class="overflow-x-auto rounded-xl shadow-lg mt-4 mx-[15px]">
+        <table class="min-w-full border-separate border-spacing-0">
+            <thead>
+                <tr class="bg-blue-900 text-white">
                             <th class="px-4 py-2">Clinic</th>
                             <th class="px-4 py-2">Technician</th>
                             <th class="px-4 py-2">Date</th>
@@ -123,7 +122,25 @@
                                 <td class="px-4 py-2">{{ $appt->caseOrder->clinic->clinic_name ?? 'N/A' }}</td>
                                 <td class="px-4 py-2">{{ $appt->technician->name ?? 'Unassigned' }}</td>
                                 <td class="px-4 py-2">{{ \Carbon\Carbon::parse($appt->schedule_datetime)->format('M j, Y - g:i A') }}</td>
-                                <td class="px-4 py-2">{{ ucfirst($appt->work_status) }}</td>
+                               <td class="px-4 py-2">
+            @if(strtolower($appt->work_status) === 'finished' || strtolower($appt->work_status) === 'completed')
+                <span class="bg-green-200 text-green-900 font-medium px-2 py-0.5 rounded-full text-xs">
+                    {{ ucfirst($appt->work_status) }}
+                </span>
+            @elseif(strtolower($appt->work_status) === 'pending')
+                <span class="bg-yellow-200 text-yellow-900 font-medium px-2 py-0.5 rounded-full text-xs">
+                    Pending
+                </span>
+            @elseif(strtolower($appt->work_status) === 'in progress')
+                <span class="bg-blue-200 text-blue-900 font-medium px-2 py-0.5 rounded-full text-xs">
+                    In Progress
+                </span>
+            @else
+                <span class="bg-gray-200 text-gray-800 font-medium px-2 py-0.5 rounded-full text-xs">
+                    {{ ucfirst($appt->work_status) }}
+                </span>
+            @endif
+        </td>
                             </tr>
                         @endforeach
                     </tbody>
@@ -162,15 +179,14 @@
         </div>
     </div>
 
-    <!-- Case Order Modal -->
     <div x-show="showModal === 'caseOrders'" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" x-cloak>
         <div class="bg-white w-full max-w-4xl rounded-xl shadow-lg p-6 relative">
             <button @click="closeModal" class="absolute top-3 right-3 text-gray-500 hover:text-gray-700">✕</button>
             <h2 class="text-lg font-semibold text-blue-900 mb-4">Case Order List</h2>
-            <div class="overflow-y-auto max-h-[60vh]">
-                <table class="min-w-full border">
-                    <thead class="bg-blue-900 text-white">
-                        <tr>
+            <div class="overflow-x-auto rounded-xl shadow-lg mt-4 mx-[15px]">
+        <table class="min-w-full border-separate border-spacing-0">
+            <thead>
+                <tr class="bg-blue-900 text-white">
                             <th class="px-4 py-2">Case ID</th>
                             <th class="px-4 py-2">Clinic</th>
                             <th class="px-4 py-2">Type</th>
@@ -180,10 +196,32 @@
                     <tbody>
                         @foreach($caseOrders as $c)
                             <tr class="hover:bg-gray-50">
-                                <td class="px-4 py-2">{{ $c->id }}</td>
+                                <td class="px-4 py-2">{{ $c->co_id }}</td>
                                 <td class="px-4 py-2">{{ $c->clinic->clinic_name ?? 'N/A' }}</td>
                                 <td class="px-4 py-2">{{ $c->case_type ?? 'N/A' }}</td>
-                                <td class="px-4 py-2">{{ ucfirst($c->status) }}</td>
+                                <td class="px-4 py-2">
+            @php
+                $status = strtolower($c->status);
+            @endphp
+
+            @if($status === 'approved')
+                <span class="bg-green-200 text-green-800 px-2 py-1 rounded-full text-xs font-semibold">
+                    {{ ucfirst($c->status) }}
+                </span>
+            @elseif($status === 'pending')
+                <span class="bg-yellow-200 text-yellow-800 px-2 py-1 rounded-full text-xs font-semibold">
+                    {{ ucfirst($c->status) }}
+                </span>
+            @elseif($status === 'rejected')
+                <span class="bg-red-200 text-red-800 px-2 py-1 rounded-full text-xs font-semibold">
+                    {{ ucfirst($c->status) }}
+                </span>
+            @else
+                <span class="bg-gray-200 text-gray-800 px-2 py-1 rounded-full text-xs font-semibold">
+                    {{ ucfirst($c->status) }}
+                </span>
+            @endif
+        </td>
                             </tr>
                         @endforeach
                     </tbody>
@@ -194,7 +232,6 @@
 
 </div>
 
-<!-- ALPINE.JS -->
 <script>
 function dashboardData(initial) {
     return {

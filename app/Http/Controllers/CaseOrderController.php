@@ -48,7 +48,7 @@ class CaseOrderController extends Controller
     return redirect()->route('appointments.index')
                      ->with('success', 'Case order approved and moved to appointments.');
 }
-// CaseOrder.php
+
 public function patient()
 {
     return $this->belongsTo(Patient::class, 'patient_id', 'patient_id');
@@ -56,14 +56,14 @@ public function patient()
 
 public function dentist()
 {
-    // Assuming dentist is linked through patient
+   
     return $this->hasOneThrough(
-        Dentist::class,       // target model
-        Patient::class,       // intermediate model
-        'patient_id',         // foreign key on Patient table
-        'dentist_id',         // foreign key on Dentist table
-        'patient_id',         // local key on CaseOrder table
-        'dentist_id'          // local key on Patient table
+        Dentist::class,    
+        Patient::class,     
+        'patient_id',        
+        'dentist_id',         
+        'patient_id',        
+        'dentist_id'          
     );
 }
 
