@@ -1,104 +1,135 @@
 @extends('layouts.clinic')
 
-@section('title', 'Clinic Home')
-
 @section('content')
-<div class="p-6 bg-gray-300 min-h-screen text-[13px] space-y-6">
+<div 
+    x-data="clinicDashboardData({ 
+        caseOrders: {{ $caseOrdersCount }},
+        appointments: {{ $appointmentsCount }},
+        dentists: {{ $dentistsCount }},
+        patients: {{ $patientsCount }}
+    })"
+    x-init="startAutoRefresh()"
+    class="p-8 bg-gray-300 min-h-screen"
+    style="font-family: 'Century Gothic', sans-serif;"
+>
 
-   
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-5">
-        <div class="bg-white backdrop-blur-lg rounded-xl shadow-lg border border-white/80 p-5 hover:shadow-2xl hover:-translate-y-1 hover:scale-105 transition transform duration-300">
-            <h6 class="text-gray-500 text-xs uppercase tracking-wider">Case Orders</h6>
-            <h3 class="text-2xl font-bold text-[#189ab4] mt-2">5</h3>
-        </div>
-        <div class="bg-white backdrop-blur-lg rounded-xl shadow-lg border border-white/80 p-5 hover:shadow-2xl hover:-translate-y-1 hover:scale-105 transition transform duration-300">
-            <h6 class="text-gray-500 text-xs uppercase tracking-wider">Completed</h6>
-            <h3 class="text-2xl font-bold text-green-600 mt-2">42</h3>
-        </div>
-        <div class="bg-white backdrop-blur-lg rounded-xl shadow-lg border border-white/80 p-5 hover:shadow-2xl hover:-translate-y-1 hover:scale-105 transition transform duration-300">
-            <h6 class="text-gray-500 text-xs uppercase tracking-wider">Pending</h6>
-            <h3 class="text-2xl font-bold text-yellow-600 mt-2">14</h3>
+    {{-- Top Statistic Cards --}}
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-5 mb-8">
+        <template x-for="(value, label) in { 'Case Orders': caseOrders, 'Appointments': appointments, 'Dentists': dentists, 'Patients': patients }" :key="label">
+            <div class="bg-white rounded-xl shadow-lg border border-white/80 p-5 transition hover:shadow-xl hover:-translate-y-2 hover:scale-105 duration-300">
+                <h6 class="text-black text-xs uppercase tracking-wider" x-text="label"></h6>
+                <h3 class="text-2xl font-bold text-blue-900 mt-2" x-text="value"></h3>
+            </div>
+        </template>
+    </div>
+
+    {{-- Dentist Report Cards --}}
+    <div class="bg-white rounded-xl shadow-lg p-6 mb-8">
+        <h2 class="text-lg font-semibold text-blue-900 mb-4">Dentist Report Cards</h2>
+        <div id="dentistReportsContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            @forelse ($dentistReports as $d)
+                <div class="p-6 border rounded-2xl bg-white shadow hover:shadow-xl transition transform hover:-translate-y-1 cursor-pointer"
+                     onclick="window.location.href='{{ url('clinic/dentists/'.$d->dentist_id) }}'">
+                    <h3 class="text-lg text-blue-900 font-semibold mb-1">{{ $d->dentist_name }}</h3>
+                    <p class="text-gray-700 text-sm">Total Cases: <span class="font-semibold">{{ $d->total_cases }}</span></p>
+                    <p class="text-green-700 text-sm">Completed: <span class="font-semibold">{{ $d->completed_cases }}</span></p>
+                    <p class="text-yellow-600 text-sm">Pending: <span class="font-semibold">{{ $d->pending_cases }}</span></p>
+                </div>
+            @empty
+                <div class="bg-gray-50 p-6 rounded-lg text-center text-gray-500 col-span-full">
+                    No dentist report data available.
+                </div>
+            @endforelse
         </div>
     </div>
 
-    <div class="grid grid-cols-12 gap-6">
-        <div class="col-span-12 lg:col-span-8 flex flex-col gap-6">
-
-        
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div class="bg-white backdrop-blur-lg rounded-xl shadow-lg border border-white/80 p-6 flex flex-col items-center hover:shadow-2xl hover:-translate-y-1 hover:scale-105 transition transform duration-300">
-                    <h6 class="font-semibold text-gray-700 mb-2 border-b border-gray-200 w-full text-center pb-2">Appointments Report</h6>
-                    <p class="text-3xl font-bold text-[#189ab4] mt-2">12</p>
-                    <p class="text-sm text-gray-500 mt-1">Total appointments scheduled</p>
-                </div>
-                <div class="bg-white backdrop-blur-lg rounded-xl shadow-lg border border-white/80 p-6 flex flex-col items-center hover:shadow-2xl hover:-translate-y-1 hover:scale-105 transition transform duration-300">
-                    <h6 class="font-semibold text-gray-700 mb-2 border-b border-gray-200 w-full text-center pb-2">Billing Summary</h6>
-                    <p class="text-3xl font-bold text-[#10b981] mt-2">₱42,500</p>
-                    <p class="text-sm text-gray-500 mt-1">Total billing this month</p>
-                </div>
-            </div>
-
-            <section class="bg-white backdrop-blur-lg rounded-xl shadow-lg border border-white/80 overflow-hidden flex flex-col hover:shadow-xl hover:-translate-y-1 transition transform duration-300">
-                <div class="px-4 py-3 border-b border-gray-200">
-                    <h6 class="font-semibold text-gray-700">Recent Appointments</h6>
-                </div>
-                <div class="overflow-x-auto">
-                    <table class="min-w-full">
-                        <thead class="bg-[#189ab4] text-white sticky top-0 shadow">
-                            <tr>
-                                <th class="px-4 py-2 text-left font-semibold">Technician</th>
-                                <th class="px-4 py-2 text-left font-semibold">Date & Time</th>
-                                <th class="px-4 py-2 text-center font-semibold">Status</th>
-                            </tr>
-                        </thead>
-                        <tbody class="divide-y divide-gray-200 text-gray-800">
-                            <tr class="hover:bg-gray-50 transition">
-                                <td class="px-4 py-2 text-center">Tech John</td>
-                                <td class="px-4 py-2 text-center text-[11px] text-gray-500">2025-08-26 10:00 AM</td>
-                                <td class="px-4 py-2 text-center">
-                                    <span class="bg-green-200 text-green-900 font-medium px-2 py-0.5 rounded-full text-xs">Completed</span>
-                                </td>
-                            </tr>
-                            <tr class="hover:bg-gray-50 transition">
-                                <td class="px-4 py-2 text-center">Tech Anna</td>
-                                <td class="px-4 py-2 text-center text-[11px] text-gray-500">2025-08-27 02:00 PM</td>
-                                <td class="px-4 py-2 text-center">
-                                    <span class="bg-yellow-200 text-yellow-900 font-medium px-2 py-0.5 rounded-full text-xs">Pending</span>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </section>
-        </div>
-
-   
-        <div class="col-span-12 lg:col-span-4">
-            <div class="bg-white backdrop-blur-lg rounded-xl shadow-lg border border-white/80 overflow-x-auto hover:shadow-xl hover:-translate-y-1 transition transform duration-300">
-                <table class="min-w-full">
-                    <thead class="bg-[#189ab4] text-white sticky top-0 shadow">
+  
+    <div class="bg-white rounded-xl shadow-lg p-6">
+        <h2 class="text-lg font-semibold text-blue-900 mb-4">Recent Case Orders</h2>
+        <div class="overflow-y-auto max-h-96 rounded-xl shadow-inner">
+            <table class="min-w-full border-separate border-spacing-0">
+                <thead class="sticky top-0 bg-blue-900 text-white z-10">
+                    <tr>
+                        <th class="px-6 py-3 text-left text-sm uppercase tracking-wider">Case ID</th>
+                        <th class="px-6 py-3 text-left text-sm uppercase tracking-wider">Patient Name</th>
+                        <th class="px-6 py-3 text-left text-sm uppercase tracking-wider">Status</th>
+                        <th class="px-6 py-3 text-left text-sm uppercase tracking-wider">Created At</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-200 text-gray-800 bg-white">
+                    @forelse ($recentCases as $case)
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-6 py-3">{{ $case->co_id }}</td>
+                            <td class="px-6 py-3">{{ $case->patient_name ?? 'N/A' }}</td>
+                            <td class="px-6 py-3">
+                                @php $status = strtolower($case->status); @endphp
+                                @if($status === 'approved')
+                                    <span class="bg-green-200 text-green-900 font-medium px-2 py-1 rounded-full text-xs">Approved</span>
+                                @elseif($status === 'pending')
+                                    <span class="bg-yellow-200 text-yellow-900 font-medium px-2 py-1 rounded-full text-xs">Pending</span>
+                                @elseif($status === 'rejected')
+                                    <span class="bg-red-200 text-red-900 font-medium px-2 py-1 rounded-full text-xs">Rejected</span>
+                                @else
+                                    <span class="bg-gray-200 text-gray-900 font-medium px-2 py-1 rounded-full text-xs">{{ ucfirst($case->status) }}</span>
+                                @endif
+                            </td>
+                            <td class="px-6 py-3">{{ \Carbon\Carbon::parse($case->created_at)->format('M d, Y') }}</td>
+                        </tr>
+                    @empty
                         <tr>
-                            <th class="px-4 py-2 text-left font-semibold">Status</th>
-                            <th class="px-4 py-2 text-center font-semibold">Count</th>
-                            <th class="px-4 py-2 text-center font-semibold">Percentage</th>
+                            <td colspan="4" class="text-center py-4 text-black">No case orders yet.</td>
                         </tr>
-                    </thead>
-                    <tbody class="divide-y divide-gray-200 text-gray-800">
-                        <tr class="hover:bg-gray-50 transition">
-                            <td class="px-4 py-2">Completed</td>
-                            <td class="px-4 py-2 text-center">42</td>
-                            <td class="px-4 py-2 text-center">70%</td>
-                        </tr>
-                        <tr class="hover:bg-gray-50 transition">
-                            <td class="px-4 py-2">Pending</td>
-                            <td class="px-4 py-2 text-center">14</td>
-                            <td class="px-4 py-2 text-center">30%</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+                    @endforelse
+                </tbody>
+            </table>
         </div>
-
     </div>
+
 </div>
+
+
+<script>
+function clinicDashboardData(initial) {
+    return {
+        caseOrders: initial.caseOrders,
+        appointments: initial.appointments,
+        dentists: initial.dentists,
+        patients: initial.patients,
+
+        async refreshCounts() {
+            try {
+                const res = await fetch("{{ route('clinic.liveCounts') }}");
+                const data = await res.json();
+                this.caseOrders = data.caseOrdersCount;
+                this.appointments = data.appointmentsCount;
+                this.dentists = data.dentistsCount;
+                this.patients = data.patientsCount;
+
+               
+                if (Array.isArray(data.dentistReports)) {
+                    const container = document.getElementById('dentistReportsContainer');
+                    container.innerHTML = data.dentistReports.map(d => `
+                        <div class="p-6 border rounded-2xl bg-white shadow hover:shadow-xl transition transform hover:-translate-y-1 cursor-pointer"
+                             onclick="window.location.href='/clinic/dentists/${d.dentist_id}'">
+                            <h3 class="text-lg text-blue-900 font-semibold mb-1">${d.dentist_name}</h3>
+                            <p class="text-gray-700 text-sm">Total Cases: <span class="font-semibold">${d.total_cases}</span></p>
+                            <p class="text-green-700 text-sm">Completed: <span class="font-semibold">${d.completed_cases}</span></p>
+                            <p class="text-yellow-600 text-sm">Pending: <span class="font-semibold">${d.pending_cases}</span></p>
+                        </div>
+                    `).join('');
+                }
+            } catch (err) {
+                console.error('Auto-refresh failed:', err);
+            }
+        },
+
+        startAutoRefresh() {
+            this.refreshCounts();
+            setInterval(() => this.refreshCounts(), 5000);
+        }
+    }
+}
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
 @endsection

@@ -22,6 +22,7 @@ use App\Http\Controllers\ClinicBillingController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ClinicSettingsController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\ClinicDashboardController;
 
 
 /*
@@ -200,3 +201,9 @@ Route::get('/push-finished-to-billing', [BillingController::class, 'pushFinished
 Route::get('/appointments/dentists/{clinic}', [ReportController::class, 'getDentistsByClinic']);
 
 
+
+
+Route::middleware('auth:clinic')->group(function () {
+    Route::get('/clinic/dashboard', [ClinicDashboardController::class, 'index'])->name('clinic.dashboard');
+    Route::get('/clinic/live-counts', [ClinicDashboardController::class, 'liveCounts'])->name('clinic.liveCounts');
+});

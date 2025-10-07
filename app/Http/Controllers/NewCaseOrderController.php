@@ -13,7 +13,7 @@ class NewCaseOrderController extends Controller
 {
     $clinicId = auth()->user()->clinic_id;
 
-    // Load patient and dentist through patient
+    
     $caseOrders = NewCaseOrder::where('clinic_id', $clinicId)
                               ->with(['patient.dentist'])
                               ->get();
@@ -21,10 +21,9 @@ class NewCaseOrderController extends Controller
     $patients = Patient::all();
     $dentists = Dentist::all();
 
-    // Safe way to get clinic - based on your database query showing tbl_clinic
+    
     $clinic = \App\Models\Clinic::where('clinic_id', $clinicId)->first();
-    // Or if your model uses id as primary key:
-    // $clinic = \App\Models\Clinic::find($clinicId);
+   
 
     $caseTypes = ['Denture plastic', 'Jacket crowns/Porcelain', 'Retainers', 'Valpast Flexible'];
     $caseStatuses = ['initial', 'adjustment', 'repair'];

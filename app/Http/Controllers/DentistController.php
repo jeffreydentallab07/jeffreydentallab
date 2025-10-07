@@ -9,8 +9,12 @@ class DentistController extends Controller
 {
     public function index()
     {
-        // Kukunin lahat ng dentist na naka paginate
-        $dentists = Dentist::orderBy('dentist_id', 'desc')->paginate(10);
+        $clinicId = auth()->user()->clinic_id;
+
+    
+        $dentists = Dentist::where('clinic_id', $clinicId)
+            ->orderBy('dentist_id', 'desc')
+            ->paginate(10);
 
         return view('clinic.dentists.index', compact('dentists'));
     }
@@ -22,6 +26,8 @@ class DentistController extends Controller
 
     public function store(Request $request)
     {
+        $clinicId = auth()->user()->clinic_id;
+
         $request->validate([
             'name'           => 'required|string|max:255',
             'address'        => 'nullable|string|max:255',
@@ -30,9 +36,10 @@ class DentistController extends Controller
             'photo'          => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
-        $data = $request->only(['name', 'address', 'contact_number', 'email', 'clinic_id']);
+        $data = $request->only(['name', 'address', 'contact_number', 'email']);
+        $data['clinic_id'] = $clinicId; 
 
-        // Handle photo upload
+      
         if ($request->hasFile('photo')) {
             $fileName = time() . '_' . $request->file('photo')->getClientOriginalName();
             $path = $request->file('photo')->storeAs('dentists', $fileName, 'public');
@@ -46,11 +53,20 @@ class DentistController extends Controller
 
     public function edit(Dentist $dentist)
     {
+        
+        if ($dentist->clinic_id !== auth()->user()->clinic_id) {
+            abort(403, 'Unauthorized access');
+        }
+
         return view('clinic.dentists.edit', compact('dentist'));
     }
 
     public function update(Request $request, Dentist $dentist)
     {
+        if ($dentist->clinic_id !== auth()->user()->clinic_id) {
+            abort(403, 'Unauthorized access');
+        }
+
         $request->validate([
             'name'           => 'required|string|max:255',
             'address'        => 'nullable|string|max:255',
@@ -59,9 +75,9 @@ class DentistController extends Controller
             'photo'          => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
-        $data = $request->only(['name', 'address', 'contact_number', 'email', 'clinic_id']);
+        $data = $request->only(['name', 'address', 'contact_number', 'email']);
 
-        // Handle new photo upload
+       
         if ($request->hasFile('photo')) {
             $fileName = time() . '_' . $request->file('photo')->getClientOriginalName();
             $path = $request->file('photo')->storeAs('dentists', $fileName, 'public');
@@ -75,6 +91,10 @@ class DentistController extends Controller
 
     public function destroy(Dentist $dentist)
     {
+        if ($dentist->clinic_id !== auth()->user()->clinic_id) {
+            abort(403, 'Unauthorized access');
+        }
+
         if ($dentist->photo && file_exists(public_path('storage/' . $dentist->photo))) {
             unlink(public_path('storage/' . $dentist->photo));
         }
