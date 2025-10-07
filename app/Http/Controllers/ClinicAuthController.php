@@ -9,41 +9,38 @@ use App\Models\Clinic;
 
 class ClinicAuthController extends Controller
 {
-    /**
-     * Show Clinic Signup Form
-     */
+   
     public function showSignup()
     {
         return view('clinic_signup');
     }
 
-    /**
-     * Handle Clinic Signup
-     */
-    public function signup(Request $request)
-    {
-        $request->validate([
-            'clinic_name'    => 'required|string|max:255',
-            'email'          => 'required|email|unique:tbl_clinic,email',
-            'password'       => 'required|string|min:8|confirmed',
-            'address'        => 'nullable|string|max:255',
-            'contact_number' => ['nullable', 'regex:/^[0-9+\-\(\)\s]+$/', 'min:7', 'max:20'],
-            'owner_name'     => ['nullable', 'string', 'max:255', 'regex:/^[a-zA-Z0-9\s\-\.]+$/'],
-        ]);
+    
+   public function signup(Request $request)
+{
+    $request->validate([
+        'clinic_name'    => 'required|string|max:255',
+        'email'          => 'required|email|unique:tbl_clinic,email',
+        'password'       => 'required|string|min:8|confirmed',
+        'address'        => 'nullable|string|max:255',
+        'contact_number' => ['nullable', 'regex:/^[0-9+\-\(\)\s]+$/', 'min:7', 'max:20'],
+        'owner_name'     => ['nullable', 'string', 'max:255', 'regex:/^[a-zA-Z0-9\s\-\.]+$/'],
+    ]);
 
-        $clinic = Clinic::create([
-            'clinic_name'    => strip_tags(trim($request->clinic_name)),
-            'email'          => strtolower(trim($request->email)),
-            'password'       => Hash::make($request->password),
-            'address'        => strip_tags(trim($request->address)),
-            'contact_number' => strip_tags(trim($request->contact_number)),
-            'owner_name'     => strip_tags(trim($request->owner_name)),
-        ]);
+    $clinic = Clinic::create([
+        'clinic_name'    => strip_tags(trim($request->clinic_name)),
+        'email'          => strtolower(trim($request->email)),
+        'password'       => Hash::make($request->password),
+        'address'        => strip_tags(trim($request->address)),
+        'contact_number' => strip_tags(trim($request->contact_number)),
+        'owner_name'     => strip_tags(trim($request->owner_name)),
+    ]);
 
-        Auth::guard('clinic')->login($clinic);
+    
+   return redirect()->back()->with('signup_success', 'Account created successfully! Please log in.');
 
-        return redirect()->route('clinic.dashboard');
-    }
+}
+
 
     /**
      * Show Login Form
@@ -57,23 +54,25 @@ class ClinicAuthController extends Controller
      * Handle Login
      */
     public function login(Request $request)
-    {
-        $credentials = $request->validate([
-            'email'    => 'required|email',
-            'password' => 'required|string'
-        ]);
+{
+    $credentials = $request->validate([
+        'email'    => 'required|email',
+        'password' => 'required|string'
+    ]);
 
-        $remember = $request->boolean('remember');
+    $remember = $request->boolean('remember');
 
-        if (Auth::guard('clinic')->attempt($credentials, $remember)) {
-            $request->session()->regenerate();
-            return redirect()->route('clinic.dashboard');
-        }
-
-        return back()
-            ->withErrors(['email' => 'Invalid credentials.'])
-            ->withInput();
+    if (Auth::guard('clinic')->attempt($credentials, $remember)) {
+        $request->session()->regenerate();
+        // Add this line
+        $request->session()->flash('login_success', 'Successfuly Login!, ' . Auth::guard('clinic')->user()->clinic_name . '!');
+        return redirect()->route('clinic.dashboard');
     }
+
+    return back()
+        ->withErrors(['email' => 'Invalid credentials.'])
+        ->withInput();
+}
 
     /**
      * Logout Clinic

@@ -119,6 +119,19 @@
     </div>
   </div>
 </div>
+@if (session('success'))
+<div id="toast" class="fixed top-5 right-5 bg-green-500 text-white px-4 py-2 rounded shadow-lg z-50">
+    {{ session('success') }}
+</div>
+
+<script>
+    setTimeout(() => {
+        const toast = document.getElementById('toast');
+        if (toast) toast.remove();
+    }, 4000); 
+</script>
+@endif
+
     </header>
 
    
@@ -142,22 +155,29 @@
                 peer-focus:top-2 peer-focus:text-teal-500 peer-focus:text-sm">
     Search for Dental services...
   </label>
-  
-  <!-- Search Icon -->
+ 
   <svg xmlns="http://www.w3.org/2000/svg" class="absolute right-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
   </svg>
 </div>
 
-               <button id="openSignupModal"
-                class="bg-blue-900 text-white px-20 py-2.5 rounded-lg font-semibold shadow-md 
-                       transform transition duration-300 ease-in-out 
-                       hover:bg-green-600 hover:text-white 
-                       hover:scale-105 hover:-translate-y-2 hover:shadow-xl hover:shadow-green-400/50 text-center">
-                Register Clinic
-            </button>
+              <button id="openSignupModal" class="bg-blue-900 text-white px-20 py-2.5 rounded-lg font-semibold shadow-md ...">
+    Register Clinic
+</button>
+
         </div>
     </div>
+</div>
+<div id="accountCheckModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+  <div class="bg-white w-full max-w-md rounded-2xl shadow-lg p-6 relative text-center">
+    <h2 class="text-lg font-bold text-[#189ab4] mb-4">Do you already have an account?</h2>
+    <p class="text-gray-700 mb-6">If yes, proceed to login. Otherwise, create a new account.</p>
+    <div class="flex justify-center space-x-4">
+      <button id="proceedLogin" class="bg-blue-900 text-white px-6 py-2 rounded-lg font-semibold hover:bg-blue-700 transition">Yes, Login</button>
+      <button id="proceedSignup" class="bg-green-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-green-500 transition">No, Sign Up</button>
+    </div>
+    <button id="closeAccountCheck" class="absolute top-3 right-3 text-gray-500 hover:text-red-500">&times;</button>
+  </div>
 </div>
 
 <div id="signupModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
@@ -205,6 +225,38 @@
         </div>
     </div>
 </div>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    @if(session('signup_success'))
+       
+        const toast = document.createElement('div');
+        toast.innerText = "{{ session('signup_success') }}";
+        toast.className = "fixed top-20 right-6 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg z-50 transition-opacity duration-500";
+        document.body.appendChild(toast);
+
+       
+        setTimeout(() => {
+            toast.style.opacity = '0';
+            setTimeout(() => toast.remove(), 500); 
+        }, 3000);
+
+        const loginModal = document.getElementById('loginModal');
+        if (loginModal) {
+            loginModal.classList.remove('hidden');
+            loginModal.classList.add('flex');
+        }
+
+        
+        const signupModal = document.getElementById('signupModal');
+        if (signupModal) {
+            signupModal.classList.add('hidden');
+            signupModal.classList.remove('flex');
+        }
+    @endif
+});
+</script>
+
+
 
 <div id="loginModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
   <div class="bg-white w-full max-w-2xl rounded-2xl shadow-lg overflow-hidden relative">
@@ -423,107 +475,158 @@
 
   <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
  <script>
+document.addEventListener('DOMContentLoaded', () => {
+  // --- MODALS ---
   const signupModal = document.getElementById('signupModal');
   const loginModal = document.getElementById('loginModal');
+  const labLoginModal = document.getElementById('labLoginModal');
+  const accountCheckModal = document.getElementById('accountCheckModal');
+  const mapModal = document.getElementById('mapModal');
+  const adminModal = document.getElementById('adminModal'); // Add this in HTML if wala pa
 
-  const openSignupModalBtn = document.getElementById('openSignupModal'); 
+  // --- BUTTONS ---
+  const openSignupModalBtn = document.getElementById('openSignupModal');
   const closeSignupModalBtn = document.getElementById('closeSignupModal');
-
   const openLoginFromSignup = document.getElementById('openLoginFromSignup');
-  const closeLoginModalBtn = document.getElementById('closeLoginModal');
   const openSignupFromLogin = document.getElementById('openSignupFromLogin');
+  const closeLoginModalBtn = document.getElementById('closeLoginModal');
+  const loginBtn = document.getElementById('loginBtn'); // Lab login
+  const closeLabLoginModalBtn = document.getElementById('closeLabLoginModal');
+  const proceedLoginBtn = document.getElementById('proceedLogin');
+  const proceedSignupBtn = document.getElementById('proceedSignup');
+  const closeAccountCheckBtn = document.getElementById('closeAccountCheck');
 
-
+  // --- OPEN MODALS ---
   openSignupModalBtn.addEventListener('click', () => {
-    signupModal.classList.remove('hidden');
-    signupModal.classList.add('flex');
+      accountCheckModal.classList.remove('hidden');
+      accountCheckModal.classList.add('flex');
   });
 
+  loginBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      labLoginModal.classList.remove('hidden');
+      labLoginModal.classList.add('flex');
+  });
 
+  // --- CLOSE MODALS ---
   closeSignupModalBtn.addEventListener('click', () => {
-    signupModal.classList.add('hidden');
-    signupModal.classList.remove('flex');
-  });
-
-
-  openLoginFromSignup.addEventListener('click', (e) => {
-    e.preventDefault();
-    signupModal.classList.add('hidden');
-    signupModal.classList.remove('flex');
-    loginModal.classList.remove('hidden');
-    loginModal.classList.add('flex');
-  });
-
-
-  openSignupFromLogin.addEventListener('click', (e) => {
-    e.preventDefault();
-    loginModal.classList.add('hidden');
-    loginModal.classList.remove('flex');
-    signupModal.classList.remove('hidden');
-    signupModal.classList.add('flex');
-  });
-
-
-  closeLoginModalBtn.addEventListener('click', () => {
-    loginModal.classList.add('hidden');
-    loginModal.classList.remove('flex');
-  });
-
-
-  window.addEventListener('click', (e) => {
-    if (e.target === signupModal) {
       signupModal.classList.add('hidden');
       signupModal.classList.remove('flex');
-    }
-    if (e.target === loginModal) {
+  });
+
+  closeLoginModalBtn.addEventListener('click', () => {
       loginModal.classList.add('hidden');
       loginModal.classList.remove('flex');
-    }
-  });
-  
-
- 
-  document.getElementById("loginBtn").addEventListener("click", function(e) {
-    e.preventDefault();
-    document.getElementById("labLoginModal").classList.remove("hidden");
-    document.getElementById("labLoginModal").classList.add("flex");
-  });
-  document.getElementById("closeLabLoginModal").addEventListener("click", function() {
-    document.getElementById("labLoginModal").classList.add("hidden");
-    document.getElementById("labLoginModal").classList.remove("flex");
   });
 
-  
+  closeLabLoginModalBtn.addEventListener('click', () => {
+      labLoginModal.classList.add('hidden');
+      labLoginModal.classList.remove('flex');
+  });
+
+  closeAccountCheckBtn.addEventListener('click', () => {
+      accountCheckModal.classList.add('hidden');
+      accountCheckModal.classList.remove('flex');
+  });
+
+  // --- ACCOUNT CHECK ---
+  proceedLoginBtn.addEventListener('click', () => {
+      accountCheckModal.classList.add('hidden');
+      accountCheckModal.classList.remove('flex');
+      loginModal.classList.remove('hidden');
+      loginModal.classList.add('flex');
+  });
+
+  proceedSignupBtn.addEventListener('click', () => {
+      accountCheckModal.classList.add('hidden');
+      accountCheckModal.classList.remove('flex');
+      signupModal.classList.remove('hidden');
+      signupModal.classList.add('flex');
+  });
+
+  // --- SWITCH BETWEEN SIGNUP AND LOGIN ---
+  openLoginFromSignup.addEventListener('click', e => {
+      e.preventDefault();
+      signupModal.classList.add('hidden');
+      signupModal.classList.remove('flex');
+      loginModal.classList.remove('hidden');
+      loginModal.classList.add('flex');
+  });
+
+  openSignupFromLogin.addEventListener('click', e => {
+      e.preventDefault();
+      loginModal.classList.add('hidden');
+      loginModal.classList.remove('flex');
+      signupModal.classList.remove('hidden');
+      signupModal.classList.add('flex');
+  });
+
+  // --- MAP MODAL ---
+  window.openMapModal = () => {
+      mapModal.classList.remove('hidden');
+      mapModal.classList.add('flex');
+  };
+  window.closeMapModal = () => {
+      mapModal.classList.add('hidden');
+      mapModal.classList.remove('flex');
+  };
+
+  // --- ADMIN MODAL (example) ---
+  if(adminModal){
+    const openAdminBtn = document.getElementById('openAdminModal');
+    const closeAdminBtn = document.getElementById('closeAdminModal');
+    openAdminBtn?.addEventListener('click', () => {
+        adminModal.classList.remove('hidden');
+        adminModal.classList.add('flex');
+    });
+    closeAdminBtn?.addEventListener('click', () => {
+        adminModal.classList.add('hidden');
+        adminModal.classList.remove('flex');
+    });
+  }
+
+  // --- CLOSE MODAL WHEN CLICKING OUTSIDE ---
+  window.addEventListener('click', (e) => {
+    [signupModal, loginModal, labLoginModal, accountCheckModal, mapModal, adminModal].forEach(modal => {
+      if(modal && e.target === modal){
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+      }
+    });
+  });
+
+  // --- LAB PASSWORD TOGGLE ---
   const labPassword = document.getElementById("labPassword");
-  const labPasswordError = document.getElementById("labPasswordError");
-  labPassword.addEventListener("input", () => {
-    if (labPassword.value.length > 0 && labPassword.value.length < 8) {
-      labPasswordError.classList.remove("hidden");
-    } else {
-      labPasswordError.classList.add("hidden");
-    }
+  const labEyeIcon = document.getElementById("labEyeIcon");
+  labPassword?.addEventListener("input", () => {
+      const labPasswordError = document.getElementById("labPasswordError");
+      if (labPassword.value.length > 0 && labPassword.value.length < 8) {
+        labPasswordError.classList.remove("hidden");
+      } else {
+        labPasswordError.classList.add("hidden");
+      }
+  });
+  const toggleLabPassword = document.getElementById("toggleLabPassword");
+  toggleLabPassword?.addEventListener("click", () => {
+      const type = labPassword.getAttribute("type") === "password" ? "text" : "password";
+      labPassword.setAttribute("type", type);
+      labEyeIcon.classList.toggle("text-[#189ab4]");
   });
 
-  
+  // --- LAB EMAIL VALIDATION ---
   const labEmail = document.getElementById("labEmail");
-  const labEmailError = document.getElementById("labEmailError");
-  labEmail.addEventListener("input", () => {
-    if (labEmail.validity.patternMismatch || labEmail.validity.typeMismatch) {
+  labEmail?.addEventListener("input", () => {
+    const labEmailError = document.getElementById("labEmailError");
+    if(labEmail.validity.patternMismatch || labEmail.validity.typeMismatch){
       labEmailError.classList.remove("hidden");
     } else {
       labEmailError.classList.add("hidden");
     }
   });
-
-  
-  const toggleLabPassword = document.getElementById("toggleLabPassword");
-  const labEyeIcon = document.getElementById("labEyeIcon");
-  toggleLabPassword.addEventListener("click", () => {
-    const type = labPassword.getAttribute("type") === "password" ? "text" : "password";
-    labPassword.setAttribute("type", type);
-    labEyeIcon.classList.toggle("text-[#189ab4]");
-  });
+});
 </script>
+
+
 
 
 </body>

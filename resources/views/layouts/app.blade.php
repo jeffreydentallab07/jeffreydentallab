@@ -6,19 +6,36 @@
     <link rel="icon" href="{{ asset('images/logo3.ico') }}" type="image/x-icon">
     <title>@yield('title', 'Denture Reports')</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    
+
     <style>
         .notification-popup-transition {
             transition: transform 0.2s ease-out, opacity 0.2s ease-out;
         }
     </style>
 </head>
+
+@if(session('success'))
+<div 
+    x-data="{ show: true }" 
+    x-show="show" 
+    x-init="setTimeout(() => show = false, 3000)" 
+    x-transition.opacity.duration.500ms
+    class="fixed top-24 right-5 bg-green-500 text-white px-4 py-2 rounded shadow-lg z-50"
+>
+    {{ session('success') }}
+</div>
+@endif
+<script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+
 <body class="h-screen flex bg-white text-[12px]">
 
-    <!-- Sidebar -->
+
     <aside class="w-48 bg-blue-900 text-white flex flex-col fixed top-0 left-0 h-full">
         <div class="h-20 px-3 border-b border-blue-700 flex items-center justify-center">
             <img src="{{ asset('images/logo2.png') }}" alt="Logo" class="h-12 object-contain">
         </div>
+
 
         <nav class="mt-4 flex-grow space-y-1">
             @php
@@ -116,14 +133,21 @@
 
 
                 <!-- User Menu -->
-                <div class="relative group">
-                    <button class="flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-gray-100 text-[12px]">
+                @php
+                    // Only show admin/staff menu for web guard (default Auth::user())
+                    $user = Auth::user();
+                @endphp
+                @if($user && in_array($user->role, ['admin', 'staff']))
+                <div class="relative" id="userMenuContainer">
+                    <button id="userMenuBtn" type="button" class="flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-gray-100 text-[12px] focus:outline-none">
                         <div class="w-6 h-6 bg-blue-600 text-white flex items-center justify-center rounded-full font-bold text-[10px]">
-                            {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
+                            {{ strtoupper(substr($user->name, 0, 1)) }}
                         </div>
-                        <span>{{ Auth::user()->name }}</span>
+                        <span>{{ $user->name }}</span>
+                        <span class="ml-1 text-gray-500">({{ ucfirst($user->role) }})</span>
+                        <svg class="w-4 h-4 ml-1 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
                     </button>
-                    <div class="absolute right-0 mt-2 w-40 bg-white rounded-md shadow-md border hidden group-hover:block z-50">
+                    <div id="userDropdown" class="absolute right-0 mt-2 w-40 bg-white rounded-md shadow-md border hidden z-50">
                         <button onclick="openModal('settingsModal')" class="w-full text-left flex items-center px-3 py-2 hover:bg-gray-100 text-[12px]">Settings</button>
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
@@ -131,6 +155,7 @@
                         </form>
                     </div>
                 </div>
+                @endif
 
             </div>
         </header>
@@ -217,6 +242,22 @@
             document.body.style.backgroundImage = `url(${url})`;
             document.body.style.backgroundSize = 'cover';
             document.body.style.backgroundPosition = 'center';
+        }
+
+        // User menu dropdown
+        const userMenuBtn = document.getElementById('userMenuBtn');
+        const userDropdown = document.getElementById('userDropdown');
+        const userMenuContainer = document.getElementById('userMenuContainer');
+        if(userMenuBtn && userDropdown) {
+            userMenuBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                userDropdown.classList.toggle('hidden');
+            });
+            document.addEventListener('click', function(e) {
+                if (!userMenuContainer.contains(e.target)) {
+                    userDropdown.classList.add('hidden');
+                }
+            });
         }
     </script>
 

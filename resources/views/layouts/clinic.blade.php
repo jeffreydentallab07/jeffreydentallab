@@ -223,6 +223,29 @@
     </div>
 
     <script>
+      
+document.addEventListener('DOMContentLoaded', function() {
+    @if(session('login_success'))
+        // Create toast element
+        const toast = document.createElement('div');
+        toast.innerText = "{{ session('login_success') }}";
+        toast.className = "fixed top-20 right-6 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg z-50 animate-slide-in";
+
+        // Optional: smooth fade out
+        toast.style.transition = "opacity 0.5s ease-out, transform 0.5s ease-out";
+
+        document.body.appendChild(toast);
+
+        // Remove toast after 3 seconds
+        setTimeout(() => {
+            toast.style.opacity = "0";
+            toast.style.transform = "translateY(-10px)";
+            setTimeout(() => toast.remove(), 500);
+        }, 3000);
+    @endif
+});
+
+
       function openModal(id){ document.getElementById(id).classList.remove('hidden'); document.getElementById(id).classList.add('flex'); }
         function closeModal(id){ document.getElementById(id).classList.remove('flex'); document.getElementById(id).classList.add('hidden'); }
 

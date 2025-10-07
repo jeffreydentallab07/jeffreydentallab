@@ -21,16 +21,19 @@ class AuthController extends Controller
             'password' => 'required',
         ]);
 
+        // Ensure we use the default web session cookie for admin/staff
+        config(['session.cookie' => env('SESSION_COOKIE_WEB', config('session.cookie'))]);
+
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
             $user = Auth::user();
 
             if ($user->role === 'admin') {
-                return redirect()->route('dashboard');
+                return redirect()->route('dashboard')->with('success', 'Logged in successfully!');
             } elseif ($user->role === 'technician') {
-                return redirect()->route('technician.dashboard');
+                return redirect()->route('technician.dashboard')->with('success', 'Logged in successfully!');
             } elseif ($user->role === 'rider') {
-                return redirect()->route('rider.dashboard');
+                return redirect()->route('rider.dashboard')->with('success', 'Logged in successfully!');
             } else {
                 Auth::logout();
                 return redirect()->route('login')->withErrors(['role' => 'Invalid role.']);
@@ -61,6 +64,8 @@ class AuthController extends Controller
     'role' => 'technician', 
 ]);
 
+        // Use web cookie for created user (default guard)
+        config(['session.cookie' => env('SESSION_COOKIE_WEB', config('session.cookie'))]);
         Auth::login($user);
 
        if ($user->role === 'admin') {
