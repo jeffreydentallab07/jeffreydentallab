@@ -86,26 +86,20 @@ class ClinicAuthController extends Controller
         return redirect()->route('clinic.login');
     }
 
-    /**
-     * Show Clinic Dashboard
-     */
+  
     public function index()
     {
         return view('clinic.dashboard');
     }
 
-    /**
-     * Show Clinic Profile
-     */
+   
     public function profile()
     {
         $clinic = Auth::guard('clinic')->user();
         return view('clinic_profile', compact('clinic'));
     }
 
-    /**
-     * Update Clinic Profile
-     */
+   
     public function updateProfile(Request $request)
     {
         $clinic = Auth::guard('clinic')->user();

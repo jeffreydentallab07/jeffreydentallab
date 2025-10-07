@@ -20,17 +20,17 @@
                 <td class="px-6 py-3 text-gray-700">{{ $billing->patient_name ?? '-' }}</td>
                 <td class="px-6 py-3 text-gray-700">{{ $billing->case_type ?? '-' }}</td>
                 <td class="px-6 py-3 text-gray-700" x-data="{ open: false }">
-                    <!-- View Button -->
+              
                     <button @click="open = true"
                         class="px-3 py-1 bg-green-600 text-white rounded hover:bg-green-700">
                         View
                     </button>
 
-                    <!-- Receipt Modal -->
+             
                     <div x-show="open" x-transition.opacity class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
                         <div @click.away="open = false" class="bg-white p-6 rounded-lg w-[700px] max-h-[90vh] overflow-y-auto">
 
-                            <!-- Receipt Content -->
+                           
                             <div class="text-left mb-2">
                                 <h1 class="text-xl font-bold uppercase">Jeffrey Dental Laboratory</h1>
                                 <p class="leading-tight text-[11px]">
@@ -65,7 +65,7 @@
                                     <tr class="border-b border-gray-300">
                                         <td class="py-1">1</td>
                                         <td>pc</td>
-                                        <td>{{ $billing->material_name ?? 'Not set' }}</td>
+                                    <td>{{ $billing->appointment->caseOrder->material_name ?? 'Not set' }}</td>
                                         <td class="text-right">{{ number_format($billing->total_amount, 2) }}</td>
                                         <td class="text-right">{{ number_format($billing->total_amount, 2) }}</td>
                                     </tr>
@@ -99,7 +99,7 @@
                                     <div>
                                         Delivered by:
                                         <div class="h-6"></div>
-                                        <div class="text-center text-xs font-semibold">{{ $billing->rider_name ?? 'Not Assigned' }}</div>
+                                        <div class="text-center text-xs font-semibold">{{ $billing->rider->name ?? 'Not Assigned' }}</div>
                                         <div class="border-t border-black w-40 text-center text-xs mt-1">Delivered By</div>
                                     </div>
                                 </div>
@@ -126,7 +126,7 @@
     </table>
 </div>
 
-<!-- Alpine.js -->
+
 <script src="//unpkg.com/alpinejs" defer></script>
 
 @endsection

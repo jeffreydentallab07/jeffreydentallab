@@ -72,8 +72,6 @@
                         class="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 transition">
                         Edit
                     </button>
-
-                    {{-- Delete Button (opens modal) --}}
                     <button onclick="openDeleteModal({{ $order->co_id }})"
                         class="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 transition">
                         Delete
@@ -88,7 +86,7 @@
         </tbody>
     </table>
 </div>
-{{-- View Case Order Modal --}}
+
 <div id="viewCaseOrderModal" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50 p-2">
     <div class="bg-white w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-xl shadow-2xl relative font-sans" 
          role="dialog" aria-labelledby="viewModalTitle" aria-modal="true">
@@ -148,7 +146,7 @@
 </div>
 
 <script>
-    // Open View Modal with data
+ 
     function openViewModal(id, patientName, dentistName, caseType, caseStatus, notes, createdAt) {
         document.getElementById('view_co_id').value = 'CASE-' + String(id).padStart(5, '0');
         document.getElementById('view_patient_name').value = patientName;
@@ -162,10 +160,10 @@
     }
 </script>
 
-{{-- Add Case Order Modal --}}
+
 <div id="addCaseOrderModal" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50 p-2">
     <div class="bg-white rounded-xl shadow-2xl w-full max-w-2xl overflow-hidden relative font-sans" role="dialog" aria-labelledby="addModalTitle" aria-modal="true">
-        {{-- Header with Clinic Info --}}
+       
         <div class="p-4 border-b border-gray-200 flex items-center justify-between">
             <div class="flex items-center space-x-4">
                 <div class="relative">
@@ -186,17 +184,17 @@
                     class="text-gray-500 hover:text-gray-800 text-xl" aria-label="Close modal">&times;</button>
         </div>
 
-        {{-- Tab Header --}}
+    
         <div class="flex border-b border-gray-200 px-4 py-1 bg-blue-900 text-white">
             <span class="px-3 py-1 border-b-2 border-white font-medium text-xs">Case Order Details</span>
         </div>
 
-        {{-- Form --}}
+     
         <div class="p-4 space-y-4">
             <form id="addCaseOrderForm" action="{{ route('clinic.new-case-orders.store') }}" method="POST" class="space-y-3 text-sm">
                 @csrf
 
-                {{-- Patient and Dentist --}}
+               
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
                     <div>
                         <label for="patient_id" class="block font-medium text-gray-700 text-xs">Patient</label>
@@ -216,7 +214,7 @@
                     </div>
                 </div>
 
-                {{-- Case Type and Status --}}
+               
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
                     <div>
                         <label for="case_type" class="block font-medium text-gray-700 text-xs">Case Type</label>
@@ -239,13 +237,13 @@
                     </div>
                 </div>
 
-                {{-- Notes --}}
+          
                 <div>
                     <label for="notes" class="block font-medium text-gray-700 text-xs">Notes / Special Instructions</label>
                     <textarea id="notes" name="notes" rows="2" class="mt-1 block w-full border rounded px-2 py-1.5 text-sm" placeholder="Optional notes..."></textarea>
                 </div>
 
-                {{-- Buttons --}}
+               
                 <div class="flex justify-end space-x-3 mt-3">
                     <button type="button" onclick="closeModal('addCaseOrderModal')" 
                             class="px-3 py-1.5 bg-gray-500 text-white rounded hover:bg-gray-600 text-sm">Cancel</button>
@@ -256,7 +254,7 @@
     </div>
 </div>
 
-{{-- Edit Case Order Modal (Improved Structure) --}}
+
 <div id="editCaseOrderModal" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50 p-2">
     <div class="bg-white w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-xl shadow-2xl relative font-sans" 
          role="dialog" aria-labelledby="editModalTitle" aria-modal="true">
@@ -284,7 +282,7 @@
             @method('PUT')
             <input type="hidden" name="co_id" id="edit_co_id">
 
-            {{-- Patient and Dentist (Readonly, Improved Layout) --}}
+          
             <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
                 <div>
                     <label class="block font-medium text-gray-700 text-xs">Patient</label>
@@ -303,7 +301,7 @@
                 </div>
             </div>
 
-            {{-- Case Type and Status --}}
+          
             <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
                 <div>
                     <label for="case_type_edit" class="block font-medium text-gray-700 text-xs">Case Type</label>
@@ -324,7 +322,7 @@
                 </div>
             </div>
 
-            {{-- Notes --}}
+        
             <div>
                 <label for="notes_edit" class="block font-medium text-gray-700 text-xs">Notes / Special Instructions</label>
                 <textarea id="notes_edit" name="notes" rows="2"
@@ -332,7 +330,7 @@
                           placeholder="Optional notes..."></textarea>
             </div>
 
-            {{-- Buttons --}}
+          
             <div class="flex justify-end space-x-3 mt-3 pt-4 border-t border-gray-200">
                 <button type="button" onclick="closeModal('editCaseOrderModal')" 
                         class="px-3 py-1.5 bg-gray-500 text-white rounded hover:bg-gray-600 transition text-sm">
@@ -384,28 +382,28 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function () {
-    // Generic close function for modals
+    
     window.closeModal = function(modalId) {
         document.getElementById(modalId).classList.add('hidden');
-        // Reset form if needed
+        
         if (modalId.includes('edit')) {
             document.getElementById('editCaseOrderForm').reset();
         }
     };
 
-    // Open Edit Modal (Improved with focus and hidden fields)
+   
     window.openEditModal = function(id, patientId, dentistName, caseType, caseStatus, notes) {
         const modal = document.getElementById('editCaseOrderModal');
         const form = document.getElementById('editCaseOrderForm');
         modal.classList.remove('hidden');
         form.action = '/clinic/new-case-orders/' + id;
 
-        // Set hidden fields
+       
         document.getElementById('edit_co_id').value = id;
         document.getElementById('edit_patient_id').value = patientId;
-        document.getElementById('edit_dentist_id').value = patientId; // Assuming dentist linked to patient
+        document.getElementById('edit_dentist_id').value = patientId; 
 
-        // Populate fields
+        
         const patientOption = document.querySelector(`#patient_id option[value="${patientId}"]`);
         document.getElementById('edit_patient_name').value = patientOption ? patientOption.textContent.trim() : 'N/A';
         document.getElementById('edit_dentist_name').value = dentistName || 'N/A';
@@ -414,11 +412,10 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('case_status_edit').value = caseStatus || 'initial';
         document.getElementById('notes_edit').value = notes || '';
 
-        // Focus on first editable field for accessibility
+      
         setTimeout(() => document.getElementById('case_type_edit').focus(), 100);
     };
 
-    // Open Delete Modal (Improved)
     window.openDeleteModal = function(id) {
         const deleteModal = document.getElementById('deleteModal');
         const deleteForm = document.getElementById('deleteForm');
@@ -430,20 +427,20 @@ document.addEventListener('DOMContentLoaded', function () {
         deleteCaseId.textContent = 'CASE-' + String(id).padStart(5, '0');
         deleteModal.classList.remove('hidden');
 
-        // Focus on cancel button for safety (best practice for destructive actions)
+     
         setTimeout(() => {
             const cancelBtn = deleteForm.querySelector('button[type="button"]');
             if (cancelBtn) cancelBtn.focus();
         }, 100);
     };
 
-    // Close Delete Modal
+   
     window.closeDeleteModal = function() {
         const deleteModal = document.getElementById('deleteModal');
         deleteModal.classList.add('hidden');
     };
 
-    // Auto-fill dentist on Add Modal
+
     const addPatientSelect = document.getElementById('patient_id');
     const dentistInput = document.getElementById('dentist_name');
     if (addPatientSelect && dentistInput) {
@@ -453,7 +450,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // Close all modals on Escape key (Accessibility)
+    
     document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape') {
             closeModal('addCaseOrderModal');
@@ -462,7 +459,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    // Close modals on backdrop click
+    
     ['addCaseOrderModal', 'editCaseOrderModal', 'deleteModal'].forEach(modalId => {
         const modal = document.getElementById(modalId);
         if (modal) {
@@ -478,7 +475,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    // Basic focus trap for modals (prevents tabbing outside)
+    
     function trapFocus(modal) {
         const focusableElements = modal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
         const firstFocusable = focusableElements[0];
@@ -501,9 +498,9 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // Apply focus trap to modals on open
+
     document.querySelectorAll('[id^="addCaseOrderModal"], [id^="editCaseOrderModal"], [id^="deleteModal"]').forEach(modal => {
-        // Triggered via onclick, so attach to open functions if needed
+       
     });
 });
 </script>

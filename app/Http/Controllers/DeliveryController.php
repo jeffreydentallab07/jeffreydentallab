@@ -46,10 +46,10 @@ class DeliveryController extends Controller
                 'appointment_id' => $appointment->appointment_id,
                 'rider_id' => null,
                 'delivery_status' => Delivery::STATUS_READY_TO_DELIVER,
-                'delivery_date' => now(), // Only include if column exists
+                'delivery_date' => now(), 
             ]);
         } catch (\Illuminate\Database\QueryException $e) {
-            // Handle missing delivery_date column
+        
             if (str_contains($e->getMessage(), 'Unknown column \'delivery_date\'')) {
                 $delivery = Delivery::create([
                     'appointment_id' => $appointment->appointment_id,
@@ -71,7 +71,7 @@ class DeliveryController extends Controller
 
     public function markDelivered(Delivery $delivery)
     {
-        // Ensure only the assigned rider can update
+       
         if ($delivery->rider_id !== Auth::id()) {
             return redirect()->back()->with('error', 'You are not authorized to update this delivery.');
         }
@@ -89,7 +89,7 @@ class DeliveryController extends Controller
 
     public function updateStatus(Request $request, Delivery $delivery)
     {
-        // Ensure only the assigned rider can update
+       
         if ($delivery->rider_id !== Auth::id()) {
             return redirect()->back()->with('error', 'You are not authorized to update this delivery.');
         }
@@ -98,12 +98,11 @@ class DeliveryController extends Controller
             'delivery_status' => 'required|in:ready to deliver,in transit,delivered,cancelled',
         ]);
 
-        // Prevent changing status if already delivered or cancelled
+       
         if (in_array($delivery->delivery_status, [Delivery::STATUS_DELIVERED, Delivery::STATUS_CANCELLED])) {
             return redirect()->back()->with('error', 'Cannot change status of a ' . $delivery->delivery_status . ' delivery.');
         }
         
-        // Handle specific status transitions
         if ($request->delivery_status === Delivery::STATUS_IN_TRANSIT && $delivery->delivery_status === Delivery::STATUS_READY_TO_DELIVER) {
             $delivery->delivery_status = Delivery::STATUS_IN_TRANSIT;
             $delivery->save();

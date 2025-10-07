@@ -3,24 +3,30 @@
 @section('page-title', 'Dentist List')
 
 @section('content')
+
+@if(session('success') || session('error'))
+    <div id="toast" 
+         class="fixed top-4 right-4 z-50 transition-all duration-500">
+        @if(session('success'))
+            <div class="mb-2 p-3 rounded bg-green-100 text-green-700 border border-green-300 shadow-md">
+                {{ session('success') }}
+            </div>
+        @endif
+        @if(session('error'))
+            <div class="mb-2 p-3 rounded bg-red-100 text-red-700 border border-red-300 shadow-md">
+                {{ session('error') }}
+            </div>
+        @endif
+    </div>
+@endif
+
 <div class="p-6 space-y-6 bg-gray-300 min-h-screen">
     <button id="openAddDentistModal"
         class="bg-green-500 text-white px-5 py-2 rounded font-semibold hover:bg-green-600 transition">
         + Add Dentist
     </button>
 
-    @if(session('success'))
-        <div class="mb-4 p-3 rounded bg-green-100 text-green-700 border border-green-300">
-            {{ session('success') }}
-        </div>
-    @endif
-
-    @if(session('error'))
-        <div class="mb-4 p-3 rounded bg-red-100 text-red-700 border border-red-300">
-            {{ session('error') }}
-        </div>
-    @endif
-
+   
     <div class="overflow-x-auto rounded-xl shadow-lg mt-4">
         <table class="min-w-full border-separate border-spacing-0">
             <thead>
@@ -125,7 +131,7 @@
       </div>
     </div>
 
-    <!-- Edit Dentist Modal -->
+
     <div id="editDentistModal" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50 p-4">
       <div class="bg-white rounded-xl shadow-2xl w-full max-w-2xl overflow-hidden relative">
         <div class="p-6 border-b border-gray-200 flex items-center justify-between">
@@ -177,7 +183,7 @@
       </div>
     </div>
 
-    <!-- Delete Dentist Modal -->
+ 
     <div id="deleteDentistModal" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50">
       <div class="bg-white rounded-xl shadow-lg w-96 p-6">
         <h2 class="text-lg font-semibold text-gray-800">Delete Dentist</h2>
@@ -196,14 +202,14 @@
 
 <script>
   document.addEventListener("DOMContentLoaded", () => {
-      // Add Dentist Modal
+   
       const addModal = document.getElementById('addDentistModal');
       document.getElementById('openAddDentistModal').addEventListener('click', () => addModal.classList.remove('hidden'));
       document.getElementById('closeAddDentistModal').addEventListener('click', () => addModal.classList.add('hidden'));
       document.getElementById('cancelAddDentist').addEventListener('click', () => addModal.classList.add('hidden'));
   });
 
-  // Preview images
+
   function previewAddImage(event) {
       document.getElementById('previewAddPhoto').src = URL.createObjectURL(event.target.files[0]);
   }
@@ -211,7 +217,7 @@
       document.getElementById('previewEditPhoto').src = URL.createObjectURL(event.target.files[0]);
   }
 
-  // Edit Dentist Modal
+
   function openEditDentistModal(id, name, email, contact, address, photo) {
       const form = document.getElementById('editDentistForm');
       form.action = `/clinic/dentists/${id}`;
@@ -226,7 +232,7 @@
       document.getElementById('editDentistModal').classList.add('hidden');
   }
 
-  // Delete Dentist Modal
+  
   function openDeleteDentistModal(id, name, photo = null) {
       const form = document.getElementById('deleteDentistForm');
       form.action = `/clinic/dentists/${id}`;
@@ -237,5 +243,17 @@
   function closeDeleteDentistModal() {
       document.getElementById('deleteDentistModal').classList.add('hidden');
   }
+
+document.addEventListener("DOMContentLoaded", () => {
+    const toast = document.getElementById('toast');
+    if (toast) {
+        setTimeout(() => {
+            toast.classList.add('opacity-0', 'translate-x-4');
+            setTimeout(() => toast.remove(), 500); 
+        }, 4000);
+    }
+});
+
+
 </script>
 @endsection

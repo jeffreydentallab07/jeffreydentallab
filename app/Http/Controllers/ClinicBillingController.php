@@ -14,13 +14,13 @@ class ClinicBillingController extends Controller
         try {
             $clinic = Auth::guard('clinic')->user();
             
-            // Use Eloquent with relationships for better performance and consistency
+        
             $billings = Billing::with([
                 'appointment.caseOrder.patient',
                 'appointment.caseOrder.clinic',
                 'appointment.caseOrder.dentist',
-                'rider',
-                'material'
+                'appointment.caseOrder.material', 
+                'rider'
             ])
             ->whereHas('appointment.caseOrder', function($query) use ($clinic) {
                 $query->where('clinic_id', $clinic->clinic_id);
@@ -28,13 +28,13 @@ class ClinicBillingController extends Controller
             ->orderBy('created_at', 'desc')
             ->get();
 
-            // If you need search functionality
+       
             if ($request->has('search')) {
                 $search = $request->input('search');
                 $billings = $billings->filter(function ($billing) use ($search) {
-                    return str_contains($billing->patient_name, $search) ||
-                           str_contains($billing->case_type, $search) ||
-                           str_contains($billing->appointment_id, $search);
+                    return str_contains($billing->appointment->caseOrder->patient->name ?? '', $search) ||
+                           str_contains($billing->appointment->caseOrder->case_type ?? '', $search) ||
+                           str_contains($billing->appointment_id ?? '', $search);
                 });
             }
 

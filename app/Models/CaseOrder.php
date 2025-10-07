@@ -58,6 +58,11 @@ class CaseOrder extends Model
 public function appointment() {
     return $this->hasMany(Appointment::class, 'co_id', 'co_id');
 }
+public function material()
+{
+    return $this->belongsTo(Material::class, 'material_id', 'id'); 
+   
+}
 
 
     

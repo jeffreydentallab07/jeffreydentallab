@@ -9,27 +9,24 @@ use App\Models\Clinic;
 
 class PatientController extends Controller
 {
-   public function index()
-{
-    $clinicId = auth()->user()->clinic_id;
+    public function index()
+    {
+        $clinicId = auth()->user()->clinic_id;
 
-    
-    $patients = \DB::table('patient')
-        ->join('tbl_dentist', 'patient.dentist_id', '=', 'tbl_dentist.dentist_id')
-        ->where('tbl_dentist.clinic_id', $clinicId)
-        ->select('patient.*', 'tbl_dentist.name as dentist_name')
-        ->get();
+        $patients = \DB::table('patient')
+            ->join('tbl_dentist', 'patient.dentist_id', '=', 'tbl_dentist.dentist_id')
+            ->where('tbl_dentist.clinic_id', $clinicId)
+            ->select('patient.*', 'tbl_dentist.name as dentist_name')
+            ->get();
 
-   
-    $dentists = \DB::table('tbl_dentist')
-        ->where('clinic_id', $clinicId)
-        ->get();
+        $dentists = \DB::table('tbl_dentist')
+            ->where('clinic_id', $clinicId)
+            ->get();
 
-    $clinic = \App\Models\Clinic::where('clinic_id', $clinicId)->first();
+        $clinic = Clinic::where('clinic_id', $clinicId)->first();
 
-    return view('clinic.patients.index', compact('patients', 'dentists', 'clinic'));
-}
-
+        return view('clinic.patients.index', compact('patients', 'dentists', 'clinic'));
+    }
 
     public function store(Request $request)
     {
@@ -47,7 +44,6 @@ class PatientController extends Controller
             'address'        => $request->address,
             'email'          => $request->email,
             'dentist_id'     => $request->dentist_id,
-            'clinic_id'      => auth()->user()->clinic_id,
         ]);
 
         return redirect()->route('clinic.patients.index')
@@ -66,8 +62,9 @@ class PatientController extends Controller
 
         $patient = Patient::findOrFail($id);
 
-       
-        if ($patient->clinic_id !== auth()->user()->clinic_id) {
+ 
+        $dentist = Dentist::find($patient->dentist_id);
+        if (!$dentist || $dentist->clinic_id !== auth()->user()->clinic_id) {
             abort(403, 'Unauthorized action.');
         }
 
@@ -87,8 +84,9 @@ class PatientController extends Controller
     {
         $patient = Patient::findOrFail($id);
 
-       
-        if ($patient->clinic_id !== auth()->user()->clinic_id) {
+   
+        $dentist = Dentist::find($patient->dentist_id);
+        if (!$dentist || $dentist->clinic_id !== auth()->user()->clinic_id) {
             abort(403, 'Unauthorized action.');
         }
 

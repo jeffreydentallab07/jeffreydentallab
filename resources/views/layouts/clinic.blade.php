@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
    <link rel="icon" href="{{ asset('images/logo3.ico') }}" type="image/x-icon">
-    <title>@yield('title', 'Clinic Dashboard')</title>
+    <title>@yield('title', 'Clinic')</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         .notification-popup-transition {

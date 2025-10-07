@@ -58,7 +58,7 @@ class AppointmentController extends Controller
             'technician_id' => 'required|exists:users,id',
         ]);
 
-        // Check if the assigned technician is already busy with other "pending" or "in progress" appointments
+        
         if (Appointment::where('technician_id', $request->technician_id)
             ->whereIn('work_status', ['in progress', 'pending'])
             ->where('appointment_id', '!=', $appointment->appointment_id)
@@ -67,7 +67,7 @@ class AppointmentController extends Controller
         }
 
         $appointment->technician_id = $request->technician_id;
-        $appointment->work_status = 'in progress'; // Automatically set to in progress when assigned
+        $appointment->work_status = 'in progress'; 
         $appointment->save();
 
         return redirect()->route('appointments.index')->with('success', 'Technician assigned successfully!');
@@ -79,26 +79,26 @@ class AppointmentController extends Controller
         $appointment->work_status = 'finished';
         $appointment->save();
 
-        // Check if delivery already exists before creating one
+       
         if (!$appointment->delivery) {
             try {
                 Delivery::create([
                     'appointment_id' => $appointment->appointment_id,
                     'rider_id' => null,
-                    'delivery_status' => 'ready to deliver', // Use consistent string value
-                    'delivery_date' => now(), // Include delivery_date if column exists
+                    'delivery_status' => 'ready to deliver', 
+                    'delivery_date' => now(), 
                 ]);
             } catch (\Illuminate\Database\QueryException $e) {
-                // Handle case where delivery_date column doesn't exist
+               
                 if (str_contains($e->getMessage(), 'Unknown column \'delivery_date\'')) {
                     Delivery::create([
                         'appointment_id' => $appointment->appointment_id,
                         'rider_id' => null,
                         'delivery_status' => 'ready to deliver',
-                        // Exclude delivery_date if column doesn't exist
+                       
                     ]);
                 } else {
-                    throw $e; // Re-throw other database errors
+                    throw $e; 
                 }
             }
         }
@@ -114,7 +114,7 @@ class AppointmentController extends Controller
             return redirect()->back()->with('error', 'Billing already exists for this appointment.');
         }
 
-        // Ensure material and its price are available
+        
         if (!$appointment->material) {
             return redirect()->back()->with('error', 'Cannot create billing: Material not selected for this appointment.');
         }
