@@ -9,10 +9,10 @@
 </head>
 <body class="h-screen flex flex-col bg-white text-[12px]">
 
-  <!-- NAVBAR -->
+  
   <header class="bg-white p-3 flex items-center justify-between shadow-md z-20">
     <div class="flex items-center gap-2">
-      <!-- Mobile menu button -->
+   
       <button id="menuToggle" class="md:hidden p-2 rounded-md hover:bg-gray-100 focus:outline-none">
         <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" stroke-width="2"
           viewBox="0 0 24 24">
@@ -55,13 +55,12 @@
 
   <div class="flex flex-1 overflow-hidden">
 
-    <!-- SIDEBAR -->
     <aside id="sidebar"
       class="fixed md:relative top-0 left-0 h-full md:h-auto md:flex flex-col bg-blue-900 text-white w-48 transform -translate-x-full md:translate-x-0 transition-transform duration-300 z-30">
       <div class="h-20 px-3 border-b border-blue-700 flex items-center justify-center">
         <img src="{{ asset('images/logo2.png') }}" alt="Logo" class="h-12 object-contain">
       </div>
-      <!-- You can put sidebar links here -->
+    
       <nav class="flex-1 overflow-y-auto p-3">
         <a href="#" class="block px-3 py-2 hover:bg-blue-800 rounded">Dashboard</a>
         <a href="#" class="block px-3 py-2 hover:bg-blue-800 rounded">Reports</a>
@@ -69,7 +68,6 @@
       </nav>
     </aside>
 
-    <!-- MAIN CONTENT -->
     <main class="flex-1 overflow-y-auto bg-white p-3 md:ml-0">
       <div class="mt-2">
         @yield('content')
@@ -78,7 +76,7 @@
   </div>
 
   <script>
-    // Sidebar toggle for mobile
+    
     const sidebar = document.getElementById('sidebar');
     const menuToggle = document.getElementById('menuToggle');
 
