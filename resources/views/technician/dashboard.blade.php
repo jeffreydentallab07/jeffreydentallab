@@ -21,158 +21,161 @@
     @endif
 </div>
 
-<div class="container mx-auto mt-20 px-4">
+<div class="container mx-auto mt-20 px-2 sm:px-4">
     @if($appointments->isEmpty())
-        <p class="text-gray-600 text-center">No appointments assigned to you.</p>
+        <p class="text-gray-600 text-center text-sm sm:text-base">No appointments assigned to you.</p>
     @else
         <div class="bg-white shadow-xl rounded-lg overflow-hidden">
-            <table class="min-w-full bg-white border border-gray-200">
-                <thead>
-                    <tr class="bg-blue-900 text-white">
-                        <th class="px-6 py-3 text-left">Appointment No.</th>
-                        <th class="px-6 py-3 text-left">Case Type</th>
-                        <th class="px-6 py-3 text-left">Note</th>
-                        <th class="px-6 py-3 text-left">Work Status</th>
-                        <th class="px-6 py-3 text-left">Material</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach($appointments as $appointment)
-                        @php
-                            $isFinished = $appointment->work_status === 'finished';
-                            $hasMaterial = !empty($appointment->material_id);
-                            $materialName = $appointment->material ? $appointment->material->name : 'Not Selected';
-                        @endphp
-                        <tr class="hover:bg-blue-50 transition">
-                            {{-- Appointment # --}}
-                            <td class="px-6 py-3 text-gray-700">
-                                @if($appointment->caseOrder)
-                                    <button type="button"
-                                            onclick="openModal('modal{{ $appointment->appointment_id }}')"
-                                            class="text-blue-600 hover:underline font-semibold">
-                                        {{ $appointment->appointment_id }}
-                                    </button>
-                                    <div id="modal{{ $appointment->appointment_id }}"
-                                         class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50 p-2">
-                                        <div class="bg-white rounded-xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto relative font-sans">
-                                            <div class="p-4 border-b border-gray-200 flex items-center justify-between">
-                                                <div class="flex items-center space-x-4">
-                                                    <img class="w-16 h-16 rounded-full object-cover border-4 border-white shadow-md"
-                                                         src="{{ $appointment->caseOrder->clinic->profile_photo 
-                                                             ? asset('storage/uploads/clinic_photos/' . $appointment->caseOrder->clinic->profile_photo) 
-                                                             : asset('images/user.png') }}"
-                                                         alt="{{ $appointment->caseOrder->clinic->clinic_name }}">
-                                                    <div>
-                                                        <h2 class="text-xl font-semibold text-gray-800">{{ $appointment->caseOrder->clinic->clinic_name }}</h2>
-                                                        <p class="text-xs text-gray-500">{{ $appointment->caseOrder->clinic->address }}</p>
-                                                        <p class="text-xs text-gray-500">Contact: {{ $appointment->caseOrder->clinic->contact_number }}</p>
-                                                    </div>
-                                                </div>
-                                                <button onclick="closeModal('modal{{ $appointment->appointment_id }}')" class="text-gray-500 hover:text-gray-800 text-xl">&times;</button>
-                                            </div>
+            <div class="overflow-x-auto">
+                <table class="min-w-full bg-white border border-gray-200 text-xs sm:text-sm">
+                    <thead>
+                        <tr class="bg-blue-900 text-white">
+                            <th class="px-3 sm:px-6 py-3 text-left">Appointment No.</th>
+                            <th class="px-3 sm:px-6 py-3 text-left">Case Type</th>
+                            <th class="px-3 sm:px-6 py-3 text-left">Note</th>
+                            <th class="px-3 sm:px-6 py-3 text-left">Work Status</th>
+                            <th class="px-3 sm:px-6 py-3 text-left">Material</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($appointments as $appointment)
+                            @php
+                                $isFinished = $appointment->work_status === 'finished';
+                                $hasMaterial = !empty($appointment->material_id);
+                                $materialName = $appointment->material ? $appointment->material->name : 'Not Selected';
+                            @endphp
+                            <tr class="hover:bg-blue-50 transition">
+                                {{-- Appointment # --}}
+                                <td class="px-3 sm:px-6 py-3 text-gray-700 whitespace-nowrap">
+                                    @if($appointment->caseOrder)
+                                        <button type="button"
+                                                onclick="openModal('modal{{ $appointment->appointment_id }}')"
+                                                class="text-blue-600 hover:underline font-semibold">
+                                            {{ $appointment->appointment_id }}
+                                        </button>
 
-                                            <div class="p-4 space-y-4 text-sm text-gray-700">
-                                                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                                                    <div>
-                                                        <label class="block font-medium text-gray-700 text-xs">Case No.</label>
-                                                        <p class="mt-1 px-2 py-1 border rounded bg-gray-100">
-                                                            {{ 'CASE-' . str_pad($appointment->caseOrder->co_id, 5, '0', STR_PAD_LEFT) }}
-                                                        </p>
+                                        {{-- Appointment Details Modal --}}
+                                        <div id="modal{{ $appointment->appointment_id }}"
+                                             class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50 p-3">
+                                            <div class="bg-white rounded-xl shadow-2xl w-full max-w-lg sm:max-w-2xl max-h-[90vh] overflow-y-auto relative font-sans">
+                                                <div class="p-4 border-b border-gray-200 flex items-center justify-between">
+                                                    <div class="flex items-center space-x-4">
+                                                        <img class="w-14 h-14 sm:w-16 sm:h-16 rounded-full object-cover border-4 border-white shadow-md"
+                                                             src="{{ $appointment->caseOrder->clinic->profile_photo 
+                                                                 ? asset('storage/uploads/clinic_photos/' . $appointment->caseOrder->clinic->profile_photo) 
+                                                                 : asset('images/user.png') }}"
+                                                             alt="{{ $appointment->caseOrder->clinic->clinic_name }}">
+                                                        <div>
+                                                            <h2 class="text-base sm:text-xl font-semibold text-gray-800">{{ $appointment->caseOrder->clinic->clinic_name }}</h2>
+                                                            <p class="text-xs text-gray-500">{{ $appointment->caseOrder->clinic->address }}</p>
+                                                            <p class="text-xs text-gray-500">Contact: {{ $appointment->caseOrder->clinic->contact_number }}</p>
+                                                        </div>
                                                     </div>
-                                                    <div>
-                                                        <label class="block font-medium text-gray-700 text-xs">Case Type</label>
-                                                        <p class="mt-1 px-2 py-1 border rounded bg-gray-100">{{ $appointment->caseOrder->case_type }}</p>
-                                                    </div>
-                                                    <div>
-                                                        <label class="block font-medium text-gray-700 text-xs">Patient Name</label>
-                                                        <p class="mt-1 px-2 py-1 border rounded bg-gray-100">{{ $appointment->caseOrder->patient?->patient_name ?? 'N/A' }}</p>
-                                                    </div>
-                                                    <div>
-                                                        <label class="block font-medium text-gray-700 text-xs">Dentist Name</label>
-                                                        <p class="mt-1 px-2 py-1 border rounded bg-gray-100">{{ $appointment->caseOrder->patient?->dentist?->name ?? 'N/A' }}</p>
-                                                    </div>
-                                                    <div class="col-span-2">
-                                                        <label class="block font-medium text-gray-700 text-xs">Notes</label>
-                                                        <p class="mt-1 px-2 py-1 border rounded bg-gray-100 whitespace-pre-line">{{ $appointment->caseOrder->notes ?? 'N/A' }}</p>
-                                                    </div>
-                                                    <div class="col-span-2">
-                                                        <label class="block font-medium text-gray-700 text-xs">Created At</label>
-                                                        <p class="mt-1 px-2 py-1 border rounded bg-gray-100">{{ \Carbon\Carbon::parse($appointment->caseOrder->created_at)->format('M d, Y h:i A') }}</p>
-                                                    </div>
+                                                    <button onclick="closeModal('modal{{ $appointment->appointment_id }}')" class="text-gray-500 hover:text-gray-800 text-xl">&times;</button>
                                                 </div>
-                                                <div class="flex justify-end mt-3">
-                                                    <button type="button" onclick="closeModal('modal{{ $appointment->appointment_id }}')" class="px-3 py-1.5 bg-gray-600 text-white rounded hover:bg-gray-700 text-sm">Close</button>
+
+                                                <div class="p-4 space-y-4 text-sm text-gray-700">
+                                                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                                        <div>
+                                                            <label class="block font-medium text-gray-700 text-xs">Case No.</label>
+                                                            <p class="mt-1 px-2 py-1 border rounded bg-gray-100">
+                                                                {{ 'CASE-' . str_pad($appointment->caseOrder->co_id, 5, '0', STR_PAD_LEFT) }}
+                                                            </p>
+                                                        </div>
+                                                        <div>
+                                                            <label class="block font-medium text-gray-700 text-xs">Case Type</label>
+                                                            <p class="mt-1 px-2 py-1 border rounded bg-gray-100">{{ $appointment->caseOrder->case_type }}</p>
+                                                        </div>
+                                                        <div>
+                                                            <label class="block font-medium text-gray-700 text-xs">Patient Name</label>
+                                                            <p class="mt-1 px-2 py-1 border rounded bg-gray-100">{{ $appointment->caseOrder->patient?->patient_name ?? 'N/A' }}</p>
+                                                        </div>
+                                                        <div>
+                                                            <label class="block font-medium text-gray-700 text-xs">Dentist Name</label>
+                                                            <p class="mt-1 px-2 py-1 border rounded bg-gray-100">{{ $appointment->caseOrder->patient?->dentist?->name ?? 'N/A' }}</p>
+                                                        </div>
+                                                        <div class="col-span-2">
+                                                            <label class="block font-medium text-gray-700 text-xs">Notes</label>
+                                                            <p class="mt-1 px-2 py-1 border rounded bg-gray-100 whitespace-pre-line">{{ $appointment->caseOrder->notes ?? 'N/A' }}</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="flex justify-end mt-3">
+                                                        <button type="button" onclick="closeModal('modal{{ $appointment->appointment_id }}')" class="px-3 py-1.5 bg-gray-600 text-white rounded hover:bg-gray-700 text-sm">Close</button>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
+                                    @endif
+                                </td>
+
+                                {{-- Case Type --}}
+                                <td class="px-3 sm:px-6 py-3 text-gray-700">{{ $appointment->caseOrder?->case_type ?? 'N/A' }}</td>
+
+                                {{-- Note --}}
+                                <td class="px-3 sm:px-6 py-3 text-gray-700">
+                                    <div class="mt-1 px-2 py-1 border rounded bg-gray-100 whitespace-pre-line max-w-[120px] sm:max-w-xs max-h-16 overflow-auto">
+                                        {{ $appointment->caseOrder?->notes ?? 'N/A' }}
                                     </div>
-                                @endif
-                            </td>
+                                </td>
 
-                            {{-- Case Type --}}
-                            <td class="px-6 py-3 text-gray-700">{{ $appointment->caseOrder?->case_type ?? 'N/A' }}</td>
+                                {{-- Work Status --}}
+                                <td class="px-3 sm:px-6 py-3 text-gray-700">
+                                    @if($isFinished)
+                                        <span class="text-gray-600 font-semibold text-xs sm:text-sm">✓ Completed</span>
+                                    @elseif($hasMaterial)
+                                        <button type="button" 
+                                                onclick="openFinishModal('{{ $appointment->appointment_id }}')"
+                                                class="bg-blue-900 hover:bg-blue-800 text-white text-[11px] sm:text-xs px-3 py-1 rounded pulse-button">
+                                            Mark as Finished
+                                        </button>
+                                    @else
+                                        <span class="text-gray-400 text-xs italic">Select material first</span>
+                                    @endif
+                                </td>
 
-                            {{-- Note --}}
-                            <td class="px-6 py-3 text-gray-700">
-                                <div class="mt-1 px-2 py-1 border rounded bg-gray-100 whitespace-pre-line max-w-xs max-h-16 overflow-auto">
-                                    {{ $appointment->caseOrder?->notes ?? 'N/A' }}
-                                </div>
-                            </td>
-
-                            {{-- Work Status --}}
-                            <td class="px-6 py-3 text-gray-700">
-                                @if($isFinished)
-                                    <span class="text-gray-600 font-semibold text-sm">✓ Completed</span>
-                                @elseif($hasMaterial)
-                                    <button type="button" 
-                                            onclick="openFinishModal('{{ $appointment->appointment_id }}')"
-                                            class="bg-blue-900 hover:bg-blue-800 text-white text-xs px-3 py-1 rounded pulse-button">
-                                        Mark as Finished
-                                    </button>
-                                @else
-                                    <span class="text-gray-400 text-xs italic">Select material first</span>
-                                @endif
-                            </td>
-
-                            {{-- Material --}}
-                            <td class="px-6 py-3 text-gray-700">
-                                <form id="materialForm_{{ $appointment->appointment_id }}" 
-                                      action="{{ route('technician.appointment.update', $appointment->appointment_id) }}" 
-                                      method="POST" class="inline-block">
-                                    @csrf
-                                    <select name="material_id"
-                                            class="border border-gray-300 rounded px-2 py-1 text-xs focus:ring-blue-900 focus:border-blue-900 bg-white w-32 
-                                            {{ !$isFinished && !$hasMaterial ? 'pulse-select' : '' }} 
-                                            {{ $isFinished ? 'bg-gray-200 text-gray-500 cursor-not-allowed' : '' }}"
-                                            onchange="this.form.submit()" 
-                                            {{ $isFinished ? 'disabled' : '' }}>
-                                        <option value="">Select Material</option>
-                                        @foreach($materials as $material)
-                                            <option value="{{ $material->material_id }}" 
-                                                    {{ $appointment->material_id == $material->material_id ? 'selected' : '' }}>
-                                                {{ $material->name }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                </form>
-                            </td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
+                                {{-- Material --}}
+                                <td class="px-3 sm:px-6 py-3 text-gray-700">
+                                    <form id="materialForm_{{ $appointment->appointment_id }}" 
+                                          action="{{ route('technician.appointment.update', $appointment->appointment_id) }}" 
+                                          method="POST" class="inline-block">
+                                        @csrf
+                                        <select name="material_id"
+                                                class="border border-gray-300 rounded px-2 py-1 text-xs focus:ring-blue-900 focus:border-blue-900 bg-white w-28 sm:w-32 
+                                                {{ !$isFinished && !$hasMaterial ? 'pulse-select' : '' }} 
+                                                {{ $isFinished ? 'bg-gray-200 text-gray-500 cursor-not-allowed' : '' }}"
+                                                onchange="this.form.submit()" 
+                                                {{ $isFinished ? 'disabled' : '' }}>
+                                            <option value="">Select</option>
+                                            @foreach($materials as $material)
+                                                <option value="{{ $material->material_id }}" 
+                                                        {{ $appointment->material_id == $material->material_id ? 'selected' : '' }}>
+                                                    {{ $material->name }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </form>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
         </div>
     @endif
 </div>
-<div id="finishModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center animate-fade-in">
-    <div class="bg-white rounded-lg shadow-lg w-96 p-6 transform transition-all duration-300 scale-100">
+
+{{-- Confirmation Modal --}}
+<div id="finishModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-lg shadow-lg w-full max-w-sm p-6 text-center transform transition-all duration-300">
         <h2 class="text-lg font-semibold text-gray-700 mb-4">Confirm Finish</h2>
         <p class="text-gray-600 mb-6">Are you sure you want to mark this appointment as finished?</p>
-        <div class="flex justify-end gap-3">
-            <button id="cancelFinishBtn" class="px-4 py-2 rounded bg-gray-300 hover:bg-gray-400">Cancel</button>
-            <button id="confirmFinishBtn" class="px-4 py-2 rounded bg-blue-900 text-white hover:bg-blue-800">Confirm</button>
+        <div class="flex justify-center gap-3">
+            <button id="cancelFinishBtn" class="px-4 py-2 rounded bg-gray-300 hover:bg-gray-400 text-sm">Cancel</button>
+            <button id="confirmFinishBtn" class="px-4 py-2 rounded bg-blue-900 text-white hover:bg-blue-800 text-sm">Confirm</button>
         </div>
     </div>
 </div>
+
 <style>
 @keyframes pulseBlue {
     0%, 100% { box-shadow: 0 0 0 0 rgba(30, 58, 138, 0.5); transform: scale(1); }
@@ -181,24 +184,16 @@
 .pulse-select, .pulse-button {
     animation: pulseBlue 1.5s infinite ease-in-out;
 }
-.pulse-button {
-    font-weight: 600;
-    transition: transform 0.2s ease;
-}
-.pulse-button:hover {
-    transform: scale(1.07);
-}
+.pulse-button { font-weight: 600; transition: transform 0.2s ease; }
+.pulse-button:hover { transform: scale(1.07); }
 </style>
 
 <script>
 let currentAppointmentId = null;
 
-function openModal(id) {
-    document.getElementById(id).classList.remove('hidden');
-}
-function closeModal(id) {
-    document.getElementById(id).classList.add('hidden');
-}
+function openModal(id) { document.getElementById(id).classList.remove('hidden'); }
+function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
+
 function openFinishModal(id) {
     currentAppointmentId = id;
     document.getElementById('finishModal').classList.remove('hidden');
@@ -213,12 +208,10 @@ document.getElementById('confirmFinishBtn').addEventListener('click', () => {
     if (currentAppointmentId) {
         const form = document.createElement('form');
         form.method = 'POST';
-       form.action = `/technician/appointments/finish/${currentAppointmentId}`;
-        form.innerHTML = `
-            @csrf
+        form.action = `/technician/appointments/finish/${currentAppointmentId}`;
+        form.innerHTML = `@csrf
             <input type="hidden" name="appointment_id" value="${currentAppointmentId}">
-            <input type="hidden" name="work_status" value="finished">
-        `;
+            <input type="hidden" name="work_status" value="finished">`;
         document.body.appendChild(form);
         form.submit();
     }
