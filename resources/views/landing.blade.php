@@ -6,45 +6,34 @@
   <link rel="icon" href="{{ asset('images/logo3.ico') }}" type="image/x-icon">
   <title>Denture Laboratory System</title>
 
-  <!-- Tailwind CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
-
-  <!-- Google Font -->
   <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;600;700&display=swap" rel="stylesheet">
 
   <style>
-    /* Entrance animation */
     @keyframes slideIn {
       0% { opacity: 0; transform: translateY(20px); }
       100% { opacity: 1; transform: translateY(0); }
     }
     .slide-in { animation: slideIn 0.9s ease forwards; }
-
-    /* Shake for invalid login */
     @keyframes shake {
       0%,100% { transform: translateX(0); }
       20%,60% { transform: translateX(-10px); }
       40%,80% { transform: translateX(10px); }
     }
     .shake { animation: shake 0.4s ease; }
-
-    /* simple visually-hidden for accessibility */
     .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
   </style>
 </head>
 <body class="antialiased bg-white text-gray-800">
 
-  <!-- Hero section with header -->
   <header class="fixed w-full z-40">
     <div class="bg-teal-900/80 backdrop-blur-sm">
       <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex items-center justify-between h-16">
           <a href="#home" class="flex items-center space-x-3">
             <img src="{{ asset('images/logo2.png') }}" alt="Logo" class="h-10 w-auto">
-            <span class="text-white font-semibold hidden sm:inline">Jeffrey Dental Laboratory</span>
           </a>
 
-          <!-- Desktop nav -->
           <nav class="hidden md:flex items-center space-x-6 text-white">
             <a href="#services" class="hover:text-teal-200 transition">Our Services</a>
             <a href="#about" class="hover:text-teal-200 transition">About Us</a>
@@ -52,7 +41,6 @@
             <button id="openLabLoginBtn" class="px-4 py-2 rounded-lg bg-transparent border border-white/20 hover:bg-white/10 transition">Lab Login</button>
           </nav>
 
-          <!-- mobile controls -->
           <div class="md:hidden flex items-center">
             <button id="mobileMenuBtn" aria-label="Toggle menu" class="text-white mr-3">
               <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -70,7 +58,6 @@
         </div>
       </div>
 
-      <!-- Mobile menu (hidden by default) -->
       <div id="mobileMenu" class="hidden md:hidden bg-teal-900/95">
         <div class="px-4 py-3 space-y-2">
           <a href="#services" class="block text-white py-2">Our Services</a>
@@ -85,7 +72,7 @@
   </header>
 
   <main id="home" class="pt-20">
-    <!-- Hero -->
+   
     <section class="relative w-full min-h-screen bg-cover bg-center flex items-center" style="background-image: url('{{ asset('images/bg.jpg') }}');">
       <div class="absolute inset-0 bg-teal-900/60"></div>
 
@@ -99,24 +86,26 @@
           <div class="p-8 md:w-1/2 flex flex-col justify-center space-y-6">
             <div class="relative w-full">
               <input id="search" type="text" placeholder=" " class="peer block w-full rounded-full bg-gray-100 px-4 pt-5 pb-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-teal-500" />
-              <label for="search" class="absolute left-4 top-2 text-gray-500 text-sm transition-all peer-placeholder-shown:top-5 peer-placeholder-shown:text-base peer-focus:top-2 peer-focus:text-teal-500 peer-focus:text-sm">Search for Dental services...</label>
+              <label for="search" class="absolute left-4 top-2 text-gray-500 text-sm transition-all peer-placeholder-shown:top-5 peer-placeholder-shown:text-base peer-focus:top-2 peer-focus:text-teal-500 peer-focus:text-sm">Search for Dental lab services...</label>
               <svg class="absolute right-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                       d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
               </svg>
             </div>
 
-            <div class="flex space-x-4">
-              <button id="openSignupModal" class="bg-blue-900 text-white px-6 py-2.5 rounded-lg font-semibold shadow-md hover:bg-[#127a95] transition">Register Clinic</button>
-
-              <a href="#services" class="px-6 py-2.5 rounded-lg border border-gray-200 hover:bg-gray-50 transition self-center">Our Services</a>
-            </div>
+             <div class="w-full">
+    <button 
+      id="openSignupModal" 
+      class="w-full bg-blue-900 text-white py-3 rounded-full font-semibold shadow-md hover:bg-[#127a95] transition duration-300"
+    >
+      Register Clinic
+    </button>
+  </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Services -->
     <section id="services" class="py-16 bg-gray-50">
       <div class="max-w-4xl mx-auto text-center px-4">
         <h2 class="text-3xl font-bold text-blue-900 mb-4">Our Services</h2>
@@ -124,7 +113,6 @@
       </div>
     </section>
 
-    <!-- About -->
     <section id="about" class="py-12 px-4">
       <div class="max-w-5xl mx-auto grid md:grid-cols-2 gap-6 items-center">
         <div class="bg-white rounded-2xl p-4 flex justify-center items-center shadow-lg">
@@ -141,10 +129,9 @@
       </div>
     </section>
 
-    <!-- Contact -->
     <section id="contact" class="py-16 bg-gray-100 px-4">
       <div class="max-w-5xl mx-auto grid md:grid-cols-3 gap-6">
-        <!-- Phones -->
+       
         <div class="bg-white rounded-3xl shadow-2xl p-6 text-center transition-transform hover:-translate-y-2">
           <h3 class="text-xl font-semibold text-blue-900 mb-4">Phone Number</h3>
           <div class="flex flex-col gap-3 items-center">
@@ -160,7 +147,6 @@
           </div>
         </div>
 
-        <!-- Address -->
         <div class="bg-white rounded-3xl shadow-2xl p-6 text-center transition-transform hover:-translate-y-2">
           <h3 class="text-xl font-semibold text-blue-900 mb-4">Address</h3>
           <button id="openMapModalBtn" class="w-full p-4 rounded-xl bg-white text-black shadow-md hover:scale-105 transition text-sm">
@@ -168,7 +154,6 @@
           </button>
         </div>
 
-        <!-- Social -->
         <div class="bg-white rounded-3xl shadow-2xl p-6 text-center transition-transform hover:-translate-y-2">
           <h3 class="text-xl font-semibold text-blue-900 mb-6">Social Media</h3>
           <div class="flex justify-center gap-4">
@@ -190,9 +175,6 @@
     </section>
   </main>
 
-  <!-- ---------- MODALS ---------- -->
-
-  <!-- Signup Modal -->
   <div id="signupModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/50 px-4">
     <div class="bg-white w-full max-w-2xl rounded-2xl shadow-lg overflow-hidden">
       <div class="flex flex-col md:flex-row">
@@ -229,7 +211,7 @@
     </div>
   </div>
 
-  <!-- Clinic Login Modal -->
+  
   <div id="clinicLoginModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/50 px-4">
     <div class="bg-white w-full max-w-2xl rounded-2xl shadow-lg overflow-hidden">
       <div class="flex flex-col md:flex-row">
@@ -275,7 +257,7 @@
     </div>
   </div>
 
-  <!-- Lab Login Modal (separate from clinic login) -->
+  
   <div id="labLoginModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/50 px-4">
     <div class="bg-white w-full max-w-4xl rounded-2xl shadow-lg overflow-hidden">
       <div class="flex flex-col md:flex-row">
@@ -324,7 +306,7 @@
     </div>
   </div>
 
-  <!-- Map Modal -->
+  
   <div id="mapModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/50 px-4">
     <div class="bg-white w-full max-w-md p-6 rounded-2xl shadow-2xl relative">
       <div class="flex items-center justify-between mb-4">
@@ -340,13 +322,13 @@
     </div>
   </div>
 
-  <!-- Toast container (for JS to attach) -->
+  
   <div id="toastContainer" class="fixed top-5 right-5 z-[9999] space-y-2"></div>
 
-  <!-- ---------- SCRIPTS (single place) ---------- -->
+  
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      // Helpers
+      
       const showToast = (message, type = 'error') => {
         const container = document.getElementById('toastContainer');
         const el = document.createElement('div');
@@ -358,7 +340,7 @@
         setTimeout(() => el.remove(), 3500);
       };
 
-      // Generic modal open/close using data attributes and ids
+      
       const openById = (id) => {
         const modal = document.getElementById(id);
         if (!modal) return;
@@ -371,7 +353,7 @@
         el.classList.remove('flex');
       };
 
-      // Close buttons (data-close)
+      
       document.querySelectorAll('[data-close]').forEach(btn => {
         btn.addEventListener('click', (e) => {
           const modal = e.target.closest('.fixed.inset-0');
@@ -379,33 +361,33 @@
         });
       });
 
-      // Close when clicking backdrop
+      
       document.querySelectorAll('.fixed.inset-0').forEach(modal => {
         modal.addEventListener('click', (e) => {
           if (e.target === modal) closeModalEl(modal);
         });
       });
 
-      // Header controls
+     
       document.getElementById('mobileMenuBtn')?.addEventListener('click', () => {
         const mm = document.getElementById('mobileMenu');
         mm.classList.toggle('hidden');
       });
 
-      // Signup / Login triggers
+      
       document.getElementById('openSignupModal')?.addEventListener('click', () => openById('signupModal'));
       document.getElementById('openSignupModalMobile')?.addEventListener('click', () => openById('signupModal'));
       document.getElementById('openClinicLoginFromSignup')?.addEventListener('click', (e) => { e.preventDefault(); closeModalEl(document.getElementById('signupModal')); openById('clinicLoginModal'); });
       document.getElementById('openSignupFromLogin')?.addEventListener('click', (e) => { e.preventDefault(); closeModalEl(document.getElementById('clinicLoginModal')); openById('signupModal'); });
 
-      // Open map modal
+     
       document.getElementById('openMapModalBtn')?.addEventListener('click', () => openById('mapModal'));
 
-      // Lab login (header buttons)
+     
       document.getElementById('openLabLoginBtn')?.addEventListener('click', (e) => { e.preventDefault(); openById('labLoginModal'); });
       document.getElementById('openLabLoginBtnMobile')?.addEventListener('click', (e) => { e.preventDefault(); openById('labLoginModal'); });
 
-      // Toggle password helpers
+      
       const togglePassword = (btnId, inputId) => {
         const btn = document.getElementById(btnId);
         const input = document.getElementById(inputId);
@@ -418,7 +400,7 @@
       togglePassword('clinicTogglePassword', 'clinicPassword');
       togglePassword('toggleLabPassword', 'labPassword');
 
-      // lab email & password simple inline validation
+     
       const labEmail = document.getElementById('labEmail');
       labEmail?.addEventListener('input', () => {
         const err = document.getElementById('labEmailError');
@@ -430,7 +412,7 @@
         if (labPassword.value.length > 0 && labPassword.value.length < 8) err.classList.remove('hidden'); else err.classList.add('hidden');
       });
 
-      // Clinic login AJAX (example) - keeps UX snappy; adjust to match server responses
+      
       const clinicLoginForm = document.getElementById('clinicLoginForm');
       if (clinicLoginForm) {
         clinicLoginForm.addEventListener('submit', async (e) => {
@@ -449,8 +431,7 @@
             if (resp.ok && data?.success) {
               window.location.href = data.redirect || "{{ route('clinic.dashboard') }}";
             } else {
-              // shake modal and show toast
-              modalBox?.classList.add('shake');
+              
               setTimeout(() => modalBox?.classList.remove('shake'), 500);
               showToast((data && data.message) || 'Invalid email or password.');
             }
@@ -462,7 +443,7 @@
         });
       }
 
-      // Lab login AJAX
+     
       const labLoginForm = document.getElementById('labLoginForm');
       if (labLoginForm) {
         labLoginForm.addEventListener('submit', async (e) => {
@@ -490,17 +471,11 @@
           }
         });
       }
-
-      // Signup toast from server session (Blade)
       @if(session('signup_success'))
         showToast("{{ session('signup_success') }}", 'success');
-        // optionally open login modal after success
-        // openById('clinicLoginModal');
       @endif
     });
   </script>
-
-  <!-- Font Awesome kit (optional) -->
   <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 </body>
 </html>
