@@ -207,3 +207,34 @@ Route::middleware('auth:clinic')->group(function () {
     Route::get('/clinic/dashboard', [ClinicDashboardController::class, 'index'])->name('clinic.dashboard');
     Route::get('/clinic/live-counts', [ClinicDashboardController::class, 'liveCounts'])->name('clinic.liveCounts');
 });
+Route::get('/reports/caseorders/export/{type}', [ReportController::class, 'exportCaseOrders'])
+     ->name('reports.caseorders.export');
+    
+Route::prefix('reports')->group(function () {
+    Route::get('/appointments', [App\Http\Controllers\ReportController::class, 'appointments'])
+        ->name('reports.appointments');
+
+    Route::get('/appointments/export/{type}', [App\Http\Controllers\ReportController::class, 'exportAppointments'])
+        ->where('type', 'pdf|word|excel')
+        ->name('reports.appointments.export');
+});
+
+ Route::get('/deliveries/export/{type}', [ReportController::class, 'exportDeliveries'])
+        ->name('reports.deliveries.export');
+ 
+         Route::get('/billings/export/{type}', [ReportController::class, 'exportBillings'])
+        ->name('reports.billings.export');
+        Route::get('/reports/riders/print', [RidersReportController::class, 'print'])->name('reports.riders.print');
+Route::get('/reports/riders/export/{type}', [App\Http\Controllers\ReportController::class, 'exportRiders'])
+    ->name('reports.riders.export');
+
+    Route::get('/reports/technicians/export/{type}', [ReportController::class, 'exportTechnicians'])
+    ->where('type', 'pdf|word|excel')
+    ->name('reports.technicians.export');
+
+    Route::get('/reports/clinics/export/{type}', [ReportController::class, 'exportClinics'])
+    ->where('type', 'pdf|word|excel')
+    ->name('reports.clinics.export');
+    // For Technician
+Route::post('/technician/appointments/finish/{id}', [AppointmentController::class, 'markAsFinished'])
+    ->name('technician.appointments.finish');

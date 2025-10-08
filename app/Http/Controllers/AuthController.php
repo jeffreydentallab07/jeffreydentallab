@@ -19,34 +19,56 @@ class AuthController extends Controller
         return view('auth.login'); 
     }
 
-    public function login(Request $request)
-    {
-        $credentials = $request->validate([
-            'email'    => 'required|email',
-            'password' => 'required',
-        ]);
+public function login(Request $request)
+{
+    $credentials = $request->validate([
+        'email'    => 'required|email',
+        'password' => 'required',
+    ]);
 
-   
-        config(['session.cookie' => env('SESSION_COOKIE_WEB', config('session.cookie'))]);
+    config(['session.cookie' => env('SESSION_COOKIE_WEB', config('session.cookie'))]);
 
-        if (Auth::attempt($credentials)) {
-            $request->session()->regenerate();
-            $user = Auth::user();
+    if (Auth::attempt($credentials, $request->boolean('remember'))) {
+        $request->session()->regenerate();
+        $user = Auth::user();
 
-            if ($user->role === 'admin') {
-                return redirect()->route('dashboard')->with('success', 'Logged in successfully!');
-            } elseif ($user->role === 'technician') {
-                return redirect()->route('technician.dashboard')->with('success', 'Logged in successfully!');
-            } elseif ($user->role === 'rider') {
-                return redirect()->route('rider.dashboard')->with('success', 'Logged in successfully!');
-            } else {
-                Auth::logout();
-                return redirect()->route('login')->withErrors(['role' => 'Invalid role.']);
+        $redirect = match ($user->role) {
+            'admin' => route('dashboard'),
+            'technician' => route('technician.dashboard'),
+            'rider' => route('rider.dashboard'),
+            'clinic' => route('clinic.dashboard'),
+            default => null,
+        };
+
+        if (!$redirect) {
+            Auth::logout();
+            if ($request->ajax()) {
+                return response()->json(['success' => false, 'message' => 'Invalid role.']);
             }
+            return redirect()->route('login')->withErrors(['role' => 'Invalid role.']);
         }
 
-        return back()->withErrors(['email' => 'Invalid credentials.']);
+    
+        if ($request->ajax()) {
+            return response()->json([
+                'success' => true,
+                'redirect' => $redirect,
+                'message' => 'Login successful!',
+            ]);
+        }
+
+        return redirect()->to($redirect)->with('success', 'Login successful!');
     }
+
+    if ($request->ajax()) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Invalid email or password.',
+        ], 401);
+    }
+
+    return redirect()->route('login')->with('error', 'Invalid email or password.');
+}
 
    
     public function showSignup()
@@ -128,7 +150,7 @@ class AuthController extends Controller
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-        return redirect()->route('login');
+        return redirect()->route('landing');
     }
      public function getLiveCounts()
     {

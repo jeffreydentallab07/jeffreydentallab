@@ -91,7 +91,7 @@
                             <button onclick="closeModal('modal{{ $caseOrder->co_id }}')" class="text-gray-500 hover:text-gray-800 text-xl">&times;</button>
                         </div>
 
-                        {{-- Case Order Details --}}
+                       
                         <div class="p-4 space-y-4 text-sm text-gray-700">
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
                                 <div>
@@ -120,7 +120,6 @@
                                 </div>
                             </div>
 
-                            {{-- Buttons --}}
                             <div class="flex justify-end space-x-3 mt-3">
                                 <button type="button" onclick="closeModal('modal{{ $caseOrder->co_id }}')" class="px-3 py-1.5 bg-gray-500 text-white rounded hover:bg-gray-600 text-sm">Back</button>
                                 <form action="{{ route('case-orders.approve', $caseOrder->co_id) }}" method="POST">

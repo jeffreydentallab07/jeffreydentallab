@@ -63,78 +63,139 @@
       </div>
 
   
-      <div class="w-full md:w-1/2 p-6 md:p-8 flex flex-col justify-center bg-white overflow-y-auto">
-        <h2 class="text-2xl font-bold text-[#189ab4] mb-6 text-center">Laboratory Login</h2>
-        <form action="{{ url('/login') }}" method="POST" class="space-y-4" novalidate>
-          @csrf
-          <div>
-            <input type="email" name="email" id="labEmail" placeholder="Enter Email" required
-              pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
-              class="w-full border border-gray-300 rounded-md p-3 focus:outline-none focus:border-[#189ab4] focus:ring-2 focus:ring-[#189ab4]/30">
-            <p id="labEmailError" class="text-red-600 text-sm mt-1 hidden">
-              Please enter a valid email.
-            </p>
-          </div>
-          
-          <div class="relative">
-            <input type="password" name="password" id="labPassword" placeholder="Enter Password" required minlength="8"
-              class="w-full border border-gray-300 rounded-md p-3 pr-10 focus:outline-none focus:border-[#189ab4] focus:ring-2 focus:ring-[#189ab4]/30">
-            <button type="button" id="toggleLabPassword" 
-              class="absolute inset-y-0 right-3 flex items-center text-gray-500 hover:text-[#189ab4]">
-              <svg id="labEyeIcon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" 
-                   stroke="currentColor" class="w-5 h-5">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                  d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                  d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 
-                     9.542 7-1.274 4.057-5.065 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-              </svg>
-            </button>
-          </div>
+    <div class="w-full md:w-1/2 p-6 md:p-8 flex flex-col justify-center bg-white overflow-y-auto">
+  <h2 class="text-2xl font-bold text-blue-900 mb-6 text-center">Laboratory Login</h2>
 
-          <p id="labPasswordError" class="text-red-600 text-sm mt-1 hidden">
-            Password must be at least 8 characters long.
-          </p>
- 
-          <div class="flex items-center justify-between text-sm">
-            <label class="flex items-center space-x-2">
-              <input type="checkbox" name="remember" class="text-[#189ab4] focus:ring-[#189ab4]">
-              <span class="text-gray-700">Remember Me</span>
-            </label>
-            <a href="#" class="text-[#189ab4] hover:underline">Forgot Password?</a>
-          </div>
+  <form id="labLoginForm" action="{{ url('/login') }}" method="POST" class="space-y-4" novalidate>
+    @csrf
 
-          <button type="submit" 
-            class="w-full bg-[#189ab4] text-white rounded-md font-bold py-3 hover:bg-[#127a95] transition">
-            Login
-          </button>
-        </form>
-
-        @if ($errors->any())
-          <div class="mt-4 text-red-600 text-sm">
-            {{ $errors->first() }}
-          </div>
-        @endif
-      </div>
+    <div>
+      <input type="email" name="email" id="labEmail" placeholder="Enter Email" required
+        pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+        class="w-full border border-gray-300 rounded-md p-3 focus:outline-none focus:border-[#189ab4] focus:ring-2 focus:ring-[#189ab4]/30">
+      <p id="labEmailError" class="text-red-600 text-sm mt-1 hidden">
+        Please enter a valid email.
+      </p>
     </div>
-  </div>
+
+    <div class="relative">
+      <input type="password" name="password" id="labPassword" placeholder="Enter Password" required minlength="8"
+        class="w-full border border-gray-300 rounded-md p-3 pr-10 focus:outline-none focus:border-[#189ab4] focus:ring-2 focus:ring-[#189ab4]/30">
+      <button type="button" id="toggleLabPassword"
+        class="absolute inset-y-0 right-3 flex items-center text-gray-500 hover:text-[#189ab4]">
+        <svg id="labEyeIcon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+          stroke="currentColor" class="w-5 h-5">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 
+               9.542 7-1.274 4.057-5.065 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+        </svg>
+      </button>
+    </div>
+    <p id="labPasswordError" class="text-red-600 text-sm mt-1 hidden">
+      Password must be at least 8 characters long.
+    </p>
+
+    <div class="flex items-center justify-between text-sm">
+      <label class="flex items-center space-x-2">
+        <input type="checkbox" name="remember" class="text-[#189ab4] focus:ring-[#189ab4]">
+        <span class="text-gray-700">Remember Me</span>
+      </label>
+      <a href="#" class="text-[#189ab4] hover:underline">Forgot Password?</a>
+    </div>
+
+    <button type="submit"
+      class="w-full bg-blue-900 text-white rounded-md font-bold py-3 hover:bg-[#127a95] transition">
+      Login
+    </button>
+  </form>
 </div>
-@if (session('success'))
-<div id="toast" class="fixed top-5 right-5 bg-green-500 text-white px-4 py-2 rounded shadow-lg z-50">
-    {{ session('success') }}
-</div>
+
+<style>
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-10px); }
+  40%, 80% { transform: translateX(10px); }
+}
+.shake {
+  animation: shake 0.4s ease;
+}
+</style>
 
 <script>
-    setTimeout(() => {
-        const toast = document.getElementById('toast');
-        if (toast) toast.remove();
-    }, 4000); 
+document.addEventListener('DOMContentLoaded', () => {
+  const form = document.getElementById('labLoginForm');
+  const modal = form.closest('.p-6'); 
+  const eyeBtn = document.getElementById('toggleLabPassword');
+  const passwordInput = document.getElementById('labPassword');
+  const eyeIcon = document.getElementById('labEyeIcon');
+
+
+  eyeBtn.addEventListener('click', () => {
+    const isHidden = passwordInput.type === 'password';
+    passwordInput.type = isHidden ? 'text' : 'password';
+    eyeIcon.innerHTML = isHidden
+      ? `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+          d="M13.875 18.825A10.05 10.05 0 0112 19c-4.477 0-8.268-2.943-9.542-7
+          1.087-3.464 4.11-6.063 7.833-6.803m6.592 1.916a10.05 10.05 0 012.66 4.887
+          M3 3l18 18"/>`
+      : `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M2.458 12C3.732 7.943 7.523 5 12 5
+          c4.477 0 8.268 2.943 9.542 7
+          -1.274 4.057-5.065 7-9.542 7
+          -4.477 0-8.268-2.943-9.542-7z" />`;
+  });
+
+ 
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const formData = new FormData(form);
+    const response = await fetch(form.action, {
+      method: 'POST',
+      headers: {
+        'X-Requested-With': 'XMLHttpRequest',
+        'X-CSRF-TOKEN': form.querySelector('input[name="_token"]').value
+      },
+      body: formData
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+
+      if (data.success) {
+    
+        window.location.href = data.redirect || '/dashboard';
+      } else {
+       
+        modal.classList.add('shake');
+        setTimeout(() => modal.classList.remove('shake'), 500);
+
+        showToast(data.message || 'Invalid credentials.');
+      }
+    } else {
+    
+      modal.classList.add('shake');
+      setTimeout(() => modal.classList.remove('shake'), 500);
+      showToast('Login failed. Please try again.');
+    }
+  });
+
+  
+  function showToast(message) {
+    const toast = document.createElement('div');
+    toast.className = 'fixed top-5 right-5 bg-red-500 text-white px-4 py-2 rounded shadow-lg z-[9999]';
+    toast.textContent = message;
+    document.body.appendChild(toast);
+    setTimeout(() => toast.remove(), 3000);
+  }
+});
 </script>
-@endif
 
     </header>
-
-   
     <div class="relative z-10 max-w-6xl mx-auto px-6 py-12 md:py-24 slide-in">
         <div class="bg-white rounded-2xl shadow-xl md:flex md:items-center md:justify-between overflow-hidden">
            
@@ -168,17 +229,7 @@
         </div>
     </div>
 </div>
-<div id="accountCheckModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
-  <div class="bg-white w-full max-w-md rounded-2xl shadow-lg p-6 relative text-center">
-    <h2 class="text-lg font-bold text-[#189ab4] mb-4">Do you already have an account?</h2>
-    <p class="text-gray-700 mb-6">If yes, proceed to login. Otherwise, create a new account.</p>
-    <div class="flex justify-center space-x-4">
-      <button id="proceedLogin" class="bg-blue-900 text-white px-6 py-2 rounded-lg font-semibold hover:bg-blue-700 transition">Yes, Login</button>
-      <button id="proceedSignup" class="bg-green-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-green-500 transition">No, Sign Up</button>
-    </div>
-    <button id="closeAccountCheck" class="absolute top-3 right-3 text-gray-500 hover:text-red-500">&times;</button>
-  </div>
-</div>
+
 
 <div id="signupModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
     <div class="bg-white w-full max-w-2xl rounded-2xl shadow-lg overflow-hidden relative">
@@ -203,7 +254,7 @@
                 </div>
             </div>           
             <div class="w-full md:w-1/2 p-4 flex flex-col justify-center bg-white overflow-y-auto">
-                <h2 class="text-lg font-bold text-[#189ab4] mb-3 text-center">Clinic Registration</h2>
+                <h2 class="text-lg font-bold text-blue-900 mb-3 text-center">Clinic Registration</h2>
 
                 <form id="clinicSignupForm" action="{{ route('clinic.signup') }}" method="POST" class="space-y-2">
                     @csrf
@@ -214,12 +265,12 @@
                     <input type="email" name="email" id="email" placeholder="Email" required class="w-full border-b border-gray-300 p-1.5 focus:outline-none focus:border-[#189ab4]">
                     <input type="password" name="password" id="password" placeholder="Password" required class="w-full border-b border-gray-300 p-1.5 focus:outline-none focus:border-[#189ab4]">
                     <input type="password" name="password_confirmation" id="password_confirmation" placeholder="Confirm Password" required class="w-full border-b border-gray-300 p-1.5 focus:outline-none focus:border-[#189ab4]">
-                    <button type="submit" class="w-full bg-[#189ab4] text-white rounded-md font-bold py-2 hover:bg-[#127a95] transition">Create Account</button>
+                    <button type="submit" class="w-full bg-blue-900 text-white rounded-md font-bold py-2 hover:bg-[#127a95] transition">Create Account</button>
                 </form>
 
                 <p class="text-center text-gray-700 text-xs mt-2">
                   Already have an account? 
-                  <a href="#" id="openLoginFromSignup" class="text-[#189ab4] hover:underline">Login here</a>
+                  <a href="#" id="openLoginFromSignup" class="text-blue-900 hover:underline">Login here</a>
                 </p>
             </div>
         </div>
@@ -254,19 +305,18 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     @endif
 });
-</script>
-
-
-
-<div id="loginModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+</script><div id="loginModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
   <div class="bg-white w-full max-w-2xl rounded-2xl shadow-lg overflow-hidden relative">
+  
     <button id="closeLoginModal" class="absolute top-4 right-4 text-gray-500 hover:text-red-500">
       <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M6 18L18 6M6 6l12 12" />
       </svg>
     </button>
 
     <div class="flex flex-col md:flex-row">
+ 
       <div class="w-full md:w-1/2 relative flex flex-col items-center justify-center text-center text-white"
            style="background-image: url('{{ asset('images/bg.jpg') }}'); background-size: cover; background-position: center;">
         <div class="absolute inset-0 bg-black/40"></div>
@@ -280,28 +330,119 @@ document.addEventListener('DOMContentLoaded', () => {
       </div>
 
       <div class="w-full md:w-1/2 p-4 flex flex-col justify-center bg-white overflow-y-auto">
-        <h2 class="text-lg font-bold text-[#189ab4] mb-3 text-center">Clinic Login</h2>
+        <h2 class="text-lg font-bold text-blue-900 mb-3 text-center">Clinic Login</h2>
 
-        <form action="{{ route('clinic.login.post') }}" method="POST" class="space-y-2">
+        <form id="clinicLoginForm" action="{{ route('clinic.login.post') }}" method="POST" class="space-y-2">
           @csrf
+
           <input type="email" name="email" placeholder="Enter Email" required
                  class="w-full border-b border-gray-300 p-1.5 focus:outline-none focus:border-[#189ab4]">
-          <input type="password" name="password" placeholder="Enter Password" required
-                 class="w-full border-b border-gray-300 p-1.5 focus:outline-none focus:border-[#189ab4]">
-          <button type="submit" 
+
+          <div class="relative">
+            <input type="password" name="password" id="clinicPassword" placeholder="Enter Password" required
+                   class="w-full border-b border-gray-300 p-1.5 focus:outline-none focus:border-[#189ab4] pr-10">
+            <button type="button" id="toggleClinicPassword"
+                    class="absolute right-2 top-1 text-gray-500 hover:text-[#189ab4]">
+              <svg xmlns="http://www.w3.org/2000/svg" id="eyeIcon" fill="none" viewBox="0 0 24 24"
+                   stroke="currentColor" class="h-5 w-5">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M2.458 12C3.732 7.943 7.523 5 12 5
+                         c4.478 0 8.268 2.943 9.542 7
+                         -1.274 4.057-5.064 7-9.542 7
+                         -4.477 0-8.268-2.943-9.542-7z" />
+              </svg>
+            </button>
+          </div>
+          <div class="flex items-center justify-between text-sm text-gray-600 mt-1">
+            <label class="flex items-center space-x-1">
+              <input type="checkbox" name="remember" class="text-[#189ab4] focus:ring-[#189ab4]">
+              <span>Remember Me</span>
+            </label>
+            <a href="#" class="text-[#189ab4] hover:underline hover:text-[#127a95] transition">
+              Forgot Password?
+            </a>
+          </div>
+          <button type="submit"
                   class="w-full bg-[#189ab4] text-white rounded-md font-bold py-2 hover:bg-[#127a95] transition">
             Login
           </button>
         </form>
-
         <p class="text-center text-gray-700 text-xs mt-2">
-          Don’t have an account? 
-          <a href="#" id="openSignupFromLogin" class="text-[#189ab4] hover:underline">Sign up here</a>
+          Don’t have an account?
+          <a href="#" id="openSignupFromLogin" class="text-blue-900 hover:underline">
+            Sign up here
+          </a>
         </p>
       </div>
     </div>
   </div>
 </div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  const form = document.getElementById("clinicLoginForm");
+  const modalBox = form.closest(".bg-white");
+  const passwordInput = document.getElementById("clinicPassword");
+  const togglePassword = document.getElementById("toggleClinicPassword");
+  const eyeIcon = document.getElementById("eyeIcon");
+
+ 
+  togglePassword.addEventListener("click", () => {
+    const type = passwordInput.getAttribute("type") === "password" ? "text" : "password";
+    passwordInput.setAttribute("type", type);
+    eyeIcon.innerHTML = type === "password"
+      ? `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+          d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+          d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />`
+      : `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.542-7a9.953 9.953 0 012.159-3.319m3.932-2.478A9.956 9.956 0 0112 5c4.478 0 8.268 2.943 9.542 7a9.966 9.966 0 01-4.053 5.157M15 12a3 3 0 11-6 0 3 3 0 016 0z" />`;
+  });
+
+  
+  form.addEventListener("submit", async function(e) {
+    e.preventDefault();
+
+    const formData = new FormData(form);
+    const response = await fetch(form.action, {
+      method: "POST",
+      headers: { "X-CSRF-TOKEN": formData.get("_token") },
+      body: formData
+    });
+
+    const result = await response.json().catch(() => null);
+
+    if (response.ok && result?.success) {
+      window.location.href = result.redirect || "{{ route('clinic.dashboard') }}";
+    } else {
+     
+      modalBox.classList.add("animate-shake");
+      setTimeout(() => modalBox.classList.remove("animate-shake"), 500);
+
+      const toast = document.createElement('div');
+      toast.className = 'fixed top-5 right-5 bg-red-500 text-white px-4 py-2 rounded shadow-lg z-[9999]';
+      toast.textContent = (result && result.message) || "Invalid email or password.";
+      document.body.appendChild(toast);
+      setTimeout(() => toast.remove(), 3000);
+    }
+  });
+});
+</script>
+
+<style>
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-10px); }
+  40%, 80% { transform: translateX(10px); }
+}
+.animate-shake {
+  animation: shake 0.4s ease;
+}
+</style>
+
+
 <section id="contact" class="py-20 flex flex-col justify-center items-center bg-gray-200 px-6 relative">
   <h2 class="text-3xl font-bold text-blue-900 mb-6">Contact Us</h2>
 
@@ -343,8 +484,9 @@ document.addEventListener('DOMContentLoaded', () => {
 </div>
 
 
+
 <div class="bg-white rounded-3xl shadow-2xl p-6 text-center transition-transform duration-300 hover:-translate-y-3">
-  <h3 class="text-xl font-semibold text-9 text-blue-900 mb-4">Address</h3>
+  <h3 class="text-xl font-semibold text-blue-900 mb-4">Address</h3>
   <button onclick="openModal()" 
     class="flex flex-col items-center justify-center w-64 p-4 rounded-xl shadow-md 
            bg-white text-black transition-all duration-300
@@ -362,7 +504,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 <div id="mapModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
   <div class="bg-white w-full max-w-md p-6 rounded-2xl shadow-2xl relative">
-    
+
    
     <button onclick="closeModal()" 
       class="absolute top-3 right-3 text-gray-500 hover:text-gray-800 text-2xl">&times;</button>
@@ -370,62 +512,66 @@ document.addEventListener('DOMContentLoaded', () => {
     <h2 class="text-lg font-semibold text-blue-600 mb-4 text-center">Google Maps Location</h2>
     
   
-    <iframe 
-      src="https://www.google.com/maps?q=Zone+7+Bulua+District+1+Cagayan+de+Oro+City+Misamis+Oriental+Philippines&output=embed" 
-      width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+    <iframe src="https://www.google.com/maps/embed?pb=!3m2!1sen!2sph!4v1759895887714!5m2!1sen!2sph!6m8!1m7!1sGXumgqKB9fSHfdDq7-g70Q!2m2!1d8.504174306065364!2d124.610842342069!3f343.02643523285644!4f-7.326250593273585!5f0.7820865974627469" width="400" height="300" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+
     
     <div class="mt-4 text-center">
-      <a href="https://www.google.com/maps/search/?api=1&query=Zone+7+Bulua+District+1+Cagayan+de+Oro+City+Misamis+Oriental+Philippines" 
+      <a href="https://maps.app.goo.gl/rannarDsNdJJebVX9" 
          target="_blank"
-         class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-9">Open in Google Maps</a>
+         class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
+         Open in Google Maps
+      </a>
     </div>
+
   </div>
 </div>
 
+
 <script>
   function openModal() {
-    document.getElementById('mapModal').classList.remove('hidden');
-    document.getElementById('mapModal').classList.add('flex');
+    const modal = document.getElementById('mapModal');
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
   }
   function closeModal() {
-    document.getElementById('mapModal').classList.add('hidden');
-    document.getElementById('mapModal').classList.remove('flex');
+    const modal = document.getElementById('mapModal');
+    modal.classList.add('hidden');
+    modal.classList.remove('flex');
   }
+ 
+  window.addEventListener('click', (e) => {
+    const modal = document.getElementById('mapModal');
+    if (e.target === modal) {
+      closeModal();
+    }
+  });
 </script>
-      <div class="bg-white rounded-3xl shadow-2xl p-6 text-center transition-transform duration-300 hover:-translate-y-3">
-        <h3 class="text-xl font-semibold text-blue-900 text-9 mb-6">Social Media</h3>
-        <div class="flex justify-center space-x-4">
 
-<a href="https://www.facebook.com/jeffrey.dental.lab.2025" target="_blank" 
-   class="flex items-center justify-center bg-white rounded-xl shadow-md w-12 h-12 hover:bg-blue-600 hover:scale-105 transition">
-  <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg" 
-       alt="Facebook" class="w-6 h-6">
-</a>
+<div class="bg-white rounded-3xl shadow-2xl p-6 text-center transition-transform duration-300 hover:-translate-y-3 mt-6">
+  <h3 class="text-xl font-semibold text-blue-900 mb-6">Social Media</h3>
+  <div class="flex justify-center space-x-4">
 
-        
-          <a href="#" class="flex items-center justify-center bg-white rounded-xl shadow-md w-12 h-12 hover:bg-gradient-to-tr hover:from-pink-500 hover:to-yellow-400 hover:scale-105 transition">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/e/e7/Instagram_logo_2016.svg" alt="Instagram" class="w-6 h-6">
-          </a>
+    <a href="https://www.facebook.com/jeffrey.dental.lab.2025" target="_blank" 
+      class="flex items-center justify-center bg-white rounded-xl shadow-md w-12 h-12 hover:bg-blue-600 hover:scale-105 transition">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg" alt="Facebook" class="w-6 h-6">
+    </a>
 
-       
-       
-<a href="mailto:jeffreydentallab143@gmail.com" 
-   class="flex items-center justify-center bg-white rounded-xl shadow-md w-12 h-12 hover:bg-red-500 hover:scale-105 transition">
-  <img src="https://upload.wikimedia.org/wikipedia/commons/4/4e/Mail_%28iOS%29.svg" 
-       alt="Email" class="w-6 h-6">
-</a>
+    <a href="#" class="flex items-center justify-center bg-white rounded-xl shadow-md w-12 h-12 hover:bg-gradient-to-tr hover:from-pink-500 hover:to-yellow-400 hover:scale-105 transition">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/e/e7/Instagram_logo_2016.svg" alt="Instagram" class="w-6 h-6">
+    </a>
 
+    <a href="mailto:jeffreydentallab143@gmail.com" 
+      class="flex items-center justify-center bg-white rounded-xl shadow-md w-12 h-12 hover:bg-red-500 hover:scale-105 transition">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/4/4e/Mail_%28iOS%29.svg" alt="Email" class="w-6 h-6">
+    </a>
 
-       
-          <a href="#" class="flex items-center justify-center bg-white rounded-xl shadow-md w-12 h-12 hover:bg-blue-800 hover:scale-105 transition">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/c/ca/LinkedIn_logo_initials.png" alt="LinkedIn" class="w-6 h-6">
-          </a>
+    <a href="#" class="flex items-center justify-center bg-white rounded-xl shadow-md w-12 h-12 hover:bg-blue-800 hover:scale-105 transition">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/c/ca/LinkedIn_logo_initials.png" alt="LinkedIn" class="w-6 h-6">
+    </a>
 
-        </div>
-      </div>
-
-    </div>
   </div>
+</div>
+
 </section>
 </section>
 
@@ -476,148 +622,106 @@ document.addEventListener('DOMContentLoaded', () => {
   <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
  <script>
 document.addEventListener('DOMContentLoaded', () => {
-  // --- MODALS ---
+
   const signupModal = document.getElementById('signupModal');
   const loginModal = document.getElementById('loginModal');
   const labLoginModal = document.getElementById('labLoginModal');
-  const accountCheckModal = document.getElementById('accountCheckModal');
   const mapModal = document.getElementById('mapModal');
-  const adminModal = document.getElementById('adminModal'); // Add this in HTML if wala pa
+  const adminModal = document.getElementById('adminModal'); 
 
-  // --- BUTTONS ---
   const openSignupModalBtn = document.getElementById('openSignupModal');
   const closeSignupModalBtn = document.getElementById('closeSignupModal');
   const openLoginFromSignup = document.getElementById('openLoginFromSignup');
   const openSignupFromLogin = document.getElementById('openSignupFromLogin');
   const closeLoginModalBtn = document.getElementById('closeLoginModal');
-  const loginBtn = document.getElementById('loginBtn'); // Lab login
+  const loginBtn = document.getElementById('loginBtn');
   const closeLabLoginModalBtn = document.getElementById('closeLabLoginModal');
-  const proceedLoginBtn = document.getElementById('proceedLogin');
-  const proceedSignupBtn = document.getElementById('proceedSignup');
-  const closeAccountCheckBtn = document.getElementById('closeAccountCheck');
 
-  // --- OPEN MODALS ---
+  
   openSignupModalBtn.addEventListener('click', () => {
-      accountCheckModal.classList.remove('hidden');
-      accountCheckModal.classList.add('flex');
+    signupModal.classList.remove('hidden');
+    signupModal.classList.add('flex');
   });
 
   loginBtn.addEventListener('click', (e) => {
-      e.preventDefault();
-      labLoginModal.classList.remove('hidden');
-      labLoginModal.classList.add('flex');
+    e.preventDefault();
+    labLoginModal.classList.remove('hidden');
+    labLoginModal.classList.add('flex');
   });
 
-  // --- CLOSE MODALS ---
   closeSignupModalBtn.addEventListener('click', () => {
-      signupModal.classList.add('hidden');
-      signupModal.classList.remove('flex');
+    signupModal.classList.add('hidden');
+    signupModal.classList.remove('flex');
   });
 
   closeLoginModalBtn.addEventListener('click', () => {
-      loginModal.classList.add('hidden');
-      loginModal.classList.remove('flex');
+    loginModal.classList.add('hidden');
+    loginModal.classList.remove('flex');
   });
 
   closeLabLoginModalBtn.addEventListener('click', () => {
-      labLoginModal.classList.add('hidden');
-      labLoginModal.classList.remove('flex');
+    labLoginModal.classList.add('hidden');
+    labLoginModal.classList.remove('flex');
   });
 
-  closeAccountCheckBtn.addEventListener('click', () => {
-      accountCheckModal.classList.add('hidden');
-      accountCheckModal.classList.remove('flex');
-  });
-
-  // --- ACCOUNT CHECK ---
-  proceedLoginBtn.addEventListener('click', () => {
-      accountCheckModal.classList.add('hidden');
-      accountCheckModal.classList.remove('flex');
-      loginModal.classList.remove('hidden');
-      loginModal.classList.add('flex');
-  });
-
-  proceedSignupBtn.addEventListener('click', () => {
-      accountCheckModal.classList.add('hidden');
-      accountCheckModal.classList.remove('flex');
-      signupModal.classList.remove('hidden');
-      signupModal.classList.add('flex');
-  });
-
-  // --- SWITCH BETWEEN SIGNUP AND LOGIN ---
   openLoginFromSignup.addEventListener('click', e => {
-      e.preventDefault();
-      signupModal.classList.add('hidden');
-      signupModal.classList.remove('flex');
-      loginModal.classList.remove('hidden');
-      loginModal.classList.add('flex');
+    e.preventDefault();
+    signupModal.classList.add('hidden');
+    signupModal.classList.remove('flex');
+    loginModal.classList.remove('hidden');
+    loginModal.classList.add('flex');
   });
 
   openSignupFromLogin.addEventListener('click', e => {
-      e.preventDefault();
-      loginModal.classList.add('hidden');
-      loginModal.classList.remove('flex');
-      signupModal.classList.remove('hidden');
-      signupModal.classList.add('flex');
+    e.preventDefault();
+    loginModal.classList.add('hidden');
+    loginModal.classList.remove('flex');
+    signupModal.classList.remove('hidden');
+    signupModal.classList.add('flex');
   });
 
-  // --- MAP MODAL ---
+ 
   window.openMapModal = () => {
-      mapModal.classList.remove('hidden');
-      mapModal.classList.add('flex');
+    mapModal.classList.remove('hidden');
+    mapModal.classList.add('flex');
   };
   window.closeMapModal = () => {
-      mapModal.classList.add('hidden');
-      mapModal.classList.remove('flex');
+    mapModal.classList.add('hidden');
+    mapModal.classList.remove('flex');
   };
 
-  // --- ADMIN MODAL (example) ---
-  if(adminModal){
-    const openAdminBtn = document.getElementById('openAdminModal');
-    const closeAdminBtn = document.getElementById('closeAdminModal');
-    openAdminBtn?.addEventListener('click', () => {
-        adminModal.classList.remove('hidden');
-        adminModal.classList.add('flex');
-    });
-    closeAdminBtn?.addEventListener('click', () => {
-        adminModal.classList.add('hidden');
-        adminModal.classList.remove('flex');
-    });
-  }
-
-  // --- CLOSE MODAL WHEN CLICKING OUTSIDE ---
   window.addEventListener('click', (e) => {
-    [signupModal, loginModal, labLoginModal, accountCheckModal, mapModal, adminModal].forEach(modal => {
-      if(modal && e.target === modal){
+    [signupModal, loginModal, labLoginModal, mapModal, adminModal].forEach(modal => {
+      if (modal && e.target === modal) {
         modal.classList.add('hidden');
         modal.classList.remove('flex');
       }
     });
   });
 
-  // --- LAB PASSWORD TOGGLE ---
   const labPassword = document.getElementById("labPassword");
   const labEyeIcon = document.getElementById("labEyeIcon");
   labPassword?.addEventListener("input", () => {
-      const labPasswordError = document.getElementById("labPasswordError");
-      if (labPassword.value.length > 0 && labPassword.value.length < 8) {
-        labPasswordError.classList.remove("hidden");
-      } else {
-        labPasswordError.classList.add("hidden");
-      }
+    const labPasswordError = document.getElementById("labPasswordError");
+    if (labPassword.value.length > 0 && labPassword.value.length < 8) {
+      labPasswordError.classList.remove("hidden");
+    } else {
+      labPasswordError.classList.add("hidden");
+    }
   });
+
   const toggleLabPassword = document.getElementById("toggleLabPassword");
   toggleLabPassword?.addEventListener("click", () => {
-      const type = labPassword.getAttribute("type") === "password" ? "text" : "password";
-      labPassword.setAttribute("type", type);
-      labEyeIcon.classList.toggle("text-[#189ab4]");
+    const type = labPassword.getAttribute("type") === "password" ? "text" : "password";
+    labPassword.setAttribute("type", type);
+    labEyeIcon.classList.toggle("text-[#189ab4]");
   });
 
   // --- LAB EMAIL VALIDATION ---
   const labEmail = document.getElementById("labEmail");
   labEmail?.addEventListener("input", () => {
     const labEmailError = document.getElementById("labEmailError");
-    if(labEmail.validity.patternMismatch || labEmail.validity.typeMismatch){
+    if (labEmail.validity.patternMismatch || labEmail.validity.typeMismatch) {
       labEmailError.classList.remove("hidden");
     } else {
       labEmailError.classList.add("hidden");

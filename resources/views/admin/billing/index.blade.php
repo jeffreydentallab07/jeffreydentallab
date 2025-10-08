@@ -212,7 +212,6 @@ function closeDeleteModal() {
     document.getElementById('deleteModal').classList.add('hidden');
 }
 
-// Auto-hide toast notifications after 5 seconds
 document.addEventListener('DOMContentLoaded', function() {
     setTimeout(() => {
         const toasts = document.querySelectorAll('#successToast, #errorToast');

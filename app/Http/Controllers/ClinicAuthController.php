@@ -40,50 +40,35 @@ class ClinicAuthController extends Controller
    return redirect()->back()->with('signup_success', 'Account created successfully! Please log in.');
 
 }
-
-
-    /**
-     * Show Login Form
-     */
     public function showLogin()
     {
         return view('clinic_index');
     }
 
-    /**
-     * Handle Login
-     */
-    public function login(Request $request)
+   public function login(Request $request)
 {
-    $credentials = $request->validate([
-        'email'    => 'required|email',
-        'password' => 'required|string'
-    ]);
+    $credentials = $request->only('email', 'password');
 
-    $remember = $request->boolean('remember');
-
-    if (Auth::guard('clinic')->attempt($credentials, $remember)) {
-        $request->session()->regenerate();
-        // Add this line
-        $request->session()->flash('login_success', 'Successfuly Login!, ' . Auth::guard('clinic')->user()->clinic_name . '!');
-        return redirect()->route('clinic.dashboard');
+    if (Auth::guard('clinic')->attempt($credentials)) {
+        return response()->json([
+            'success' => true,
+            'redirect' => route('clinic.dashboard')
+        ]);
     }
 
-    return back()
-        ->withErrors(['email' => 'Invalid credentials.'])
-        ->withInput();
+    return response()->json([
+        'success' => false,
+        'message' => 'Invalid email or password.'
+    ], 401);
 }
 
-    /**
-     * Logout Clinic
-     */
     public function logout(Request $request)
     {
         Auth::guard('clinic')->logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect()->route('clinic.login');
+        return redirect()->route('landing');
     }
 
   

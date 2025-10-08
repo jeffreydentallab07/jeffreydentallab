@@ -12,7 +12,7 @@ class ClinicController extends Controller
 {
     public function index()
     {
-        // This query seems incorrect. Assuming you want to display a list of all clinics.
+       
         $clinics = Clinic::all();
         return view('admin.clinics.index', compact('clinics'));
     }

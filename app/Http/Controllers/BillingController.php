@@ -14,9 +14,9 @@ class BillingController extends Controller
     public function index()
     {
         try {
-            // Ensure 'appointment.material' is correctly loaded
+            
             $billings = Billing::with([
-                'appointment.material', // This is the crucial relationship for your request
+                'appointment.material', 
                 'appointment.caseOrder',
                 'appointment.technician',
                 'appointment.delivery.rider'

@@ -3,17 +3,18 @@
 @section('title', 'Appointments Report')
 
 @section('content')
-<div class="p-6 bg-gray-100 min-h-screen text-sm">
-    <h1 class="text-xl font-bold mb-4">📅 Appointments Report</h1>
+<div class="p-6 bg-gray-300 min-h-screen text-sm">
+    <h1 class="text-xl font-bold mb-4">Appointments Report</h1>
 
-    <!-- ✅ Filter Form -->
+    
     <form id="filterForm" method="GET" action="{{ route('reports.appointments') }}"
-          class="mb-6 bg-white p-4 rounded shadow flex flex-wrap gap-4 items-end">
+          class="mb-6 p-4 rounded-lg flex flex-wrap gap-4 items-end bg-gray-200 shadow-inner border border-gray-400">
 
-        <!-- Clinic -->
+     
         <div>
             <label class="block text-gray-600 text-xs mb-1">Clinic</label>
-            <select name="clinic_id" class="p-2 border rounded auto-submit">
+            <select name="clinic_id"
+                    class="p-2 border border-gray-300 rounded bg-gray-50 shadow-inner focus:outline-none focus:ring-2 focus:ring-blue-400 auto-submit">
                 <option value="">All Clinics</option>
                 @foreach($clinics as $clinic)
                     <option value="{{ $clinic->id }}" {{ request('clinic_id') == $clinic->id ? 'selected' : '' }}>
@@ -23,10 +24,10 @@
             </select>
         </div>
 
-        <!-- Dentist -->
         <div>
             <label class="block text-gray-600 text-xs mb-1">Dentist</label>
-            <select name="dentist_id" class="p-2 border rounded auto-submit">
+            <select name="dentist_id"
+                    class="p-2 border border-gray-300 rounded bg-gray-50 shadow-inner focus:outline-none focus:ring-2 focus:ring-blue-400 auto-submit">
                 <option value="">All Dentists</option>
                 @foreach($dentists as $dentist)
                     <option value="{{ $dentist->id }}" {{ request('dentist_id') == $dentist->id ? 'selected' : '' }}>
@@ -36,10 +37,10 @@
             </select>
         </div>
 
-        <!-- Technician -->
         <div>
             <label class="block text-gray-600 text-xs mb-1">Technician</label>
-            <select name="technician_id" class="p-2 border rounded auto-submit">
+            <select name="technician_id"
+                    class="p-2 border border-gray-300 rounded bg-gray-50 shadow-inner focus:outline-none focus:ring-2 focus:ring-blue-400 auto-submit">
                 <option value="">All Technicians</option>
                 @foreach($technicians as $tech)
                     <option value="{{ $tech->id }}" {{ request('technician_id') == $tech->id ? 'selected' : '' }}>
@@ -49,10 +50,11 @@
             </select>
         </div>
 
-        <!-- Status -->
+      
         <div>
             <label class="block text-gray-600 text-xs mb-1">Status</label>
-            <select name="work_status" class="p-2 border rounded auto-submit">
+            <select name="work_status"
+                    class="p-2 border border-gray-300 rounded bg-gray-50 shadow-inner focus:outline-none focus:ring-2 focus:ring-blue-400 auto-submit">
                 <option value="">All Status</option>
                 @foreach($statuses as $status)
                     <option value="{{ $status }}" {{ request('work_status') == $status ? 'selected' : '' }}>
@@ -62,122 +64,148 @@
             </select>
         </div>
 
-        <!-- From -->
+       
         <div>
             <label class="block text-gray-600 text-xs mb-1">From</label>
-            <input type="date" name="from" value="{{ request('from') }}" class="border p-2 rounded w-44 auto-submit">
+            <input type="date" name="from" value="{{ request('from') }}"
+                   class="border border-gray-300 rounded bg-gray-50 shadow-inner p-2 w-44 focus:outline-none focus:ring-2 focus:ring-blue-400 auto-submit">
         </div>
 
-        <!-- To -->
         <div>
             <label class="block text-gray-600 text-xs mb-1">To</label>
-            <input type="date" name="to" value="{{ request('to') }}" class="border p-2 rounded w-44 auto-submit">
+            <input type="date" name="to" value="{{ request('to') }}"
+                   class="border border-gray-300 rounded bg-gray-50 shadow-inner p-2 w-44 focus:outline-none focus:ring-2 focus:ring-blue-400 auto-submit">
         </div>
 
-        <!-- Reset -->
-        <div class="flex gap-2">
-            <button type="button" id="resetBtn" class="bg-gray-500 text-white px-4 py-2 rounded shadow hover:bg-gray-600">
+      
+        <div class="flex flex-wrap gap-2 items-center mt-2">
+          
+            <button type="button" id="resetBtn"
+                class="bg-gray-500 text-white px-4 py-2 rounded shadow-[inset_1px_1px_2px_rgba(255,255,255,0.4),inset_-2px_-2px_3px_rgba(0,0,0,0.2)] hover:shadow-md hover:bg-gray-600 transition">
                 Reset
+            </button>
+
+            <div class="relative inline-block text-left">
+                <button id="saveOptionsBtn" type="button"
+                    class="bg-blue-600 text-white px-4 py-2 rounded shadow-[inset_1px_1px_2px_rgba(255,255,255,0.3),inset_-2px_-2px_3px_rgba(0,0,0,0.25)] hover:shadow-md hover:bg-blue-700 transition flex items-center gap-1">
+                    💾 Save Options
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none" viewBox="0 0 24 24"
+                         stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M19 9l-7 7-7-7" />
+                    </svg>
+                </button>
+ 
+               <div id="saveDropdown"
+     class="hidden absolute mt-1 w-44 bg-white border border-gray-300 rounded shadow-lg z-50">
+                    <a href="{{ route('reports.appointments.export', ['type' => 'pdf'] + request()->all()) }}"
+                       class="block px-4 py-2 text-sm hover:bg-gray-100 text-gray-700">📄 Save as PDF</a>
+                    <a href="{{ route('reports.appointments.export', ['type' => 'word'] + request()->all()) }}"
+                       class="block px-4 py-2 text-sm hover:bg-gray-100 text-gray-700">📝 Save as Word</a>
+                    <a href="{{ route('reports.appointments.export', ['type' => 'excel'] + request()->all()) }}"
+                       class="block px-4 py-2 text-sm hover:bg-gray-100 text-gray-700">📊 Save as Excel</a>
+                </div>
+            </div>
+
+            <button onclick="window.print()" type="button"
+                class="bg-gray-700 text-white px-4 py-2 rounded shadow-[inset_1px_1px_2px_rgba(255,255,255,0.3),inset_-2px_-2px_3px_rgba(0,0,0,0.3)] hover:shadow-md hover:bg-gray-800 transition text-xs">
+                🖨️ Print Report
             </button>
         </div>
     </form>
 
-    <!-- ✅ Report Table -->
     <div id="reportTable">
-        <table class="min-w-full bg-white rounded shadow text-sm">
-            <thead>
-                <tr class="bg-gray-200 text-left text-xs uppercase tracking-wider">
-                    <th class="px-4 py-2">ID</th>
-                    <th class="px-4 py-2">Case Type</th>
-                    <th class="px-4 py-2">Clinic</th>
-                    <th class="px-4 py-2">Dentist</th>
-                    <th class="px-4 py-2">Patient</th>
-                    <th class="px-4 py-2">Technician</th>
-                    <th class="px-4 py-2">Status</th>
-                    <th class="px-4 py-2">Schedule</th>
-                </tr>
-            </thead>
-            <tbody>
-                @forelse($appointments as $appt)
-                    <tr class="border-b hover:bg-gray-50">
-                        <td class="px-4 py-2">{{ $appt->id }}</td>
-                        <td class="px-4 py-2">{{ $appt->caseOrder->case_type ?? 'N/A' }}</td>
-                        <td class="px-4 py-2">{{ $appt->caseOrder->clinic->clinic_name ?? 'N/A' }}</td>
-                        <td class="px-4 py-2">{{ $appt->caseOrder->dentist->name ?? 'N/A' }}</td>
-                        <td class="px-4 py-2">{{ $appt->caseOrder->patient->full_name ?? 'N/A' }}</td>
-                        <td class="px-4 py-2">{{ $appt->technician->name ?? 'N/A' }}</td>
-                        <td class="px-4 py-2">{{ ucfirst($appt->work_status) }}</td>
-                        <td class="px-4 py-2">{{ $appt->schedule_datetime->format('Y-m-d H:i') }}</td>
-                    </tr>
-                @empty
+        <div class="overflow-x-auto rounded-xl shadow-lg mt-4 max-h-[60vh] overflow-y-auto">
+            <table class="min-w-full bg-white border border-gray-200">
+                <thead class="sticky top-0 bg-blue-900 text-white z-10">
                     <tr>
-                        <td colspan="8" class="px-4 py-4 text-center text-gray-500">No appointments found.</td>
+                        <th class="px-4 py-2">ID</th>
+                        <th class="px-4 py-2">Case Type</th>
+                        <th class="px-4 py-2">Clinic</th>
+                        <th class="px-4 py-2">Dentist</th>
+                        <th class="px-4 py-2">Patient</th>
+                        <th class="px-4 py-2">Technician</th>
+                        <th class="px-4 py-2">Status</th>
+                        <th class="px-4 py-2">Schedule</th>
                     </tr>
-                @endforelse
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    @forelse($appointments as $appt)
+                        <tr class="border-b hover:bg-gray-50">
+                            <td class="px-4 py-2">{{ $appt->id }}</td>
+                            <td class="px-4 py-2">{{ $appt->caseOrder->case_type ?? 'N/A' }}</td>
+                            <td class="px-4 py-2">{{ $appt->caseOrder->clinic->clinic_name ?? 'N/A' }}</td>
+                            <td class="px-4 py-2">{{ $appt->caseOrder->dentist->name ?? 'N/A' }}</td>
+                            <td class="px-4 py-2">{{ $appt->caseOrder->patient->full_name ?? 'N/A' }}</td>
+                            <td class="px-4 py-2">{{ $appt->technician->name ?? 'N/A' }}</td>
+                            <td class="px-4 py-2">
+                                <span class="
+                                    px-2 py-1 rounded text-xs 
+                                    @if($appt->work_status == 'pending') bg-yellow-200 text-yellow-800
+                                    @elseif($appt->work_status == 'in progress') bg-blue-200 text-blue-800
+                                    @elseif($appt->work_status == 'finished') bg-green-200 text-green-800
+                                    @else bg-gray-200 text-gray-600
+                                    @endif
+                                ">
+                                    {{ ucfirst($appt->work_status) }}
+                                </span>
+                            </td>
+                            <td class="px-4 py-2">{{ $appt->schedule_datetime->format('F j, Y g:i A') }}</td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="8" class="px-4 py-4 text-center text-gray-500">
+                                No appointments found.
+                            </td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
 
-        <!-- ✅ Pagination -->
-        <div class="mt-4">
-            {{ $appointments->links() }}
+            <div class="mt-4">
+                {{ $appointments->links() }}
+            </div>
         </div>
     </div>
 </div>
 
-<!-- ✅ AJAX Script -->
 <script>
 document.addEventListener("DOMContentLoaded", function() {
     const filterForm = document.getElementById('filterForm');
     const reportTable = document.getElementById('reportTable');
     const resetBtn = document.getElementById('resetBtn');
+    const btn = document.getElementById('saveOptionsBtn');
+    const dropdown = document.getElementById('saveDropdown');
 
-    const clinicSelect = filterForm.querySelector('select[name="clinic_id"]');
-    const dentistSelect = filterForm.querySelector('select[name="dentist_id"]');
-
-    // Auto-submit on any filter change
-    filterForm.querySelectorAll('select, input[type="date"]').forEach(el => {
-        el.addEventListener('change', applyFilter);
+   
+    btn.addEventListener('click', () => dropdown.classList.toggle('hidden'));
+    document.addEventListener('click', e => {
+        if (!btn.contains(e.target) && !dropdown.contains(e.target)) dropdown.classList.add('hidden');
     });
 
-    // Reset
-    resetBtn.addEventListener('click', function() {
+   
+    document.querySelectorAll('.auto-submit').forEach(el => {
+        el.addEventListener('change', () => applyFilter());
+    });
+
+    resetBtn.addEventListener('click', () => {
         filterForm.reset();
-        dentistSelect.innerHTML = `<option value="">All Dentists</option>`;
         applyFilter();
-    });
-
-    // Update dentists when clinic changes
-    clinicSelect.addEventListener('change', function() {
-        const clinicId = this.value;
-        dentistSelect.innerHTML = `<option value="">All Dentists</option>`;
-
-        if (!clinicId) {
-            applyFilter();
-            return;
-        }
-
-        fetch(`/appointments/dentists/${clinicId}`)
-            .then(res => res.json())
-            .then(data => {
-                let options = `<option value="">All Dentists</option>`;
-                data.forEach(d => options += `<option value="${d.id}">${d.name}</option>`);
-                dentistSelect.innerHTML = options;
-                applyFilter();
-            })
-            .catch(err => console.error("Dentist fetch error:", err));
     });
 
     function applyFilter(page = 1) {
         const params = new URLSearchParams(new FormData(filterForm)).toString();
-        fetch(`${filterForm.action}?${params}&page=${page}`, { headers: { "X-Requested-With": "XMLHttpRequest" }})
-            .then(res => res.text())
-            .then(html => {
-                const parser = new DOMParser();
-                const doc = parser.parseFromString(html, 'text/html');
-                reportTable.innerHTML = doc.querySelector('#reportTable').innerHTML;
-                bindPagination();
-            })
-            .catch(err => console.error("AJAX Filter Error:", err));
+        fetch(`${filterForm.action}?${params}&page=${page}`, {
+            headers: {"X-Requested-With": "XMLHttpRequest"}
+        })
+        .then(res => res.text())
+        .then(html => {
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(html, 'text/html');
+            reportTable.innerHTML = doc.querySelector('#reportTable').innerHTML;
+            bindPagination();
+        })
+        .catch(err => console.error("AJAX Filter Error:", err));
     }
 
     function bindPagination() {

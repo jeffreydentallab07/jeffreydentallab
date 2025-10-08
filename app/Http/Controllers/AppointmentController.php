@@ -12,17 +12,20 @@ use Illuminate\Http\Request;
 class AppointmentController extends Controller
 {
     public function index()
-    {
-        $appointments = Appointment::with(['technician', 'material', 'delivery', 'billing', 'caseOrder'])->get();
-        
-        $technicians = User::where('role', 'technician')->get()->map(function ($tech) {
-            $tech->is_busy = Appointment::where('technician_id', $tech->id)
-                ->whereIn('work_status', ['pending', 'in progress'])
-                ->exists();
-            return $tech;
-        });
+{
+    $appointments = Appointment::with(['technician', 'material', 'delivery', 'billing', 'caseOrder'])
+        ->orderByDesc('appointment_id')
+        ->get();
+    
+    $technicians = User::where('role', 'technician')->get()->map(function ($tech) {
+        $tech->is_busy = Appointment::where('technician_id', $tech->id)
+            ->whereIn('work_status', ['pending', 'in progress'])
+            ->exists();
+        return $tech;
+    });
 
-        return view('admin.appointments.index', compact('appointments', 'technicians'));
+    return view('admin.appointments.index', compact('appointments', 'technicians'));
+
     }
 
     public function approve($co_id)

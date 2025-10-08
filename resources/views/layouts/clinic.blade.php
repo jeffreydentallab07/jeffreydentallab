@@ -153,23 +153,18 @@
   <div id="clinicSettingsModal" class="hidden fixed inset-0 bg-gray-300 bg-opacity-50 flex items-center justify-center z-50 p-4">
         <div class="bg-white rounded-xl shadow-2xl w-full max-w-2xl overflow-hidden relative">
             
-            <!-- Header -->
             <div class="p-6 border-b border-gray-300 flex items-center justify-between">
                 <h2 class="text-2xl font-semibold text-gray-300">Clinic Settings</h2>
                 <button onclick="closeModal('clinicSettingsModal')" class="text-gray-300 hover:text-gray-300 text-2xl">&times;</button>
             </div>
 
-            <!-- Section Title -->
             <div class="flex border-b border-gray-300 px-6 py-2 bg-blue-900 text-white">
                 <span class="px-4 py-2 border-b-2 border-white font-medium">Clinic Details</span>
             </div>
 
-            <!-- Form -->
             <div class="p-6 space-y-6">
                 <form method="POST" action="{{ route('clinic.settings.update') }}" enctype="multipart/form-data" class="space-y-6">
                     @csrf
-
-                    <!-- Photo Upload -->
                     <div class="flex items-center space-x-4">
                         <div class="relative">
                             <img id="previewClinicPhoto" class="w-20 h-20 rounded-full object-cover border-4 border-white shadow-md"
@@ -185,7 +180,6 @@
                         </div>
                     </div>
 
-                    <!-- Text Fields -->
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
                             <label class="block text-sm font-medium text-gray-300">Clinic Name</label>
@@ -212,7 +206,6 @@
                         </div>
                     </div>
 
-                    <!-- Buttons -->
                     <div class="flex justify-end space-x-4 mt-4">
                         <button type="button" onclick="closeModal('clinicSettingsModal')" class="py-2 px-4 rounded-md text-gray-300 font-medium hover:bg-gray-300">Cancel</button>
                         <button type="submit" class="py-2 px-4 rounded-md bg-indigo-600 text-white font-medium hover:bg-indigo-700 shadow-md">Save</button>
@@ -226,17 +219,16 @@
       
 document.addEventListener('DOMContentLoaded', function() {
     @if(session('login_success'))
-        // Create toast element
+    
         const toast = document.createElement('div');
         toast.innerText = "{{ session('login_success') }}";
         toast.className = "fixed top-20 right-6 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg z-50 animate-slide-in";
 
-        // Optional: smooth fade out
         toast.style.transition = "opacity 0.5s ease-out, transform 0.5s ease-out";
 
         document.body.appendChild(toast);
 
-        // Remove toast after 3 seconds
+        
         setTimeout(() => {
             toast.style.opacity = "0";
             toast.style.transform = "translateY(-10px)";
@@ -249,14 +241,14 @@ document.addEventListener('DOMContentLoaded', function() {
       function openModal(id){ document.getElementById(id).classList.remove('hidden'); document.getElementById(id).classList.add('flex'); }
         function closeModal(id){ document.getElementById(id).classList.remove('flex'); document.getElementById(id).classList.add('hidden'); }
 
-        // Preview Clinic Photo
+       
         function previewClinicImage(event) {
             const output = document.getElementById('previewClinicPhoto');
             output.src = URL.createObjectURL(event.target.files[0]);
         }
 
         document.addEventListener('DOMContentLoaded', function() {
-            // Notification popup
+          
             const bellButton = document.getElementById('notification-bell-btn');
             const popup = document.getElementById('notification-popup');
             const container = document.getElementById('notification-container');
@@ -266,7 +258,7 @@ document.addEventListener('DOMContentLoaded', function() {
             document.addEventListener('click', function(e){ if(!popup.classList.contains('hidden') && !container.contains(e.target)) closePopup(); });
             document.addEventListener('keydown', function(e){ if(e.key==='Escape' && !popup.classList.contains('hidden')) closePopup(); });
 
-            // User dropdown and settings modal
+          
             const userBtn = document.getElementById('userDropdownBtn');
             const userMenu = document.getElementById('userDropdownMenu');
             const openSettingsBtn = document.getElementById('openClinicSettingsBtn');

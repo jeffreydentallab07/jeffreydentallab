@@ -65,32 +65,23 @@
             @endforeach
         </nav>
     </aside>
-
-    <!-- Main Content -->
     <div class="flex-grow flex flex-col h-full ml-48">
 
-        <!-- Header -->
         <header class="bg-white p-3 flex items-center justify-between shadow-md z-10">
-
-            <!-- Search -->
             <div class="flex items-center gap-2 border border-gray-300 rounded-lg w-96 p-2 bg-white">
                 <svg class="w-4 h-4 text-gray-400 mr-2" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5z"/>
                 </svg>
                 <input type="text" placeholder="Search..." class="outline-none w-full text-[12px]">
             </div>
-
-            <!-- Header Actions -->
             <div class="flex items-center gap-2">
 
-                <!-- Dashboard Icon -->
                 <a href="{{ url('dashboard') }}" class="flex items-center justify-center w-8 h-8 rounded-lg hover:bg-gray-100 transition">
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                         <path d="M3 9.5L12 3l9 6.5V21a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1V9.5z"/>
                     </svg>
                 </a>
 
-               <!-- Notifications -->
 <div id="notification-container" class="relative">
     <button id="notification-bell-btn" 
             class="flex items-center justify-center w-8 h-8 rounded-lg hover:bg-gray-300 transition relative z-30">
@@ -99,7 +90,7 @@
         </svg>
 
         @if(isset($notificationCount) && $notificationCount > 0)
-            <!-- Notification Count Badge -->
+           
             <span id="notification-count" 
                   class="absolute -top-1 -right-1 w-4 h-4 bg-red-500 text-white text-xs font-bold rounded-full flex items-center justify-center">
                 {{ $notificationCount }}
@@ -107,7 +98,7 @@
         @endif
     </button>
 
-    <!-- Notification Popup -->
+ 
     @if(isset($notificationCount) && $notificationCount > 0)
         <div id="notification-popup" 
              class="absolute right-0 mt-3 w-80 bg-white rounded-xl shadow-2xl border border-gray-300 hidden z-40 origin-top-right scale-95 opacity-0 transition-all duration-200">
@@ -130,9 +121,6 @@
         </div>
     @endif
 </div>
-
-
-                <!-- User Menu -->
                 @php
                     // Only show admin/staff menu for web guard (default Auth::user())
                     $user = Auth::user();
@@ -159,16 +147,12 @@
 
             </div>
         </header>
-
-        <!-- Main Content -->
         <main class="flex-grow overflow-y-auto">
             <div>
                 @yield('content')
             </div>
         </main>
     </div>
-
-    <!-- Settings Modal -->
     <div id="settingsModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
         <div class="bg-white rounded-xl w-96 p-6 relative">
             <h2 class="text-lg font-semibold mb-4">Settings</h2>
@@ -194,7 +178,6 @@
         </div>
     </div>
 
-    <!-- Scripts -->
     <script>
         const bellBtn = document.getElementById('notification-bell-btn');
         const popup = document.getElementById('notification-popup');
@@ -244,7 +227,7 @@
             document.body.style.backgroundPosition = 'center';
         }
 
-        // User menu dropdown
+ 
         const userMenuBtn = document.getElementById('userMenuBtn');
         const userDropdown = document.getElementById('userDropdown');
         const userMenuContainer = document.getElementById('userMenuContainer');
