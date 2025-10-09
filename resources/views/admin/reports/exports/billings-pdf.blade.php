@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>Billings Report</title>
 
     <style>
@@ -12,6 +13,7 @@
             background-color: #ffffff;
             color: #1f2937;
         }
+
         .container {
             width: 100%;
             max-width: 800px;
@@ -122,6 +124,12 @@
             color: #374151;
         }
 
+        /* Align peso amounts to the right */
+        .amount {
+            text-align: right;
+            font-weight: bold;
+        }
+
         .footer {
             margin-top: 40px;
             padding-top: 15px;
@@ -136,7 +144,6 @@
 
     <div class="container">
 
-        {{-- Header --}}
         <div class="header">
             <div class="logo-section">
                 <img src="{{ public_path('images/logo.png') }}" alt="Logo" class="logo">
@@ -150,40 +157,37 @@
             </div>
         </div>
 
-        {{-- Report Summary --}}
         <div class="report-summary">
             <p><strong>Report Scope:</strong> All Billings</p>
             <p><strong>Total Billings:</strong> {{ count($billings) }}</p>
             <p><strong>Total Amount:</strong> ₱{{ number_format($billings->sum('total_amount'), 2) }}</p>
         </div>
 
-        {{-- Table --}}
         <div class="table-container">
             <table class="data-table">
                 <thead>
                     <tr>
-                        <th style="width: 5%;">#</th>
+                        <th style="width: 5%;">Billing ID.</th>
                         <th style="width: 25%;">Clinic</th>
                         <th style="width: 20%;">Appointment ID</th>
                         <th style="width: 25%;">Date Created</th>
-                        <th style="width: 25%;">Total Amount</th>
+                        <th style="width: 25%; text-align: right;">Total Amount</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach ($billings as $index => $billing)
                         <tr>
-                            <td style="font-weight: bold;">{{ $index + 1 }}</td>
+                            <td style="font-weight: bold;">{{ $billing->billing_id }}</td>
                             <td>{{ $billing->appointment->caseOrder->clinic->clinic_name ?? 'N/A' }}</td>
                             <td>{{ $billing->appointment_id }}</td>
                             <td>{{ $billing->created_at->format('M j, Y') }}</td>
-                            <td>₱{{ number_format($billing->total_amount, 2) }}</td>
+                            <td class="amount">₱{{ number_format($billing->total_amount, 2) }}</td>
                         </tr>
                     @endforeach
                 </tbody>
             </table>
         </div>
 
-        {{-- Footer --}}
         <div class="footer">
             <p>&copy; {{ date('Y') }} Jeffrey Dental Laboratory Management System. All Rights Reserved.</p>
             <p>Document ID: JDLMS-BILLREP-{{ now()->format('Ymd') }}</p>

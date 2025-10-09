@@ -37,9 +37,9 @@
                 <tbody class="divide-y divide-gray-200 bg-white">
                     @forelse($billings as $billing)
                         <tr class="hover:bg-gray-50 transition">
-                            <td class="px-6 py-4 text-sm text-gray-700 font-medium">
-                                #{{ $billing->appointment_id }}
-                            </td>
+                             <td class="px-6 py-4 text-sm text-gray-700 font-medium">
+        {{ 'APT-' . str_pad($billing->appointment_id, 5, '0', STR_PAD_LEFT) }}
+    </td>
                           <td class="px-6 py-4 text-sm text-gray-600">
     @if($billing->appointment && $billing->appointment->material)
         <span class="font-medium text-gray-900">
@@ -109,7 +109,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="6" class="text-center py-8"> {{-- Adjusted colspan --}}
+                            <td colspan="6" class="text-center py-8"> 
                                 <div class="text-gray-500">
                                     <svg class="mx-auto h-12 w-12 text-gray-400 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 0v6m0-6H9m3 0v6m-3-6H6m3 0V9m0 0h6m-6 0H9" />
@@ -129,7 +129,6 @@
         </div>
     </div>
 
-    <!-- Receipt Modal -->
     <div id="receiptModal" class="fixed inset-0 z-50 hidden bg-black/50 flex items-center justify-center">
         <div class="bg-white w-[550px] max-h-[90vh] overflow-y-auto p-6 border border-gray-300 shadow-lg rounded-lg relative">
             <button onclick="closeReceiptModal()" class="absolute top-2 right-2 text-gray-600 hover:text-gray-900 font-bold text-2xl">&times;</button>
@@ -148,7 +147,6 @@
         </div>
     </div>
 
-    <!-- Delete Confirmation Modal -->
     <div id="deleteModal" class="fixed inset-0 z-50 hidden bg-black/50 flex items-center justify-center">
         <div class="bg-white w-[400px] p-6 rounded-lg shadow-lg text-center relative">
             <h2 class="text-lg font-semibold text-gray-800 mb-4">Confirm Delete</h2>

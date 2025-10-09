@@ -25,7 +25,7 @@
     $caseOrder = $appointment->caseOrder ?? null;
     $material = $appointment->material ?? null;
     
-    $dentist = $caseOrder && $caseOrder->dentist ? $caseOrder->dentist->name : 'N/A';
+    $dentist = 'Dr. ' . ($caseOrder?->patient?->dentist?->name ?? 'N/A');
     $clinic = $caseOrder && $caseOrder->clinic ? $caseOrder->clinic->clinic_name : 'N/A';
     $clinicAddress = $caseOrder && $caseOrder->clinic ? $caseOrder->clinic->address : 'N/A';
     $technician = $appointment->technician ? $appointment->technician->name : 'N/A';
@@ -63,7 +63,7 @@
         <tr class="border-b border-gray-300">
             <td class="py-1">1</td>
             <td>pc</td>
-            <td>{{ $material->material_name }}</td>
+            <td>{{ $billing->appointment->material->name }}</td>
             <td class="text-right">
                 @if($material->price)
                     {{ number_format($material->price, 2) }}

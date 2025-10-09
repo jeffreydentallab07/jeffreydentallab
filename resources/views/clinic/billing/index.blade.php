@@ -16,7 +16,7 @@
         <tbody>
             @forelse ($billings as $billing)
             <tr class="hover:bg-blue-50 transition">
-                <td class="px-6 py-3 text-gray-700">{{ $billing->appointment_id }}</td>
+                <td class="px-6 py-3 text-gray-700">{{ 'APT-' . str_pad($billing->appointment_id, 5, '0', STR_PAD_LEFT) }}</td>
                 <td class="px-6 py-3 text-gray-700">{{ $billing->patient_name ?? '-' }}</td>
                 <td class="px-6 py-3 text-gray-700">{{ $billing->case_type ?? '-' }}</td>
                 <td class="px-6 py-3 text-gray-700" x-data="{ open: false }">
@@ -65,7 +65,7 @@
                                     <tr class="border-b border-gray-300">
                                         <td class="py-1">1</td>
                                         <td>pc</td>
-                                    <td>{{ $billing->appointment->caseOrder->material_name ?? 'Not set' }}</td>
+                                    <td> {{ $billing->appointment->material->name }}</td>
                                         <td class="text-right">{{ number_format($billing->total_amount, 2) }}</td>
                                         <td class="text-right">{{ number_format($billing->total_amount, 2) }}</td>
                                     </tr>

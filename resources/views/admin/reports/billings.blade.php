@@ -84,10 +84,9 @@
         <div class="overflow-x-auto rounded-xl shadow-lg mt-4 max-h-[60vh] overflow-y-auto">
             <table class="min-w-full bg-white border border-gray-200">
                 <thead class="sticky top-0 bg-blue-900 text-white z-10">
-                    <tr>
-                        <th class="px-4 py-2">#</th>
+                    <tr class="text-left">
+                        <th class="px-4 py-2">Billing No.</th>
                         <th class="px-4 py-2">Clinic</th>
-                        <th class="px-4 py-2">Appointment ID</th>
                         <th class="px-4 py-2">Created At</th>
                         <th class="px-4 py-2">Total Amount</th>
                     </tr>
@@ -97,9 +96,8 @@
                         <tr class="border-b hover:bg-gray-50">
                             <td class="px-4 py-2">{{ $billing->billing_id }}</td>
                             <td class="px-4 py-2">{{ $billing->appointment->caseOrder->clinic->clinic_name ?? 'N/A' }}</td>
-                            <td class="px-4 py-2">{{ $billing->appointment_id }}</td>
                             <td class="px-4 py-2">{{ $billing->created_at->format('F j, Y g:i A') }}</td>
-                            <td class="px-4 py-2 font-semibold text-right">₱{{ number_format($billing->total_amount, 2) }}
+                            <td class="px-4 py-2 font-semibold">₱{{ number_format($billing->total_amount, 2) }}
 </td>
                         </tr>
                     @empty

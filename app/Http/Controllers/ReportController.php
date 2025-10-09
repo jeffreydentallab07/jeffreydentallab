@@ -236,20 +236,23 @@ public function exportAppointments(Request $request, $type)
 
         return view('admin.reports.deliveries', compact('deliveries', 'clinics', 'statuses'));
     }
-public function exportDeliveries($type)
+ public function exportDeliveries($type)
 {
     $deliveries = Delivery::with(['appointment.caseOrder.clinic'])->latest()->get();
 
     switch ($type) {
         case 'pdf':
-           
-            return response()->view('admin.reports.exports.deliveries-pdf', compact('deliveries'));
-        case 'word':
-          
-            return response()->download(storage_path('exports/deliveries.docx'));
-        case 'excel':
+            $pdf = Pdf::loadView('admin.reports.exports.deliveries-pdf', compact('deliveries'))
+                      ->setPaper('A4', 'portrait');
          
+            return $pdf->download('Deliveries_Report_' . now()->format('Ymd') . '.pdf');
+
+        case 'word':
+            return response()->download(storage_path('exports/deliveries.docx'));
+
+        case 'excel':
             return response()->download(storage_path('exports/deliveries.xlsx'));
+
         default:
             abort(404);
     }

@@ -13,15 +13,16 @@ class BillingController extends Controller
 {
     public function index()
     {
-        try {
-            
-            $billings = Billing::with([
-                'appointment.material', 
-                'appointment.caseOrder',
-                'appointment.technician',
-                'appointment.delivery.rider'
-            ])->get();
-            
+       try {
+      
+        $billings = Billing::with([
+            'appointment.material', 
+            'appointment.caseOrder',
+            'appointment.technician',
+            'appointment.delivery.rider'
+        ])
+        ->latest()
+        ->get();
             return view('admin.billing.index', compact('billings'));
         } catch (\Exception $e) {
             Log::error('Error loading billings: ' . $e->getMessage(), [
@@ -33,7 +34,7 @@ class BillingController extends Controller
 
     public function create()
     {
-        // Only show finished appointments that don't have billing yet
+        
         $appointments = Appointment::with('material', 'caseOrder.clinic')
             ->where('work_status', 'finished')
             ->whereDoesntHave('billing')
@@ -46,24 +47,24 @@ class BillingController extends Controller
     {
         $request->validate([
             'appointment_id' => 'required|exists:tbl_appointment,appointment_id',
-            'total_amount' => 'nullable|numeric|min:0', // total_amount can be null, calculated from material
+            'total_amount' => 'nullable|numeric|min:0', 
         ]);
 
         try {
-            // Check if billing already exists
+          
             if (Billing::where('appointment_id', $request->appointment_id)->exists()) {
                 return redirect()->back()->withInput()->with('error', 'Billing already exists for this appointment.');
             }
 
-            // Get the appointment to calculate total amount if not provided
+          
             $appointment = Appointment::with('material')->findOrFail($request->appointment_id);
             
-            // Ensure appointment is finished
+           
             if ($appointment->work_status !== 'finished') {
                 return redirect()->back()->withInput()->with('error', 'Billing can only be created for finished appointments.');
             }
 
-            // If total_amount is not provided in the request, use material price
+            
             $totalAmount = $request->total_amount ?? ($appointment->material->price ?? 0);
 
             Billing::create([
@@ -99,7 +100,7 @@ class BillingController extends Controller
         ]);
 
         try {
-            // Prevent changing appointment if it would create duplicate billing
+           
             if ($request->appointment_id !== $billing->appointment_id && 
                 Billing::where('appointment_id', $request->appointment_id)->exists()) {
                 return redirect()->back()->withInput()->with('error', 'Billing already exists for the selected appointment.');
@@ -147,7 +148,7 @@ class BillingController extends Controller
         return view('billing.print', compact('billing'));
     }
 
-    // For modal (HTML)
+   
     public function receiptModal($billingId)
     {
         $billing = Billing::with([
@@ -161,7 +162,7 @@ class BillingController extends Controller
         return view('admin.billing.receipt', compact('billing'));
     }
 
-    // For PDF
+    
     public function exportPdf($billingId)
     {
         $billing = Billing::with(['appointment.material', 'appointment.caseOrder.clinic', 'appointment.technician', 'appointment.delivery.rider'])->find($billingId);
