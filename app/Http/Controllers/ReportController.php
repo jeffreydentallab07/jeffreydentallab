@@ -242,13 +242,13 @@ public function exportDeliveries($type)
 
     switch ($type) {
         case 'pdf':
-            // Example: export to PDF
+           
             return response()->view('admin.reports.exports.deliveries-pdf', compact('deliveries'));
         case 'word':
-            // Example: export to Word
+          
             return response()->download(storage_path('exports/deliveries.docx'));
         case 'excel':
-            // Example: export to Excel
+         
             return response()->download(storage_path('exports/deliveries.xlsx'));
         default:
             abort(404);
@@ -365,24 +365,27 @@ public function exportTechnicians($type)
             abort(404, 'Invalid export type.');
     }
 }
-
-    public function riders(Request $request)
-    {
-        $query = Rider::withCount(['deliveries' => function($q) use ($request) {
+public function riders(Request $request)
+{
+    $query = Rider::riders() 
+        ->withCount(['deliveries' => function($q) use ($request) {
             if ($request->clinic_id) {
-                $q->whereHas('caseOrder', fn($q2) => $q2->where('clinic_id', $request->clinic_id));
+                $q->whereHas('caseOrder', fn($q2) => 
+                    $q2->where('clinic_id', $request->clinic_id)
+                );
             }
         }]);
 
-        $riders = $query->orderBy('name')->paginate(20);
-        $clinics = Clinic::all();
+    $riders = $query->orderBy('name')->paginate(20);
+    $clinics = Clinic::all();
 
-        if ($request->ajax()) {
-            return view('admin.reports.riders', compact('riders', 'clinics'))->render();
-        }
-
-        return view('admin.reports.riders', compact('riders', 'clinics'));
+    if ($request->ajax()) {
+        return view('admin.reports.riders', compact('riders', 'clinics'))->render();
     }
+
+    return view('admin.reports.riders', compact('riders', 'clinics'));
+}
+
     public function export(Request $request, $type)
 {
     $clinicId = $request->get('clinic_id');
@@ -459,7 +462,6 @@ public function exportRiders($type)
     }
 }
 
-    // 🏥 Clinics Report
     public function clinics(Request $request)
     {
         $query = Clinic::withCount(['caseOrders', 'appointments']);

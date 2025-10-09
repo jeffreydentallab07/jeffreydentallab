@@ -53,7 +53,7 @@
     <table class="data-table">
         <thead>
             <tr>
-                <th>#</th>
+                <th>Delivery ID</th>
                 <th>Clinic</th>
                 <th>Case Order</th>
                 <th>Delivery Date</th>
@@ -73,8 +73,8 @@
                 <tr>
                     <td>{{ $index + 1 }}</td>
                     <td>{{ $delivery->appointment->caseOrder->clinic->clinic_name ?? 'N/A' }}</td>
-                    <td>{{ $delivery->appointment->caseOrder->co_id ?? 'N/A' }}</td>
-                    <td>{{ optional($delivery->delivery_date)->format('M j, Y') ?? 'N/A' }}</td>
+                    <td>{{ 'CASE-' . str_pad($delivery->appointment->caseOrder->co_id, 5, '0', STR_PAD_LEFT) }}</td>
+                    <td>{{ $delivery->created_at ? $delivery->created_at->format('F j, Y') : 'N/A' }}</td>
                     <td><span class="status-span {{ $statusClass }}">{{ ucfirst($delivery->delivery_status ?? 'N/A') }}</span></td>
                 </tr>
             @endforeach

@@ -4,7 +4,17 @@
 
 @section('content')
 <div class="p-6 bg-gray-300 min-h-screen text-sm">
-    <h1 class="text-xl font-bold mb-4">Appointments Report</h1>
+    <div class="flex items-center gap-3 mb-6">
+        <a href="{{ url()->previous() }}"
+           class="inline-flex items-center justify-center bg-white border border-gray-300 rounded-full p-2 shadow hover:bg-gray-100 transition focus:ring-2 focus:ring-blue-400 focus:outline-none">
+            <svg xmlns="http://www.w3.org/2000/svg"
+                 fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                 class="w-4 h-4 text-gray-700">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
+            </svg>
+        </a>
+     <h1 class="text-xl font-bold mb-4">Appointments Report</h1>
+    </div>
 
     
     <form id="filterForm" method="GET" action="{{ route('reports.appointments') }}"
@@ -19,19 +29,6 @@
                 @foreach($clinics as $clinic)
                     <option value="{{ $clinic->id }}" {{ request('clinic_id') == $clinic->id ? 'selected' : '' }}>
                         {{ $clinic->clinic_name }}
-                    </option>
-                @endforeach
-            </select>
-        </div>
-
-        <div>
-            <label class="block text-gray-600 text-xs mb-1">Dentist</label>
-            <select name="dentist_id"
-                    class="p-2 border border-gray-300 rounded bg-gray-50 shadow-inner focus:outline-none focus:ring-2 focus:ring-blue-400 auto-submit">
-                <option value="">All Dentists</option>
-                @foreach($dentists as $dentist)
-                    <option value="{{ $dentist->id }}" {{ request('dentist_id') == $dentist->id ? 'selected' : '' }}>
-                        {{ $dentist->name }}
                     </option>
                 @endforeach
             </select>
@@ -122,7 +119,6 @@
                         <th class="px-4 py-2">ID</th>
                         <th class="px-4 py-2">Case Type</th>
                         <th class="px-4 py-2">Clinic</th>
-                        <th class="px-4 py-2">Dentist</th>
                         <th class="px-4 py-2">Patient</th>
                         <th class="px-4 py-2">Technician</th>
                         <th class="px-4 py-2">Status</th>
@@ -132,11 +128,10 @@
                 <tbody>
                     @forelse($appointments as $appt)
                         <tr class="border-b hover:bg-gray-50">
-                            <td class="px-4 py-2">{{ $appt->id }}</td>
+                            <td class="px-4 py-2">{{ $appt->appointment_id }}</td>
                             <td class="px-4 py-2">{{ $appt->caseOrder->case_type ?? 'N/A' }}</td>
                             <td class="px-4 py-2">{{ $appt->caseOrder->clinic->clinic_name ?? 'N/A' }}</td>
-                            <td class="px-4 py-2">{{ $appt->caseOrder->dentist->name ?? 'N/A' }}</td>
-                            <td class="px-4 py-2">{{ $appt->caseOrder->patient->full_name ?? 'N/A' }}</td>
+                            <td class="px-4 py-2">{{ $appt->caseOrder->patient->patient_name ?? 'N/A' }}</td>
                             <td class="px-4 py-2">{{ $appt->technician->name ?? 'N/A' }}</td>
                             <td class="px-4 py-2">
                                 <span class="

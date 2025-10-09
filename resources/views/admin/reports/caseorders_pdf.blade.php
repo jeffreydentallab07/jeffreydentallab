@@ -193,8 +193,11 @@
                         <tr>
                             <td style="font-weight: bold;">{{ $index + 1 }}</td>
                             <td>{{ $order->clinic->clinic_name ?? 'N/A' }}</td>
-                            <td>{{ $order->dentist->dentist_name ?? 'N/A' }}</td>
-                            <td>{{ $order->patient->fullname ?? 'N/A' }}</td>
+                          <td class="px-4 py-2">{{ $order->patient->dentist && !Str::startsWith(Str::lower($order->patient->dentist->name), 'dr.') 
+    ? 'Dr. ' . $order->patient->dentist->name 
+    : ($order->patient->dentist->name ?? 'N/A') }}
+</td>
+                        <td class="px-4 py-2">{{ $order->patient->patient_name ?? 'N/A' }}</td>
                             <td>
                                 @php
                                     $status = $order->status ?? $order->delivery->delivery_status ?? $order->appointment->work_status ?? 'N/A';

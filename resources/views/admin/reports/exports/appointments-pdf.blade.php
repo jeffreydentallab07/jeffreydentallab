@@ -176,9 +176,8 @@
             <table class="data-table">
                 <thead>
                     <tr>
-                        <th style="width: 5%;">#</th>
+                        <th style="width: 5%;">Appointment ID</th>
                         <th style="width: 20%;">Clinic</th>
-                        <th style="width: 20%;">Dentist</th>
                         <th style="width: 20%;">Patient</th>
                         <th style="width: 15%;">Technician</th>
                         <th style="width: 10%;">Status</th>
@@ -199,8 +198,7 @@
                         <tr>
                             <td style="font-weight: bold;">{{ $index + 1 }}</td>
                             <td>{{ $appt->caseOrder->clinic->clinic_name ?? 'N/A' }}</td>
-                            <td>{{ $appt->caseOrder->dentist->dentist_name ?? 'N/A' }}</td>
-                            <td>{{ $appt->caseOrder->patient->fullname ?? 'N/A' }}</td>
+                            <td>{{ $appt->caseOrder->patient->patient_name ?? 'N/A' }}</td>
                             <td>{{ $appt->technician->name ?? 'N/A' }}</td>
                             <td>
                                 <span class="status-span {{ $statusClass }}">

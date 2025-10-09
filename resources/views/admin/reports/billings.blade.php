@@ -4,13 +4,21 @@
 
 @section('content')
 <div class="p-6 bg-gray-300 min-h-screen text-sm">
-    <h1 class="text-xl font-bold mb-4">Billings Report</h1>
+    <div class="flex items-center gap-3 mb-6">
+        <a href="{{ url()->previous() }}"
+           class="inline-flex items-center justify-center bg-white border border-gray-300 rounded-full p-2 shadow hover:bg-gray-100 transition focus:ring-2 focus:ring-blue-400 focus:outline-none">
+            <svg xmlns="http://www.w3.org/2000/svg"
+                 fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                 class="w-4 h-4 text-gray-700">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
+            </svg>
+        </a>
+        <h1 class="text-xl font-bold mb-4">Billings Report</h1>
+    </div>
 
-    <!-- ✅ Filter Form -->
     <form id="filterForm" method="GET" action="{{ route('reports.billings') }}"
           class="mb-6 p-4 rounded-lg flex flex-wrap gap-4 items-end bg-gray-200 shadow-inner border border-gray-400">
 
-        <!-- Clinic Filter -->
         <div>
             <label class="block text-gray-600 text-xs mb-1">Clinic</label>
             <select name="clinic_id"
@@ -24,29 +32,25 @@
             </select>
         </div>
 
-        <!-- From Date -->
         <div>
             <label class="block text-gray-600 text-xs mb-1">From</label>
             <input type="date" name="from" value="{{ request('from') }}"
                    class="border border-gray-300 rounded bg-gray-50 shadow-inner p-2 w-44 focus:outline-none focus:ring-2 focus:ring-blue-400 auto-submit">
         </div>
 
-        <!-- To Date -->
         <div>
             <label class="block text-gray-600 text-xs mb-1">To</label>
             <input type="date" name="to" value="{{ request('to') }}"
                    class="border border-gray-300 rounded bg-gray-50 shadow-inner p-2 w-44 focus:outline-none focus:ring-2 focus:ring-blue-400 auto-submit">
         </div>
 
-        <!-- Buttons -->
         <div class="flex flex-wrap gap-2 items-center mt-2">
-            <!-- Reset -->
+          
             <button type="button" id="resetBtn"
                 class="bg-gray-500 text-white px-4 py-2 rounded shadow-[inset_1px_1px_2px_rgba(255,255,255,0.4),inset_-2px_-2px_3px_rgba(0,0,0,0.2)] hover:shadow-md hover:bg-gray-600 transition">
                 Reset
             </button>
 
-            <!-- Save Options Dropdown -->
             <div class="relative inline-block text-left">
                 <button id="saveOptionsBtn" type="button"
                     class="bg-blue-600 text-white px-4 py-2 rounded shadow-[inset_1px_1px_2px_rgba(255,255,255,0.3),inset_-2px_-2px_3px_rgba(0,0,0,0.25)] hover:shadow-md hover:bg-blue-700 transition flex items-center gap-1">
@@ -69,7 +73,6 @@
                 </div>
             </div>
 
-            <!-- Print -->
             <button onclick="window.print()" type="button"
                 class="bg-gray-700 text-white px-4 py-2 rounded shadow-[inset_1px_1px_2px_rgba(255,255,255,0.3),inset_-2px_-2px_3px_rgba(0,0,0,0.3)] hover:shadow-md hover:bg-gray-800 transition text-xs">
                 🖨️ Print Report
@@ -77,7 +80,6 @@
         </div>
     </form>
 
-    <!-- ✅ Report Table -->
     <div id="reportTable">
         <div class="overflow-x-auto rounded-xl shadow-lg mt-4 max-h-[60vh] overflow-y-auto">
             <table class="min-w-full bg-white border border-gray-200">
@@ -125,7 +127,6 @@ document.addEventListener("DOMContentLoaded", function() {
     const btn = document.getElementById('saveOptionsBtn');
     const dropdown = document.getElementById('saveDropdown');
 
-    // Dropdown toggle
     btn.addEventListener('click', (e) => {
         e.stopPropagation();
         dropdown.classList.toggle('hidden');
@@ -135,7 +136,6 @@ document.addEventListener("DOMContentLoaded", function() {
             dropdown.classList.add('hidden');
     });
 
-    // Auto-submit filters
     document.querySelectorAll('.auto-submit').forEach(el => {
         el.addEventListener('change', () => applyFilter());
     });

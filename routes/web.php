@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
-// Import your controllers
+
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ClinicAuthController;
 use App\Http\Controllers\AppointmentController;
@@ -11,7 +11,7 @@ use App\Http\Controllers\MaterialController;
 use App\Http\Controllers\DeliveryController;
 use App\Http\Controllers\DentistController;
 use App\Http\Controllers\CaseOrderController;
-use App\Http\Controllers\TechnicianController; // Ensure this is imported
+use App\Http\Controllers\TechnicianController; 
 use App\Http\Controllers\BillingController;
 use App\Http\Controllers\RiderController;
 use App\Http\Controllers\ClinicController;
@@ -23,6 +23,8 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ClinicSettingsController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\ClinicDashboardController;
+use App\Http\Controllers\AdminSearchController;
+use App\Http\Controllers\RidersReportController;
 
 
 /*
@@ -238,3 +240,8 @@ Route::get('/reports/riders/export/{type}', [App\Http\Controllers\ReportControll
     // For Technician
 Route::post('/technician/appointments/finish/{id}', [AppointmentController::class, 'markAsFinished'])
     ->name('technician.appointments.finish');
+
+    Route::get('/admin-search', [App\Http\Controllers\AdminSearchController::class, 'search'])
+    ->name('admin.search')
+    ->middleware('auth');
+

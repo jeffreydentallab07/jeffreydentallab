@@ -4,7 +4,18 @@
 
 @section('content')
 <div class="p-6 bg-gray-300 min-h-screen text-sm">
-    <h1 class="text-xl font-bold mb-4">Case Orders Report</h1>
+    <div class="flex items-center gap-3 mb-6">
+        <a href="{{ url()->previous() }}"
+           class="inline-flex items-center justify-center bg-white border border-gray-300 rounded-full p-2 shadow hover:bg-gray-100 transition focus:ring-2 focus:ring-blue-400 focus:outline-none">
+            <svg xmlns="http://www.w3.org/2000/svg"
+                 fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                 class="w-4 h-4 text-gray-700">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
+            </svg>
+        </a>
+        <h1 class="text-xl font-bold mb-4">Case Orders Report</h1>
+    </div>    
+
 <form id="filterForm" method="GET" action="{{ route('reports.caseorders') }}"
       class="mb-6 p-4 rounded-lg flex flex-wrap gap-4 items-end bg-gray-200 shadow-inner border border-gray-400">
 
@@ -127,8 +138,11 @@ document.addEventListener('DOMContentLoaded', function() {
                         <td class="px-4 py-2">{{ $order->co_id }}</td>
                         <td class="px-4 py-2">{{ $order->case_type }}</td>
                         <td class="px-4 py-2">{{ $order->clinic->clinic_name ?? 'N/A' }}</td>
-                        <td class="px-4 py-2">{{ $order->dentist->name ?? 'N/A' }}</td>
-                        <td class="px-4 py-2">{{ $order->patient->full_name ?? 'N/A' }}</td>
+                        <td class="px-4 py-2">{{ $order->patient->dentist && !Str::startsWith(Str::lower($order->patient->dentist->name), 'dr.') 
+    ? 'Dr. ' . $order->patient->dentist->name 
+    : ($order->patient->dentist->name ?? 'N/A') }}
+</td>
+                        <td class="px-4 py-2">{{ $order->patient->patient_name ?? 'N/A' }}</td>
                         <td class="px-4 py-2">
                             <span class="
                                 px-2 py-1 rounded text-xs 
