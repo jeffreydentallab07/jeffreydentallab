@@ -99,7 +99,7 @@
                                     <div>
                                         Delivered by:
                                         <div class="h-6"></div>
-                                        <div class="text-center text-xs font-semibold">{{ $billing->rider->name ?? 'Not Assigned' }}</div>
+                                        <div class="text-center text-xs font-semibold">{{ $billing->appointment->delivery->rider->name ?? 'Not Assigned' }}</div>
                                         <div class="border-t border-black w-40 text-center text-xs mt-1">Delivered By</div>
                                     </div>
                                 </div>

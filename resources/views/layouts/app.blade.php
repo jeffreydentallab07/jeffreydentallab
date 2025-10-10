@@ -6,27 +6,32 @@
     <link rel="icon" href="{{ asset('images/logo3.ico') }}" type="image/x-icon">
     <title>@yield('title', 'Denture Reports')</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    
+  <body x-data class="bg-gray-50">
 
-    <style>
-        .notification-popup-transition {
-            transition: transform 0.2s ease-out, opacity 0.2s ease-out;
-        }
-    </style>
-</head>
+  
+    @if(session('success'))
+        <div 
+            x-data="{ show: true }"
+            x-show="show"
+            x-init="setTimeout(() => show = false, 3000)"
+            x-transition.opacity.duration.500ms
+            class="fixed top-24 right-5 bg-green-500 text-white px-4 py-2 rounded shadow-lg z-[9999]"
+        >
+        </div>
+    @endif
 
-@if(session('success'))
-<div 
-    x-data="{ show: true }" 
-    x-show="show" 
-    x-init="setTimeout(() => show = false, 3000)" 
-    x-transition.opacity.duration.500ms
-    class="fixed top-24 right-5 bg-green-500 text-white px-4 py-2 rounded shadow-lg z-50"
->
-    {{ session('success') }}
-</div>
-@endif
-<script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+    @if(session('error'))
+        <div 
+            x-data="{ show: true }"
+            x-show="show"
+            x-init="setTimeout(() => show = false, 3000)"
+            x-transition.opacity.duration.500ms
+            class="fixed top-24 right-5 bg-red-500 text-white px-4 py-2 rounded shadow-lg z-[9999]"
+        >
+            {{ session('error') }}
+        </div>
+    @endif
+
 
 <body class="h-screen flex bg-white text-[12px]">
 
@@ -137,9 +142,13 @@
                     </button>
                     <div id="userDropdown" class="absolute right-0 mt-2 w-40 bg-white rounded-md shadow-md border hidden z-50">
                         <button onclick="openModal('settingsModal')" class="w-full text-left flex items-center px-3 py-2 hover:bg-gray-100 text-[12px]">Settings</button>
-                        <form method="POST" action="{{ route('logout') }}">
+                        <form method="POST" action="{{ route('landing') }}">
                             @csrf
-                            <button type="submit" class="w-full text-left flex items-center px-3 py-2 text-red-500 hover:bg-gray-100 text-[12px]">Sign out</button>
+                            <button type="button" 
+        class="w-full text-left px-3 py-2 text-red-500 hover:bg-gray-300 text-[12px]" 
+        onclick="window.location.href='{{ route('landing') }}'">
+  Sign out
+</button>
                         </form>
                     </div>
                 </div>

@@ -245,3 +245,6 @@ Route::post('/technician/appointments/finish/{id}', [AppointmentController::clas
     ->name('admin.search')
     ->middleware('auth');
 
+Route::prefix('admin')->name('admin.')->middleware(['auth'])->group(function () {
+    Route::resource('clinics', ClinicController::class);
+});

@@ -88,7 +88,7 @@ public function login(Request $request)
     'name' => $request->name,
     'email' => $request->email,
     'password' => Hash::make($request->password),
-    'role' => 'technician', 
+    'role' => 'admin', 
 ]);
 
       

@@ -13,7 +13,6 @@
     style="font-family: 'Century Gothic', sans-serif;"
 >
 
-    {{-- Top Statistic Cards --}}
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-5 mb-8">
         <template x-for="(value, label) in { 'Case Orders': caseOrders, 'Appointments': appointments, 'Dentists': dentists, 'Patients': patients }" :key="label">
             <div class="bg-white rounded-xl shadow-lg border border-white/80 p-5 transition hover:shadow-xl hover:-translate-y-2 hover:scale-105 duration-300">
@@ -22,27 +21,6 @@
             </div>
         </template>
     </div>
-
-    {{-- Dentist Report Cards --}}
-    <div class="bg-white rounded-xl shadow-lg p-6 mb-8">
-        <h2 class="text-lg font-semibold text-blue-900 mb-4">Dentist Report Cards</h2>
-        <div id="dentistReportsContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            @forelse ($dentistReports as $d)
-                <div class="p-6 border rounded-2xl bg-white shadow hover:shadow-xl transition transform hover:-translate-y-1 cursor-pointer"
-                     onclick="window.location.href='{{ url('clinic/dentists/'.$d->dentist_id) }}'">
-                    <h3 class="text-lg text-blue-900 font-semibold mb-1">{{ $d->dentist_name }}</h3>
-                    <p class="text-gray-700 text-sm">Total Cases: <span class="font-semibold">{{ $d->total_cases }}</span></p>
-                    <p class="text-green-700 text-sm">Completed: <span class="font-semibold">{{ $d->completed_cases }}</span></p>
-                    <p class="text-yellow-600 text-sm">Pending: <span class="font-semibold">{{ $d->pending_cases }}</span></p>
-                </div>
-            @empty
-                <div class="bg-gray-50 p-6 rounded-lg text-center text-gray-500 col-span-full">
-                    No dentist report data available.
-                </div>
-            @endforelse
-        </div>
-    </div>
-
   
     <div class="bg-white rounded-xl shadow-lg p-6">
         <h2 class="text-lg font-semibold text-blue-900 mb-4">Recent Case Orders</h2>

@@ -67,16 +67,11 @@
                             </td>
                             <td class="px-6 py-3 text-center">
                                 @if($delivery->delivery_status == 'in transit')
-                                    <form action="{{ route('rider.deliveries.markDelivered', $delivery->delivery_id) }}"
-                                          method="POST"
-                                          onsubmit="return confirm('Mark this delivery as DELIVERED?');">
-                                        @csrf
-                                        @method('PUT')
-                                        <button type="submit"
-                                                class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg text-xs transition-colors pulse-button">
-                                            Mark as Delivered
-                                        </button>
-                                    </form>
+                                    <button type="button"
+                                            onclick="showConfirmModal({{ $delivery->delivery_id }})"
+                                            class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg text-xs transition-colors pulse-button">
+                                        Mark as Delivered
+                                    </button>
                                 @else
                                     <span class="text-gray-500 text-xs">No active actions</span>
                                 @endif
@@ -132,15 +127,11 @@
                     </div>
                     <div class="mt-3 text-right">
                         @if($delivery->delivery_status == 'in transit')
-                            <form action="{{ route('rider.deliveries.markDelivered', $delivery->delivery_id) }}" method="POST"
-                                  onsubmit="return confirm('Mark this delivery as DELIVERED?');">
-                                @csrf
-                                @method('PUT')
-                                <button type="submit"
-                                        class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg text-xs transition-colors pulse-button">
-                                    Mark as Delivered
-                                </button>
-                            </form>
+                            <button type="button"
+                                    onclick="showConfirmModal({{ $delivery->delivery_id }})"
+                                    class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg text-xs transition-colors pulse-button">
+                                Mark as Delivered
+                            </button>
                         @else
                             <span class="text-gray-500 text-xs">No active actions</span>
                         @endif
@@ -153,28 +144,39 @@
     </div>
 </div>
 
+{{-- Confirmation Modal --}}
+<div id="confirmModal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+    <div class="bg-white rounded-xl shadow-lg w-80 p-6 text-center">
+        <h2 class="text-lg font-semibold text-gray-800 mb-3">Confirm Delivery</h2>
+        <p class="text-sm text-gray-600 mb-5">Are you sure you want to mark this delivery as <strong>DELIVERED</strong>?</p>
+        <form id="confirmForm" method="POST">
+            @csrf
+            @method('PUT')
+            <div class="flex justify-center gap-3">
+                <button type="button"
+                        onclick="closeConfirmModal()"
+                        class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-medium px-4 py-2 rounded-lg transition">
+                    Cancel
+                </button>
+                <button type="submit"
+                        class="bg-green-600 hover:bg-green-700 text-white font-medium px-4 py-2 rounded-lg transition">
+                    Yes, Confirm
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
 {{-- Button pulse animation --}}
 <style>
 @keyframes pulseEffect {
-    0%, 100% {
-        transform: scale(1);
-        box-shadow: 0 0 0 0 rgba(30, 58, 138, 0.4);
-    }
-    50% {
-        transform: scale(1.05);
-        box-shadow: 0 0 15px 3px rgba(30, 58, 138, 0.5);
-    }
+    0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(30,58,138,0.4); }
+    50% { transform: scale(1.05); box-shadow: 0 0 15px 3px rgba(30,58,138,0.5); }
 }
-.pulse-button {
-    animation: pulseEffect 1.5s infinite ease-in-out;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-.pulse-button:hover {
-    box-shadow: 0 0 20px 5px rgba(30, 58, 138, 0.6);
-}
+.pulse-button { animation: pulseEffect 1.5s infinite ease-in-out; }
 </style>
 
-{{-- Toast Auto-hide --}}
+{{-- Scripts --}}
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const toasts = [document.getElementById('successToast'), document.getElementById('errorToast')];
@@ -187,6 +189,18 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 });
+
+// Confirmation Modal Functions
+function showConfirmModal(deliveryId) {
+    const modal = document.getElementById('confirmModal');
+    const form = document.getElementById('confirmForm');
+    form.action = `/rider/deliveries/${deliveryId}/mark-delivered`; // route pattern
+    modal.classList.remove('hidden');
+}
+
+function closeConfirmModal() {
+    document.getElementById('confirmModal').classList.add('hidden');
+}
 </script>
 
 @endsection

@@ -3,6 +3,22 @@
 @section('page-title', 'Dashboard')
 
 @section('content')
+
+@if(session('success'))
+    <div 
+        x-data="{ show: true }"
+        x-show="show"
+        x-init="setTimeout(() => show = false, 3000)"
+        x-transition.opacity.duration.500ms
+        class="fixed top-24 right-5 bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg z-[9999] flex items-center gap-2"
+    >
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+        </svg>
+        <span>{{ session('success') }}</span>
+    </div>
+@endif
+
 <div 
     x-data="dashboardData({ 
         clinic: {{ $clinicCount }},

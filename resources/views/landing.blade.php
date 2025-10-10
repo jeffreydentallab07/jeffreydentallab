@@ -213,98 +213,116 @@
 
   
   <div id="clinicLoginModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/50 px-4">
-    <div class="bg-white w-full max-w-2xl rounded-2xl shadow-lg overflow-hidden">
-      <div class="flex flex-col md:flex-row">
-        <div class="w-full md:w-1/2 relative flex items-center justify-center p-6" style="background-image:url('{{ asset('images/bg.jpg') }}'); background-size:cover;">
-          <div class="absolute inset-0 bg-black/40"></div>
-          <div class="relative z-10 text-center text-white px-4">
-            <img src="{{ asset('images/logo2.png') }}" alt="Logo" class="w-24 mx-auto mb-3">
-            <h2 class="text-lg font-bold">Welcome Back</h2>
-            <p class="text-xs mt-2">Log in to manage your clinic's appointments, case orders, billing, and deliveries.</p>
-          </div>
+  <div class="bg-white w-full max-w-4xl rounded-2xl shadow-lg overflow-hidden">
+    <div class="flex flex-col md:flex-row h-full">
+      <!-- Left Side -->
+      <div class="w-full md:w-1/2 relative flex items-center justify-center p-6" style="background-image:url('{{ asset('images/bg.jpg') }}'); background-size:cover; background-position:center;">
+        <div class="absolute inset-0 bg-black/40"></div>
+        <div class="relative z-10 text-center text-white px-4">
+          <img src="{{ asset('images/logo2.png') }}" alt="Logo" class="w-32 mx-auto mb-4">
+          <h2 class="text-2xl font-bold">Welcome Back</h2>
+          <p class="text-sm mt-2">Log in to manage your clinic's appointments, case orders, billing, and deliveries.</p>
+        </div>
+      </div>
+
+      <!-- Right Side -->
+      <div class="w-full md:w-1/2 p-6 bg-white flex flex-col justify-center">
+        <div class="flex items-center justify-between mb-4">
+          <h3 class="text-2xl font-bold text-blue-900">Clinic Login</h3>
+          <button data-close class="text-gray-500 hover:text-red-500 text-2xl leading-none">&times;</button>
         </div>
 
-        <div class="w-full md:w-1/2 p-6 bg-white">
-          <div class="flex items-center justify-between mb-4">
-            <h3 class="text-lg font-bold text-blue-900">Clinic Login</h3>
-            <button data-close class="text-gray-500 hover:text-red-500" aria-label="Close clinic login modal">&times;</button>
+        <form id="clinicLoginForm" action="{{ route('clinic.login.post') }}" method="POST" class="space-y-3" novalidate>
+          @csrf
+
+          <div>
+            <input type="email" id="clinicEmail" name="email" placeholder="Enter Email" required pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+              class="w-full border p-3 rounded-md focus:outline-none focus:border-[#189ab4]" />
+            <p id="clinicEmailError" class="text-red-600 text-sm mt-1 hidden">Please enter a valid email.</p>
+          </div>
+          <div class="relative">
+            <input type="password" name="password" id="clinicPassword" placeholder="Enter Password" required minlength="8"
+              class="w-full border p-3 rounded-md pr-10 focus:outline-none focus:border-[#189ab4]" />
+            <button type="button" id="clinicTogglePassword" class="absolute right-3 top-3 text-gray-500" aria-label="Toggle password">
+              <svg id="clinicEyeIcon" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7-1.274 4.057-5.065 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+              </svg>
+            </button>
+            <p id="clinicPasswordError" class="text-red-600 text-sm mt-1 hidden">Password must be at least 8 characters long.</p>
           </div>
 
-          <form id="clinicLoginForm" action="{{ route('clinic.login.post') }}" method="POST" class="space-y-3">
-            @csrf
-            <input type="email" name="email" placeholder="Enter Email" required class="w-full border-b p-2 focus:outline-none focus:border-[#189ab4]" />
-            <div class="relative">
-              <input type="password" name="password" id="clinicPassword" placeholder="Enter Password" required class="w-full border-b p-2 pr-10 focus:outline-none focus:border-[#189ab4]" />
-              <button type="button" id="clinicTogglePassword" class="absolute right-2 top-2 text-gray-500" aria-label="Toggle password">
-                <svg id="clinicEyeIcon" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
-                </svg>
-              </button>
-            </div>
+          <div class="flex items-center justify-between text-sm text-gray-600">
+            <label class="flex items-center space-x-2">
+              <input type="checkbox" name="remember" class="text-[#189ab4]">
+              <span>Remember Me</span>
+            </label>
+            <a href="#" class="text-[#189ab4] hover:underline">Forgot Password?</a>
+          </div>
 
-            <div class="flex items-center justify-between text-sm text-gray-600">
-              <label class="flex items-center space-x-2"><input type="checkbox" name="remember" class="text-[#189ab4]"> <span>Remember Me</span></label>
-              <a href="#" class="text-[#189ab4]">Forgot Password?</a>
-            </div>
+          <button type="submit" class="w-full bg-blue-900 text-white rounded-md font-bold py-3 hover:bg-[#127a95]">Login</button>
+        </form>
 
-            <button type="submit" class="w-full bg-[#189ab4] text-white rounded-md py-2 font-bold hover:bg-[#127a95]">Login</button>
-          </form>
-
-          <p class="text-center text-xs text-gray-700 mt-3">Don’t have an account? <a href="#" id="openSignupFromLogin" class="text-blue-900">Sign up here</a></p>
-        </div>
+        <p class="text-center text-xs text-gray-700 mt-3">
+          Don’t have an account?
+          <a href="#" id="openSignupFromLogin" class="text-blue-900 font-semibold hover:underline">Sign up here</a>
+        </p>
       </div>
     </div>
   </div>
+</div>
 
-  
-  <div id="labLoginModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/50 px-4">
-    <div class="bg-white w-full max-w-4xl rounded-2xl shadow-lg overflow-hidden">
-      <div class="flex flex-col md:flex-row">
-        <div class="w-full md:w-1/2 relative flex items-center justify-center p-6" style="background-image:url('{{ asset('images/bg.jpg') }}'); background-size:cover;">
-          <div class="absolute inset-0 bg-black/40"></div>
-          <div class="relative z-10 text-center text-white px-4">
-            <img src="{{ asset('images/logo2.png') }}" alt="Logo" class="w-32 mx-auto mb-4">
-            <h2 class="text-2xl font-bold">Jeffrey Dental Laboratory</h2>
-            <p class="text-sm mt-2">Lab portal — manage orders and deliveries.</p>
-          </div>
+
+
+<div id="labLoginModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/50 px-4">
+  <div class="bg-white w-full max-w-4xl rounded-2xl shadow-lg overflow-hidden">
+    <div class="flex flex-col md:flex-row h-full">
+   
+      <div class="w-full md:w-1/2 relative flex items-center justify-center p-6" style="background-image:url('{{ asset('images/bg.jpg') }}'); background-size:cover; background-position:center;">
+        <div class="absolute inset-0 bg-black/40"></div>
+        <div class="relative z-10 text-center text-white px-4">
+          <img src="{{ asset('images/logo2.png') }}" alt="Logo" class="w-32 mx-auto mb-4">
+          <h2 class="text-2xl font-bold">Jeffrey Dental Laboratory</h2>
+          <p class="text-sm mt-2">Lab portal — manage orders and deliveries.</p>
+        </div>
+      </div>
+
+      <div class="w-full md:w-1/2 p-6 bg-white flex flex-col justify-center">
+        <div class="flex items-center justify-between mb-4">
+          <h3 class="text-2xl font-bold text-blue-900">Laboratory Login</h3>
+          <button data-close class="text-gray-500 hover:text-red-500 text-2xl leading-none">&times;</button>
         </div>
 
-        <div class="w-full md:w-1/2 p-6 bg-white">
-          <div class="flex items-center justify-between mb-4">
-            <h3 class="text-2xl font-bold text-blue-900">Laboratory Login</h3>
-            <button data-close class="text-gray-500 hover:text-red-500" aria-label="Close lab login modal">&times;</button>
+        <form id="labLoginForm" action="{{ url('/login') }}" method="POST" class="space-y-3" novalidate>
+          @csrf
+          <div>
+            <input id="labEmail" name="email" type="email" placeholder="Enter Email" required pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" class="w-full border p-3 rounded-md focus:outline-none focus:border-[#189ab4]" />
+            <p id="labEmailError" class="text-red-600 text-sm mt-1 hidden">Please enter a valid email.</p>
           </div>
 
-          <form id="labLoginForm" action="{{ url('/login') }}" method="POST" class="space-y-3" novalidate>
-            @csrf
-            <div>
-              <input id="labEmail" name="email" type="email" placeholder="Enter Email" required pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" class="w-full border p-3 rounded-md focus:outline-none focus:border-[#189ab4]" />
-              <p id="labEmailError" class="text-red-600 text-sm mt-1 hidden">Please enter a valid email.</p>
-            </div>
+          <div class="relative">
+            <input id="labPassword" name="password" type="password" placeholder="Enter Password" required minlength="8" class="w-full border p-3 rounded-md pr-10 focus:outline-none focus:border-[#189ab4]" />
+            <button type="button" id="toggleLabPassword" class="absolute right-3 top-3 text-gray-500" aria-label="Toggle lab password">
+              <svg id="labEyeIcon" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7-1.274 4.057-5.065 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+              </svg>
+            </button>
+            <p id="labPasswordError" class="text-red-600 text-sm mt-1 hidden">Password must be at least 8 characters long.</p>
+          </div>
 
-            <div class="relative">
-              <input id="labPassword" name="password" type="password" placeholder="Enter Password" required minlength="8" class="w-full border p-3 rounded-md pr-10 focus:outline-none focus:border-[#189ab4]" />
-              <button type="button" id="toggleLabPassword" class="absolute right-3 top-3 text-gray-500" aria-label="Toggle lab password">
-                <svg id="labEyeIcon" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7-1.274 4.057-5.065 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
-                </svg>
-              </button>
-              <p id="labPasswordError" class="text-red-600 text-sm mt-1 hidden">Password must be at least 8 characters long.</p>
-            </div>
+          <div class="flex items-center justify-between text-sm">
+            <label class="flex items-center space-x-2"><input type="checkbox" name="remember" class="text-[#189ab4]"> <span class="text-gray-700">Remember Me</span></label>
+            <a href="#" class="text-[#189ab4] hover:underline">Forgot Password?</a>
+          </div>
 
-            <div class="flex items-center justify-between text-sm">
-              <label class="flex items-center space-x-2"><input type="checkbox" name="remember" class="text-[#189ab4]"> <span class="text-gray-700">Remember Me</span></label>
-              <a href="#" class="text-[#189ab4] hover:underline">Forgot Password?</a>
-            </div>
-
-            <button type="submit" class="w-full bg-blue-900 text-white rounded-md font-bold py-3 hover:bg-[#127a95]">Login</button>
-          </form>
-        </div>
+          <button type="submit" class="w-full bg-blue-900 text-white rounded-md font-bold py-3 hover:bg-[#127a95]">Login</button>
+        </form>
       </div>
     </div>
   </div>
+</div>
+
 
   
   <div id="mapModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/50 px-4">
@@ -443,7 +461,19 @@
         });
       }
 
-     
+      const clinicEmail = document.getElementById('clinicEmail');
+  clinicEmail?.addEventListener('input', () => {
+    const err = document.getElementById('clinicEmailError');
+    if (!clinicEmail.checkValidity()) err.classList.remove('hidden');
+    else err.classList.add('hidden');
+  });
+
+  const clinicPassword = document.getElementById('clinicPassword');
+  clinicPassword?.addEventListener('input', () => {
+    const err = document.getElementById('clinicPasswordError');
+    if (clinicPassword.value.length > 0 && clinicPassword.value.length < 8) err.classList.remove('hidden');
+    else err.classList.add('hidden');
+  });
       const labLoginForm = document.getElementById('labLoginForm');
       if (labLoginForm) {
         labLoginForm.addEventListener('submit', async (e) => {
@@ -475,6 +505,7 @@
         showToast("{{ session('signup_success') }}", 'success');
       @endif
     });
+  
   </script>
   <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 </body>

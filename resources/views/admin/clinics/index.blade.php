@@ -21,7 +21,6 @@
         <table class="min-w-full border-separate border-spacing-0">
             <thead>
                 <tr class="bg-blue-900 text-white">
-                    <th class="px-6 py-3 text-left">Clinic ID</th>
                     <th class="px-6 py-3 text-left">Owner Name</th>
                     <th class="px-6 py-3 text-left">Clinic Name</th>
                     <th class="px-6 py-3 text-left">Address</th>
@@ -33,7 +32,6 @@
             <tbody>
                 @forelse($clinics as $clinic)
                 <tr class="bg-white hover:bg-gray-50">
-                    <td class="px-6 py-3 font-semibold text-gray-800">{{ $clinic->clinic_id }}</td>
                     <td class="px-6 py-3 font-semibold text-gray-800">{{ $clinic->owner_name }}</td>
                     <td class="px-6 py-3 font-semibold text-gray-800">{{ $clinic->clinic_name }}</td>
                     <td class="px-6 py-3 font-semibold text-gray-800">{{ $clinic->address }}</td>
@@ -43,12 +41,14 @@
                         <button data-id="{{ $clinic->clinic_id }}" class="editBtn px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600">
                             Edit
                         </button>
-                        <form action="{{ route('clinics.destroy', $clinic->clinic_id) }}" method="POST"
-                            onsubmit="return confirm('Are you sure you want to delete this clinic?');">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="text-red-600 hover:underline">Delete</button>
-                        </form>
+
+                        <button 
+                            type="button" 
+                            data-id="{{ $clinic->clinic_id }}" 
+                            data-name="{{ $clinic->clinic_name }}"
+                            class="deleteBtn px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600">
+                            Delete
+                        </button>
                     </td>
                 </tr>
                 @empty
@@ -135,19 +135,37 @@
         </div>
     </div>
 
+    <div id="deleteClinicModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div class="bg-white w-96 rounded-xl shadow-lg p-6 relative text-center">
+            <h2 class="text-xl font-bold mb-4 text-red-600">Confirm Deletion</h2>
+            <p class="text-gray-700 mb-6">Are you sure you want to delete <span id="clinicName" class="font-semibold"></span>?</p>
+            <form id="deleteClinicForm" method="POST">
+                @csrf
+                @method('DELETE')
+                <div class="flex justify-center gap-3">
+                    <button type="button" id="cancelDeleteClinic" class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400">Cancel</button>
+                    <button type="submit" class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700">Delete</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
 </div>
 
 <script>
 document.addEventListener("DOMContentLoaded", () => {
     const addModal = document.getElementById('addClinicModal');
     const editModal = document.getElementById('editClinicModal');
+    const deleteModal = document.getElementById('deleteClinicModal');
+    const clinicNameSpan = document.getElementById('clinicName');
+    const deleteForm = document.getElementById('deleteClinicForm');
 
     // Add Modal
     document.getElementById('openAddClinicModal').addEventListener('click', () => addModal.classList.remove('hidden'));
     document.getElementById('closeAddClinicModal').addEventListener('click', () => addModal.classList.add('hidden'));
     document.getElementById('cancelAddClinic').addEventListener('click', () => addModal.classList.add('hidden'));
 
-    // Edit Modal (event delegation)
+    // Edit Modal
     document.addEventListener('click', function(e){
         if(e.target.closest('.editBtn')){
             const btn = e.target.closest('.editBtn');
@@ -170,6 +188,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
     document.getElementById('closeEditClinicModal').addEventListener('click', () => editModal.classList.add('hidden'));
     document.getElementById('cancelEditClinic').addEventListener('click', () => editModal.classList.add('hidden'));
+
+    // Delete Modal
+    document.addEventListener('click', function(e){
+        if(e.target.closest('.deleteBtn')){
+            const btn = e.target.closest('.deleteBtn');
+            const clinicId = btn.dataset.id;
+            const clinicName = btn.dataset.name;
+
+            clinicNameSpan.textContent = clinicName;
+            deleteForm.action = `/clinics/${clinicId}`;
+            deleteModal.classList.remove('hidden');
+        }
+    });
+
+    document.getElementById('cancelDeleteClinic').addEventListener('click', () => deleteModal.classList.add('hidden'));
 });
 </script>
 @endsection

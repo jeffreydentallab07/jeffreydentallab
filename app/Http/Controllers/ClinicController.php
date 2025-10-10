@@ -43,28 +43,34 @@ class ClinicController extends Controller
     return response()->json($clinic);
 }
 
-    public function update(Request $request, Clinic $clinic)
-    {
-        $request->validate([
-            'clinic_name'    => 'required|string|max:255',
-            'address'        => 'required|string',
-            'contact_number' => 'required|string',
-            'email'          => 'required|email',
-        ]);
+   public function update(Request $request, Clinic $clinic)
+{
+    $request->validate([
+        'clinic_name'    => 'required|string|max:255',
+        'address'        => 'required|string',
+        'contact_number' => 'required|string',
+        'owner_name'     => 'required|string|max:255',
+        'email'          => 'required|email|unique:tbl_clinic,email,' . $clinic->clinic_id . ',clinic_id',
+    ]);
 
-        $clinic->update($request->all());
+    $clinic->update([
+        'clinic_name'    => $request->clinic_name,
+        'address'        => $request->address,
+        'contact_number' => $request->contact_number,
+        'owner_name'     => $request->owner_name,
+        'email'          => $request->email,
+    ]);
 
-        return redirect()->route('admin.clinics.index')
-                         ->with('success', 'Clinic updated successfully.');
-    }
+    return redirect()->route('admin.clinics.index')
+                     ->with('success', 'Clinic updated successfully.');
+}
 
     public function destroy(Clinic $clinic)
-    {
-        $clinic->delete();
+{
+    $clinic->delete();
+    return redirect()->route('clinics.index')->with('success', 'Clinic deleted successfully.');
+}
 
-        return redirect()->route('admin.clinics.index')
-                         ->with('success', 'Clinic deleted successfully.');
-    }
 
     public function patients()
     {
@@ -105,15 +111,15 @@ class ClinicController extends Controller
         'photo'        => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
     ]);
 
-    // Handle photo upload
+   
     if ($request->hasFile('photo')) {
         $file = $request->file('photo');
         $filename = time() . '_' . $file->getClientOriginalName();
-        $file->storeAs('public/clinic_photos', $filename); // save to storage/app/public/clinic_photos
-        $clinic->profile_photo = 'clinic_photos/' . $filename; // relative path sa DB
+        $file->storeAs('public/clinic_photos', $filename); 
+        $clinic->profile_photo = 'clinic_photos/' . $filename;
     }
 
-    // Update other fields
+  
     $clinic->clinic_name    = $request->clinic_name;
     $clinic->email          = $request->email;
     $clinic->contact_number = $request->contact_number;
