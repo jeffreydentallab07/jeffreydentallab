@@ -147,7 +147,7 @@ public function dashboard()
         return view('admin.technicians.index', compact('technicians'));
     }
 
-    // Store new technician
+    
     public function store(Request $request)
     {
         $request->validate([
@@ -198,23 +198,21 @@ public function update(Request $request, $id)
     try {
         DB::beginTransaction();
 
-        // Update photo if uploaded
         if ($request->hasFile('photo')) {
             $photoPath = $request->file('photo')->store('photos/users', 'public');
             $user->photo = $photoPath;
         }
 
-        // Update basic fields
         $user->name = strip_tags($request->name);
         $user->email = strtolower(strip_tags($request->email));
         $user->contact_number = strip_tags($request->contact_number);
 
-        // Update password only if entered
+       
         if ($request->filled('password')) {
             $user->password = Hash::make($request->password);
         }
 
-        $user->save(); // Save all changes
+        $user->save(); 
         DB::commit();
 
         return redirect()->route('technicians.index')->with('success', 'Technician updated successfully.');

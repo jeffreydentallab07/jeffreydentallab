@@ -28,14 +28,10 @@ class DashboardController extends Controller
             }
         }
 
-        // --- Notifications ---
-        // New case orders
         $newCaseOrders = CaseOrder::where('status', 'new')->get();
 
-        // Finished appointments
         $finishedAppointments = Appointment::where('work_status', 'finished')->get();
 
-        // Merge notifications
         $notifications = $newCaseOrders->map(function($order){
             return [
                 'type' => 'New Case Order',

@@ -85,10 +85,10 @@ class RiderController extends Controller
     {
         $riderId = Auth::id();
 
-        // Eager load necessary relationships: appointment, then material and caseOrder.clinic through it
+       
         $deliveries = Delivery::with([
             'appointment.material', 
-            'appointment.caseOrder.clinic' // To get clinic name
+            'appointment.caseOrder.clinic'
         ])
         ->where('rider_id', $riderId)
         ->orderBy('updated_at', 'desc') 
@@ -97,17 +97,14 @@ class RiderController extends Controller
         return view('rider.dashboard', compact('deliveries'));
     }
 
-    /**
-     * Handle the update of a delivery's status.
-     * This method will be used for the dropdown changes.
-     */
+   
     public function updateStatus(Request $request, Delivery $delivery)
     {
         $request->validate([
             'delivery_status' => 'required|string|in:ready to deliver,in transit,delivered',
         ]);
 
-        // Authorization check: Ensure the delivery belongs to the authenticated rider
+    
         if ($delivery->rider_id !== Auth::id()) {
             Log::warning('Unauthorized attempt to update delivery status', [
                 'delivery_id' => $delivery->id,
@@ -117,7 +114,7 @@ class RiderController extends Controller
             return redirect()->route('rider.dashboard')->with('error', 'Unauthorized action.');
         }
         
-        // Prevent changing status if it's already delivered
+       
         if ($delivery->delivery_status === 'delivered' && $request->delivery_status !== 'delivered') {
              return redirect()->route('rider.dashboard')->with('error', 'Cannot change status of a delivered item.');
         }

@@ -21,13 +21,25 @@
                         <td class="px-6 py-3 text-left">{{ $appointment->caseOrder->patient->patient_name ?? '-' }}</td>
                         <td class="px-6 py-3 text-left">{{ $appointment->technician->name ?? 'Not assigned' }}</td>
                         <td class="px-6 py-3 text-left">{{ \Carbon\Carbon::parse($appointment->schedule_datetime)->format('M d, Y h:i A') }}</td>
-                        <td class="px-6 py-3 text-left">
-                            @if($appointment->work_status !== 'finished')
-                                {{ ucfirst($appointment->work_status) }}
-                            @else
-                                {{ $appointment->delivery->delivery_status ?? 'No delivery info' }}
-                            @endif
-                        </td>
+                       <td class="px-6 py-3 text-left">
+    @php
+        $status = $appointment->work_status !== 'finished'
+            ? ucfirst($appointment->work_status)
+            : ($appointment->delivery->delivery_status ?? 'No delivery info');
+
+        // define color based on status
+        $colorClass = match(strtolower($status)) {
+            'delivered' => 'text-green-600 font-semibold',
+            'pending' => 'text-yellow-500 font-semibold',
+            'in progress' => 'text-blue-600 font-semibold',
+            'cancelled' => 'text-red-600 font-semibold',
+            default => 'text-gray-700'
+        };
+    @endphp
+
+    <span class="{{ $colorClass }}">{{ $status }}</span>
+</td>
+
                     </tr>
                 @empty
                     <tr>

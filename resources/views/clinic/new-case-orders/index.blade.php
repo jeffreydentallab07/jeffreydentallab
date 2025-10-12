@@ -69,7 +69,7 @@
                             '{{ $order->case_status }}',
                             '{{ addslashes($order->notes) }}'
                         )"
-                        class="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 transition">
+                        class="px-3 py-1 bg-blue-900 text-white rounded hover:bg-blue-600 transition">
                         Edit
                     </button>
                     <button onclick="openDeleteModal({{ $order->co_id }})"
@@ -93,10 +93,9 @@
         <button onclick="closeModal('viewCaseOrderModal')" 
                 class="absolute top-3 right-3 text-gray-500 hover:text-gray-800 text-xl z-10" aria-label="Close modal">&times;</button>
 
-        <div class="p-4 border-b border-gray-200 flex items-center justify-between">
-            <h2 id="viewModalTitle" class="text-xl font-semibold text-gray-800">Case Order Details</h2>
-        </div>
-
+       <div class="p-4 border-b border-gray-200 flex items-center justify-between bg-blue-900 text-white">
+    <h2 id="viewModalTitle" class="text-xl font-semibold">Case Order Details</h2>
+</div>
         <div class="p-4 space-y-4 text-sm">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
                 <div>
@@ -261,19 +260,19 @@
         <button onclick="closeModal('editCaseOrderModal')" 
                 class="absolute top-3 right-3 text-gray-500 hover:text-gray-800 text-xl z-10" aria-label="Close modal">&times;</button>
 
-        <div class="p-4 border-b border-gray-200 flex items-center justify-between">
-            <div class="flex items-center space-x-4">
-                <div class="relative">
-                    <img class="w-12 h-12 rounded-full object-cover border-2 border-white shadow-md"
-                        src="{{ Auth::guard('clinic')->user()->profile_photo 
-                            ? asset('storage/' . Auth::guard('clinic')->user()->profile_photo) 
-                            : 'https://via.placeholder.com/150' }}"
-                        alt="{{ $clinic->clinic_name }}">
-                </div>
-                <div>
-                    <h2 id="editModalTitle" class="text-xl font-semibold text-gray-800">Edit Case Order</h2>
-                    <p class="text-xs text-gray-500">Update details for this case order.</p>
-                </div>
+        <div class="p-4 border-b flex items-center justify-between bg-blue-900 text-white">
+    <div class="flex items-center space-x-4">
+        <div class="relative">
+            <img class="w-12 h-12 rounded-full object-cover border-2 border-white shadow-md"
+                src="{{ Auth::guard('clinic')->user()->profile_photo 
+                    ? asset('storage/' . Auth::guard('clinic')->user()->profile_photo) 
+                    : 'https://via.placeholder.com/150' }}"
+                alt="{{ $clinic->clinic_name }}">
+        </div>
+        <div>
+            <h2 id="editModalTitle" class="text-xl font-semibold">Edit Case Order</h2>
+            <p class="text-xs text-blue-100">Update details for this case order.</p>
+        </div>
             </div>
         </div>
 

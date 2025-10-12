@@ -14,7 +14,6 @@ class NewCaseOrderController extends Controller
 {
     $clinicId = auth()->user()->clinic_id;
 
-    // ✅ Get case orders only for this clinic
     $caseOrders = NewCaseOrder::whereHas('patient.dentist', function ($query) use ($clinicId) {
         $query->where('clinic_id', $clinicId);
     })
@@ -22,12 +21,10 @@ class NewCaseOrderController extends Controller
     ->orderBy('created_at', 'desc')
     ->get();
 
-    // ✅ Get patients belonging to dentists under this clinic
     $patients = \App\Models\Patient::whereHas('dentist', function ($query) use ($clinicId) {
         $query->where('clinic_id', $clinicId);
     })->get();
 
-    // ✅ Get dentists belonging to this clinic
     $dentists = \App\Models\Dentist::where('clinic_id', $clinicId)->get();
 
     $clinic = \App\Models\Clinic::where('clinic_id', $clinicId)->first();

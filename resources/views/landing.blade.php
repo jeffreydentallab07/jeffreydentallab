@@ -200,8 +200,43 @@
             <input name="address" placeholder="Address (optional)" class="w-full border-b p-2 focus:outline-none focus:border-[#189ab4]" />
             <input name="contact_number" placeholder="Contact Number (optional)" class="w-full border-b p-2 focus:outline-none focus:border-[#189ab4]" />
             <input type="email" name="email" placeholder="Email" required class="w-full border-b p-2 focus:outline-none focus:border-[#189ab4]" />
-            <input type="password" name="password" id="signup_password" placeholder="Password" required class="w-full border-b p-2 focus:outline-none focus:border-[#189ab4]" />
-            <input type="password" name="password_confirmation" id="signup_password_confirmation" placeholder="Confirm Password" required class="w-full border-b p-2 focus:outline-none focus:border-[#189ab4]" />
+         
+<div class="relative w-full">
+  <input type="password" 
+         name="password" 
+         id="signup_password" 
+         placeholder="Password" 
+         required 
+         class="w-full border-b p-2 pr-10 focus:outline-none focus:border-[#189ab4]" />
+  <button type="button" 
+          id="signupTogglePassword" 
+          class="absolute right-2 top-2 text-gray-500" 
+          aria-label="Toggle password">
+    <svg id="signupEyeIcon" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7-1.274 4.057-5.065 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+    </svg>
+  </button>
+</div>
+
+<div class="relative w-full">
+  <input type="password" 
+         name="password_confirmation" 
+         id="signup_password_confirmation" 
+         placeholder="Confirm Password" 
+         required 
+         class="w-full border-b p-2 pr-10 focus:outline-none focus:border-[#189ab4]" />
+  <button type="button" 
+          id="signupTogglePasswordConfirm" 
+          class="absolute right-2 top-2 text-gray-500" 
+          aria-label="Toggle confirm password">
+    <svg id="signupEyeIconConfirm" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7-1.274 4.057-5.065 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+    </svg>
+  </button>
+</div>
+
             <button type="submit" class="w-full bg-blue-900 text-white py-2 rounded-md font-bold hover:bg-[#127a95]">Create Account</button>
           </form>
 
@@ -215,7 +250,7 @@
   <div id="clinicLoginModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/50 px-4">
   <div class="bg-white w-full max-w-4xl rounded-2xl shadow-lg overflow-hidden">
     <div class="flex flex-col md:flex-row h-full">
-      <!-- Left Side -->
+    
       <div class="w-full md:w-1/2 relative flex items-center justify-center p-6" style="background-image:url('{{ asset('images/bg.jpg') }}'); background-size:cover; background-position:center;">
         <div class="absolute inset-0 bg-black/40"></div>
         <div class="relative z-10 text-center text-white px-4">
@@ -225,7 +260,7 @@
         </div>
       </div>
 
-      <!-- Right Side -->
+  
       <div class="w-full md:w-1/2 p-6 bg-white flex flex-col justify-center">
         <div class="flex items-center justify-between mb-4">
           <h3 class="text-2xl font-bold text-blue-900">Clinic Login</h3>
@@ -257,7 +292,7 @@
               <input type="checkbox" name="remember" class="text-[#189ab4]">
               <span>Remember Me</span>
             </label>
-            <a href="#" class="text-[#189ab4] hover:underline">Forgot Password?</a>
+            <a href="#" class="text-blue-900 hover:underline">Forgot Password?</a>
           </div>
 
           <button type="submit" class="w-full bg-blue-900 text-white rounded-md font-bold py-3 hover:bg-[#127a95]">Login</button>
@@ -313,7 +348,7 @@
 
           <div class="flex items-center justify-between text-sm">
             <label class="flex items-center space-x-2"><input type="checkbox" name="remember" class="text-[#189ab4]"> <span class="text-gray-700">Remember Me</span></label>
-            <a href="#" class="text-[#189ab4] hover:underline">Forgot Password?</a>
+            <a href="#" class="text-blue-900 hover:underline">Forgot Password?</a>
           </div>
 
           <button type="submit" class="w-full bg-blue-900 text-white rounded-md font-bold py-3 hover:bg-[#127a95]">Login</button>
@@ -345,6 +380,21 @@
 
   
   <script>
+    const togglePassword = (btnId, inputId) => {
+  const btn = document.getElementById(btnId);
+  const input = document.getElementById(inputId);
+  if (!btn || !input) return;
+
+  btn.addEventListener('click', () => {
+    const type = input.getAttribute('type') === 'password' ? 'text' : 'password';
+    input.setAttribute('type', type);
+  });
+};
+
+
+togglePassword('signupTogglePassword', 'signup_password');
+togglePassword('signupTogglePasswordConfirm', 'signup_password_confirmation');
+
     document.addEventListener('DOMContentLoaded', () => {
       
       const showToast = (message, type = 'error') => {
@@ -446,13 +496,16 @@
             });
             const data = await resp.json().catch(() => null);
 
-            if (resp.ok && data?.success) {
-              window.location.href = data.redirect || "{{ route('clinic.dashboard') }}";
-            } else {
-              
-              setTimeout(() => modalBox?.classList.remove('shake'), 500);
-              showToast((data && data.message) || 'Invalid email or password.');
-            }
+           if (resp.ok && data?.success) {
+    window.location.href = data.redirect || "{{ route('clinic.dashboard') }}";
+} else {
+    modalBox?.classList.remove('shake'); 
+    void modalBox?.offsetWidth; 
+    modalBox?.classList.add('shake'); 
+    setTimeout(() => modalBox?.classList.remove('shake'), 400); 
+    showToast((data && data.message) || 'Invalid email or password.');
+}
+
           } catch (err) {
             modalBox?.classList.add('shake');
             setTimeout(() => modalBox?.classList.remove('shake'), 500);
