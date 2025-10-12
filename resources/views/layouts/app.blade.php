@@ -6,7 +6,7 @@
     <link rel="icon" href="{{ asset('images/logo3.ico') }}" type="image/x-icon">
     <title>@yield('title', 'Denture Reports')</title>
     <script src="https://cdn.tailwindcss.com"></script>
-  <body x-data class="bg-gray-50">
+  <body x-data class="bg-gray-50 text-[11px]">
 
   
     @if(session('success'))
