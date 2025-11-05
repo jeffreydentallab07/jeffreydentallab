@@ -2,28 +2,25 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class Clinic extends Authenticatable
 {
-    use HasFactory, Notifiable;
-    
-
-    protected $table = 'tbl_clinic';
     protected $primaryKey = 'clinic_id';
-       public $timestamps = false;
-       
+    protected $guard = 'clinic';
 
     protected $fillable = [
+        'username',
         'clinic_name',
-        'address',
-        'contact_number',
-        'owner_name',
         'email',
         'password',
+        'contact_number',
+        'address',
         'profile_photo',
+        'approval_status',
+        'rejection_reason',
+        'approved_at',
+        'approved_by',
     ];
 
     protected $hidden = [
@@ -31,44 +28,53 @@ class Clinic extends Authenticatable
         'remember_token',
     ];
 
-    protected function casts(): array
-    {
-        return [
-            'password' => 'hashed',
-            'email_verified_at' => 'datetime',
-        ];
-    }
-  public function appointments()
-{
-    return $this->hasManyThrough(
-        \App\Models\Appointment::class, // The final model
-        \App\Models\CaseOrder::class,   // The intermediate model
-        'clinic_id',                     // Foreign key on CaseOrder table
-        'co_id',                         // Foreign key on Appointment table
-        'clinic_id',                     // Local key on Clinic table
-        'co_id'                          // Local key on CaseOrder table
-    );
-}
-public function dentists()
-{
-    return $this->hasMany(Dentist::class, 'clinic_id', 'clinic_id');
-}
+    protected $casts = [
+        'approved_at' => 'datetime',
+        'password' => 'hashed',
+    ];
 
-
-public function patients()
-{
-    return $this->hasManyThrough(
-        Patient::class,
-        Dentist::class,
-        'clinic_id',    // Foreign key sa Dentist table
-        'dentist_id',   // Foreign key sa Patient table
-        'clinic_id',    // Local key sa Clinic table
-        'dentist_id'    // Local key sa Dentist table
-    );
-}
-  public function caseOrders()
+    // Relationships
+    public function caseOrders()
     {
-        return $this->hasMany(\App\Models\CaseOrder::class, 'clinic_id', 'clinic_id');
+        return $this->hasMany(CaseOrder::class, 'clinic_id', 'clinic_id');
     }
 
+    public function patients()
+    {
+        return $this->hasMany(Patient::class, 'clinic_id', 'clinic_id');
+    }
+
+    public function dentists()
+    {
+        return $this->hasMany(Dentist::class, 'clinic_id', 'clinic_id');
+    }
+
+    public function notifications()
+    {
+        return $this->hasMany(ClinicNotification::class, 'clinic_id', 'clinic_id');
+    }
+
+    // Check if clinic is approved
+    public function isApproved()
+    {
+        return $this->approval_status === 'approved';
+    }
+
+    // Check if clinic is pending
+    public function isPending()
+    {
+        return $this->approval_status === 'pending';
+    }
+
+    // Check if clinic is rejected
+    public function isRejected()
+    {
+        return $this->approval_status === 'rejected';
+    }
+
+    // Relationship with admin who approved
+    public function approvedBy()
+    {
+        return $this->belongsTo(User::class, 'approved_by');
+    }
 }

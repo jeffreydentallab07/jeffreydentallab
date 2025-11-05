@@ -2,64 +2,103 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class CaseOrder extends Model
 {
-    protected $table = 'tbl_case_order';
+    use HasFactory;
+
     protected $primaryKey = 'co_id';
-    public $timestamps = true;
-    
+
     protected $fillable = [
-        'notes',
-        'case_type',
-        'recieve_by',
-        'recieve_at',
         'clinic_id',
+        'dentist_id',
         'patient_id',
+        'case_type',
         'status',
-        'case_status',
-        'user_id'
+        'notes',
     ];
-    
-    // Relationship: Case order belongs to a patient
-    public function patient()
+
+    // ✅ Status constants
+    const STATUS_PENDING = 'pending';
+    const STATUS_FOR_APPOINTMENT = 'for appointment';
+    const STATUS_IN_PROGRESS = 'in progress';
+    const STATUS_UNDER_REVIEW = 'under review';
+    const STATUS_ADJUSTMENT_REQUESTED = 'adjustment requested';
+    const STATUS_REVISION_IN_PROGRESS = 'revision in progress';
+    const STATUS_COMPLETED = 'completed';
+
+    // ✅ Helper methods
+    public function canBeReviewedByClinic()
     {
-        return $this->belongsTo(Patient::class, 'patient_id', 'patient_id');
+        return $this->status === self::STATUS_UNDER_REVIEW;
     }
-    
-    // Relationship: Case order belongs to a clinic
+
+    public function needsNewAppointment()
+    {
+        return $this->status === self::STATUS_ADJUSTMENT_REQUESTED;
+    }
+
+    public function getSubmissionCountAttribute()
+    {
+        return $this->appointments()
+            ->whereIn('work_status', ['completed', 'delivered'])
+            ->count();
+    }
+
+    // RELATIONSHIPS
+
     public function clinic()
     {
         return $this->belongsTo(Clinic::class, 'clinic_id', 'clinic_id');
     }
-    
-    // Relationship: Case order belongs to a dentist
+
     public function dentist()
     {
         return $this->belongsTo(Dentist::class, 'dentist_id', 'dentist_id');
     }
-    
-    // Relationship: One case order can have many appointments
+
+    public function patient()
+    {
+        return $this->belongsTo(Patient::class, 'patient_id', 'patient_id');
+    }
+
+    public function pickup()
+    {
+        return $this->hasOne(Pickup::class, 'case_order_id', 'co_id');
+    }
+
+    public function latestDelivery()
+    {
+        // Get the latest appointment's delivery
+        $latestAppointment = $this->appointments()
+            ->whereHas('delivery')
+            ->orderBy('appointment_id', 'desc')
+            ->first();
+
+        return $latestAppointment ? $latestAppointment->delivery() : null;
+    }
+
+    public function pickups()
+    {
+        return $this->hasMany(Pickup::class, 'case_order_id', 'co_id');
+    }
+
+    public function latestPickup()
+    {
+        return $this->hasOne(Pickup::class, 'case_order_id', 'co_id')
+            ->orderBy('pickup_id', 'desc');
+    }
+
     public function appointments()
     {
-        return $this->hasMany(Appointment::class, 'co_id', 'co_id');
+        return $this->hasMany(Appointment::class, 'case_order_id', 'co_id');
     }
-   public function delivery()
-{
-    return $this->hasOneThrough(
-        Delivery::class,       
-        Appointment::class, 
-        'co_id',              
-        'appointment_id',     
-        'co_id',              
-        'appointment_id'    
-    );
-}
-public function appointment() {
-    return $this->hasMany(Appointment::class, 'co_id', 'co_id');
-}
 
-
-    
+    public function latestAppointment()
+    {
+        return $this->hasOne(Appointment::class, 'case_order_id', 'co_id')
+            ->orderBy('appointment_id', 'desc');
+    }
 }
